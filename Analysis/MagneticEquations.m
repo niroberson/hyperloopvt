@@ -25,22 +25,18 @@ mew_0 = 4*pi*1E-7; % permeability of free space
 %x = 0.35;
 %z0 = 0.2;
 
-B0 = Br*(1-exp(-pi*t1/tau))*sin(pi/q)/(pi/q)
+B0 = Br*(1-exp(-pi*t1/tau))*sin(pi/q)/(pi/q);
+trident = @(x, y, z, x0, z0) (z-z0)./sqrt((x-x0).^2 + y.^2 + (z-z0));
+By_integrand = @(x, y, z, x0) B0*y/(2*pi).*(trident(x, y, z, x0, w2/2) - trident(x, y, z, x0, -w2/2)).*exp(1i.*x0.*pi/tau)./((x-x0).^2 + y.^2);
+C1_mn_s_integrand = @(x0, x,z) By_integrand(x0, x,-d1,z);
+C1_mn_s = integral3(C1_mn_s_integrand,-l2/2, l2/2, -1, 1, -1, 1, 'method', 'tiled'); 
 
-trident = @(y, z0, x, x0, z) (z-z0)./sqrt((x-x0).^2 + y.^2 + (z-z0));
-By_integrand = @(x, y, z, x0) (trident(y,w2/2,x,x0,z) - trident(y,(-w2/2),x,x0,z)).*exp(1i*x0.*pi./tau)./((x-x0).^2 + y.^2);
-
-By_xyz = @(x, y, z) (B0.*y./(2*pi)).*integral(@(x0)By_integrand(x,y,z,x0),(-l2/2),l2/2);
-
-m = 1;
-n = 1;
-
-xi_m = 2*pi*m./l2;
-k_n = 2*pi*n./w2;
-k_mn = sqrt((xi_m).^2 + (k_n).^2);
-
-C1_mn_s_integrand = @(x,z) By_xyz(x,-d1,z);
-C1_mn_s = integral2(C1_mn_s_integrand,-1,1,-1,1) % If you comment this out, evrything before this works.
+% m = 1;
+% n = 1;
+% 
+% xi_m = 2*pi*m./l2;
+% k_n = 2*pi*n./w2;
+% k_mn = sqrt((xi_m).^2 + (k_n).^2);
 
 % IGNORE EVERYTHING UNDER THIS
 %(1/(l2*w2))
