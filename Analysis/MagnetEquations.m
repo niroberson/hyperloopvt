@@ -34,12 +34,12 @@ By_integrand = @(x, y, z, x0) B0*y/(2*pi).*(trident(x, y, z, x0, w2/2) - trident
 
 C1_mn_s_integrand = @(x0,x,z,m,n) By_integrand(x,-d1,z,x0).*exp(-1i.*(xi_m(m).*x + k_n(n).*z));
 C1_mn_s_int = @(m,n) integral3(@(x0,x,z)C1_mn_s_integrand(x0,x,z,m,n),-l2/2, l2/2, -l2/2, l2/2, -w2/2, w2/2,'Method','iterated',...
-                               'AbsTol',1e-8,'RelTol',1e-10);
+                               'AbsTol',1e-2,'RelTol',1e-2);
 C1_mn_s = @(m,n) C1_mn_s_int(m,n).*(1/(l2*w2));
 
 C3_mn_s_integrand = @(x0,x,z,m,n) By_integrand(x,d2,z,x0).*exp(-1i.*(xi_m(m).*x + k_n(n).*z));
 C3_mn_s_int = @(m,n) integral3(@(x0,x,z)C3_mn_s_integrand(x0,x,z,m,n),-l2/2, l2/2, -l2/2, l2/2, -w2/2, w2/2,'Method','iterated',...
-                               'AbsTol',1e-6,'RelTol',1e-10);
+                               'AbsTol',1e-2,'RelTol',1e-2);
 C3_mn_s = @(m,n) C3_mn_s_int(m,n).*(1/(l2*w2));
 
 lambda =  -0.5*v_y*mew_0*sigma;
@@ -60,13 +60,20 @@ f_mn_minus = @(m,n) conj(C1_mn_s(m,n)).*C1_mn_r(m,n) - conj(C3_mn_s(m,n)).*C3_mn
 S1 = 0;
 S2 = 0;
 
-for m = -10:1:10
-    for n = -10:1:10
+coeff = (w2.*l2./mew_0);
+
+for m = -20:1:20
+    m
+    for n = -2:1:2
+        n
         p = real(f_mn_minus(m,n))
         S1 = S1 + p;
     end
     S2 = S2 + S1;
 end
 
+Force_lift = coeff*S2
+
+%n=5,m=40
 
 
