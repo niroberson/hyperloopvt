@@ -8,7 +8,7 @@ s.Rate = rate;
 %% Define Output Waveform
 duration = 5;
 t = (1:(duration*rate))/rate;
-t_on = rate/600;
+t_on = rate/600; % Ratio
 
 outputN = zeros(1,(duration*rate));
 %t = 1:(duration*sampleRate);
