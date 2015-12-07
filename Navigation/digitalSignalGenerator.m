@@ -49,5 +49,4 @@ end
 queueOutputData(s,outputN');
 [data, timestamps, triggerTime] = s.startForeground;
 %% Display the results
->>>>>>> de14246214e8f176364e1725b4d19d1482d7e1e0
 plot(timestamps, data);
