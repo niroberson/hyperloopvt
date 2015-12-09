@@ -4,5 +4,7 @@ Welcome to the GitHub repository for Hyperloop at Virginia. All of your analysis
 ###Contributing to the repository
 
 To be able to contribute and modify code in the repository it would be helpful to
+
 1. Download Git ( https://git-scm.com/downloads ) 
+
 2. Learn Git ( https://git-scm.com/doc )
