@@ -1,7 +1,9 @@
 function spec_raw = load_spec(spec_name)
 %     Read in the json file
+    this_dir = fileparts(which('load_spec.m'));
+    base = fullfile(this_dir, '..');
     spec_filename = [spec_name '.json'];
-    spec_path = fullfile(pwd, 'Specs', spec_filename);
+    spec_path = fullfile(base, 'Specs', spec_filename);
     fid = fopen(spec_path);
     raw = fread(fid, inf);
     str = char(raw');
