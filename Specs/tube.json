@@ -1,0 +1,7 @@
+{
+	"p": 101.325, //kpa
+	"T": 300, // Kelvin
+	"A": 6, // cross sectional area m^2,
+	"w_subtrack": 1.2, //Width of aluminum subtrack 
+	"t_subtrack": 0.006, // Thickness of aluminum subtrack
+}
