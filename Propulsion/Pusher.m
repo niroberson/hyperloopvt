@@ -24,3 +24,21 @@ ylabel(AX(2), 'Acceleration (m/s^2), Force (N)')
 legend('Force', 'Acceleration', 'Velocity')
 plot([m, m], [0, 100], 'gr'); 
 title('Effect of Pod Mass on Pusher Characteristics')
+
+
+% % Propulsive force
+% d = 682.752; %m
+% m = 750; % kg
+% Fp = m/(2*d)*u;
+% F_net = Fp-Fd;
+% 
+% % Plot drag, propulsive, and net force
+% figure, hold on
+% plot(Fp, u, 'gr')
+% plot(Fd, u, 'r')
+% plot(F_net, u, 'm')
+% plot(Fp - max(Fd), u, 'bl')
+% xlabel('Force (N)')
+% ylabel('Velocity (m/s)')
+% legend('Thrust Force', 'Drag Force', 'Net Force', 'Constant Drag (max)', 'Location', 'best')
+% title('Effect of Velocity on Horizontal Forces')

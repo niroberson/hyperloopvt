@@ -1,4 +1,6 @@
 function Re = ReynoldsNumber()
+%%TODO Fix this calulation to use metric units
+
 tube = load_spec('tube');
 pod = load_spec('pod');
 
