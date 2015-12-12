@@ -34,7 +34,7 @@ v_y = 0;
 v_y = Vy; % param switch
 v_z = 0;
 v_z = Vz; % param switch
-v_x = 5*8.3333; % vmin pod for initial levitation = 8.3333 m/s for vz,vy = 0
+v_x = 5*8.3333;
 v_x = Vx; % param switch
 
 xi_m = @(m) 2*pi*m./L2;
@@ -92,7 +92,7 @@ mhigh = 1e0;
 mhigh = mHigh; % param switch
 nhigh = 1e0;
 nhigh = nHigh; % param switch
-steps = 2*mhigh+2*nhigh;
+steps = 2*mhigh*2*nhigh;
 
 for step = 1:steps
     % computations take place here
