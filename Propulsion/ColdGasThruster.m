@@ -13,10 +13,10 @@ rho_N = 20.4427; %density of Nitrogen in pressure vessel fully compressed in kg/
 m_N = rho_N*V_vessel; %mass of Nitrogen in pressure vessel fully compressed in kg
 T_c = 300; %temperature of Nitrogen in tank in K
 
-%%
+%% 
 P_c = 18202159.3; %gauge pressure in Pa
 P_e = tube.P; %nozzle exit/ ambient tube pressure in Pa
-g = 9.81; %gravitational constant in m/s^2
+ g = 9.81; %gravitational constant in m/s^2
 J = F_T * t; %impulse in N*s
 v_e = sqrt(((2*gamma*R*T_c)/(gamma-1))*((1-(P_e/P_c))^((gamma-1)/2))); %exit flow veclocity in m/s
 A_e = F_T/P_e; %area of the diverging nozzle exit in m^2
