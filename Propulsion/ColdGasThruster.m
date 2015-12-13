@@ -1,4 +1,5 @@
 function [x, v] = ColdGasThruster(mass_pod)
+tube = load_spec('tube');
 %% Pressurized tank specs
 % TODO move this to specs file
 V_vessel = 6.45624; %volume of pressure vessel in m^3
@@ -14,9 +15,8 @@ T_c = 300; %temperature of Nitrogen in tank in K
 
 %%
 P_c = 18202159.3; %gauge pressure in Pa
-P_e = 120; %nozzle exit/ ambient tube pressure in Pa
+P_e = tube.P; %nozzle exit/ ambient tube pressure in Pa
 g = 9.81; %gravitational constant in m/s^2
-t = (v_f - 100)/a_pod; %time interval of acceleration after pusher in s
 J = F_T * t; %impulse in N*s
 v_e = sqrt(((2*gamma*R*T_c)/(gamma-1))*((1-(P_e/P_c))^((gamma-1)/2))); %exit flow veclocity in m/s
 A_e = F_T/P_e; %area of the diverging nozzle exit in m^2

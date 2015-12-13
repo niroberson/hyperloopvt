@@ -1,9 +1,10 @@
 function Fd = Drag(pod_v)
 tube = load_spec('tube');
 pod = load_spec('pod');
+air = load_spec('air');
 p = tube.p; %Pa
 T = tube.T; % (K) Equilibrium tube temperature % http://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/20150000699.pdf page 13
-R = 287.058;  %individual gas constant (J/kg*K)
+R = air.R;  %individual gas constant (J/kg*K)
 ro = p/(R*T); % kg/m^ 2 Air density
 
 w = pod.Wmax; % m width of pod
