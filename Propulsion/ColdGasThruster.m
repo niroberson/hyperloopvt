@@ -1,4 +1,5 @@
 function F = ColdGasThruster(mass_pod)
+%% Calculate the velocity and position of the pod during propulsion
 tube = load_spec('tube');
 %% Pressurized tank specs
 % TODO move this to specs file
