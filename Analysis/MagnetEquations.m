@@ -1,6 +1,7 @@
 % clear all; close all; 
 
-function [Force_lift,Force_drag] = MagnetEquations(Vx,Vy,Vz,mHigh,nHigh,aTol,rTol)
+function [Force_lift,Force_drag,Force_drag_x,Force_drag_z] =...
+    magnetEQUATIONS(Vx,Vy,Vz,mHigh,nHigh,aTol,rTol)
 % computes lift force and drag of a dual halbach array EDS device from
 % 3-D velocities and specified computation bounds and resolution.
 
@@ -11,23 +12,23 @@ rtol = 1e0;
 rtol = rTol; % param switch
 
 % Magnet Parameters (m):
-tau = 0.1;    % pole pitch
-L1 = 0.4;     % length of array
-tau_m = 0.05; % length of single magnet
-t1 = 0.1;     % magnet thickness
-w1 = .05;      % width of single magnet
+tau = 0.1*1e3;    % pole pitch
+L1 = 0.4*1e3;     % length of array
+tau_m = 0.05*1e3; % length of single magnet
+t1 = 0.1*1e3;     % magnet thickness
+w1 = .05*1e3;      % width of single magnet
 Br = 1.28;    % magnet remanence
 q = 2;        % number of magnets in one pole pair
 
 % Track Parameters:
-L2 = 0.8;       % length of plate
-t2 = 0.006;     % thickness of plate
-w2 = 1.2;       % width of aluminum plate
+L2 = 0.8*1e3;       % length of plate
+t2 = 0.006*1e3;     % thickness of plate
+w2 = 1.2*1e3;       % width of aluminum plate
 sigma = 2.54*1e7; % conductivity of plate
 
 % Air-gap Parameters:
-d1 = 0.026;        % upper air gap
-d2 = 0.032;        % lower air gap
+d1 = 0.026*1e3;        % upper air gap
+d2 = 0.032*1e3;        % lower air gap
 mew_0 = 4*pi*1e-7; % permeability of free space
  
 v_y = 0;
@@ -84,7 +85,9 @@ S1 = 0;
 S2 = 0;
 % drag partial sums
 D1 = 0;
+D1b = 0;
 D2 = 0;
+D2b = 0;
 
 h = waitbar(0,'Loading...','Name','Are we there yet?');
 
@@ -94,27 +97,34 @@ nhigh = 1e0;
 nhigh = nHigh; % param switch
 steps = 2*mhigh*2*nhigh;
 
+
 for step = 1:steps
     % computations take place here
     for m = -mhigh:1:mhigh
         for n = -nhigh:1:nhigh
             if(m~=0 || n~=0) % m == 0 && n == 0 -> NaN
                 p = -real(f_mn_minus(m,n));
-                q = real((xi_m(m)+k_n(n))/k_mn(m,n)*f_mn_plus(m,n));
+                %q = real(1i.*(xi_m(m)+k_n(n))./k_mn(m,n).*f_mn_plus(m,n));
+                q = real(1i.*(xi_m(m))./k_mn(m,n).*f_mn_plus(m,n));
+                q2 = real(1i.*(k_n(n))./k_mn(m,n).*f_mn_plus(m,n));
                 S1 = S1 + p;
                 D1 = D1 + q;
+                D1b = D1b + q2;
                 % check status waitbar
                 waitbar(step/steps,h,sprintf('Loading...%.2f%%',step/steps*100))
             end;
         end
         S2 = S2 + S1;
         D2 = D2 + D1;
+        D2b = D2b + D1b;
     end
 end
 
 amppertesla = L2*w2/mew_0;
 Force_lift = S2*amppertesla
-Force_drag = D2*amppertesla
+Force_drag_x = D2*amppertesla
+Force_drag_z = D2b*amppertesla
+Force_drag = sqrt(Force_drag_x^2 + Force_drag_z^2)
 
 delete(h)
 
