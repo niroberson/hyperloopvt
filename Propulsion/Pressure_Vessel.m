@@ -1,3 +1,4 @@
+%% Goal of this analysis, output a pressure and velocity of flow given thickness of tank
 E = 200e3; %modulus of elasticity for structural A-36 steel in mPascals
 t = 0.0254*[0.25 0.5 0.75 1 1.25 1.5 1.75 2] ;%assumed thickness in m
 D_0 = 0.3048; %outer diameter in m
