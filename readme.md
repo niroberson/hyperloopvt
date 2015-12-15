@@ -8,3 +8,12 @@ To be able to contribute and modify code in the repository it would be helpful t
 1. Download Git ( https://git-scm.com/downloads ) 
 
 2. Learn Git ( https://git-scm.com/doc )
+
+
+### Remember to pull the latest changes before you push
+
+1. git pull
+2. resolve conflicts
+2. git add <filename>
+3. git commit -m '<message>'
+4. git push
