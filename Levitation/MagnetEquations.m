@@ -1,4 +1,3 @@
-<<<<<<< HEAD:Analysis/MagnetEquations.m
 % clear all; close all; 
 
 function [Force_lift,Force_drag,Force_drag_x,Force_drag_z] =...
@@ -250,5 +249,4 @@ Force_drag = D2*amppertesla
 
 delete(h)
 
->>>>>>> 5c3351649db000578010f2fe48f001a8e10b2e2a:Levitation/MagnetEquations.m
 end
