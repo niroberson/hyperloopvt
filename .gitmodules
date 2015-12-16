@@ -1,3 +1,6 @@
 [submodule "Libraries/OpenMDAO"]
 	path = Libraries/OpenMDAO
 	url = git@github.com:OpenMDAO/OpenMDAO.git
+[submodule "Libraries/OPENMDAO-Hyperloop"]
+	path = Libraries/OPENMDAO-Hyperloop
+	url = git@github.com:OpenMDAO-Plugins/Hyperloop.git
