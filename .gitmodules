@@ -1,0 +1,3 @@
+[submodule "Libraries/OpenMDAO"]
+	path = Libraries/OpenMDAO
+	url = git@github.com:OpenMDAO/OpenMDAO.git
