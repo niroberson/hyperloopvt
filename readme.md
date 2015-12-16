@@ -12,8 +12,27 @@ To be able to contribute and modify code in the repository it would be helpful t
 
 ### Remember to pull the latest changes before you push
 
-1. git pull
-2. resolve conflicts
-2. git add <filename>
-3. git commit -m '<message>'
-4. git push
+##### Pull
+<pre></code>git pull</code></pre>
+
+##### Push
+<pre><code>
+git add <filename>
+git commit -m '<message>'
+git push
+</code></pre>
+
+### NASA OpenMDAO Submodule
+After you add a submodule, or whenever someone does a fresh checkout of your repository, you'll need to do:
+
+<pre><code>git submodule init
+git submodule update</code></pre>
+
+And then all submodules you've added will be checked out at the same revision you have.
+
+When you want to update to a newer version of one of the libraries, cd into the submodule and pull:
+
+ <pre> <code>
+  cd lib/some_lib
+  git pull
+  </code> </pre>
