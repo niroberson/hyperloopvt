@@ -1,5 +1,5 @@
 
-function [FliftPlot,FdragPlot] = SweepForce(filename,Values)
+function [FliftPlot,FdragPlot] = SweepForce(filename,Values,steps)
 % This is called from the command line
 %
 % Inputs: Filename, Values
@@ -14,12 +14,21 @@ function [FliftPlot,FdragPlot] = SweepForce(filename,Values)
 s1 = 'Initial';
 s2 = 'Final';
 
-vlow = 0;
-vhigh = 5*8.3333;
-vres = 8.3333;
-vx = vlow:vres:vhigh;
+if(steps == 6)
+    vlow = 0;
+    vhigh = 5*8.3333;
+    vres = 8.3333;
+    vx = vlow:vres:vhigh;
+end
 
-[rows,cols] = size(vx);
+if(steps == 11)
+    vlow = 0;
+    vhigh = 10*4.16667;
+    vres = 4.16667;
+    vx = vlow:vres:vhigh;
+end
+
+[~,cols] = size(vx);
 numIterations = cols;
 
 if(strcmp(Values,s1))
@@ -58,6 +67,7 @@ steps = numIterations-1;
 
 rows = 2;
 FliftPlot(1,1) = 0;
+FdragPlot(1,1) = 0;
 
 vlow = vlow+vres; % Skip zero calculation
 for vx = vlow:vres:vhigh
@@ -74,7 +84,7 @@ for vx = vlow:vres:vhigh
     dlmwrite (filename, M,'-append');
     
     % Status bar
-    waitbar(i/steps,h,sprintf('Loading...%.2f%%',i/steps*100))
+    waitbar(rows/steps,h,sprintf('Loading...%.2f%%',rows/steps*100))
     rows = rows + 1;
 end
 
@@ -88,7 +98,7 @@ vxKmh = vx*3.6;
 
 plot(vxKmh,FliftPlot)
 hold on
-plot(vxKmh,liftREF,'--','LineWidth',2);
+plot(0:8.3333:5*8.3333,liftREF,'--','LineWidth',2);
 hold on
 plot(vxKmh,FdragPlot)
 hold on
@@ -96,6 +106,5 @@ plot(vxKmh,dragREF)
 xlabel('Vx (km/h)');
 ylabel('Force (N)');
 legend('Model_Lift','Reference_Lift','Model_Drag','Reference_Drag','location','northwest')
-
 
 

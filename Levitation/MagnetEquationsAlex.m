@@ -92,7 +92,7 @@ R1_mn = @(m,n) (lambda + beta_mn(m,n) - k_mn(m,n)).*(lambda - beta_mn(m,n) - ...
 R3_mn = @(m,n) (lambda + beta_mn(m,n) + k_mn(m,n)).*(lambda - beta_mn(m,n) + ...
     k_mn(m,n)).*(1 - exp(2*beta_mn(m,n).*t2))./U_mn(m,n);
 T_mn = @(m,n,y) -4*beta_mn(m,n).*k_mn(m,n).*exp(beta_mn(m,n).*t2).*exp(lambda.*...
-    (t2 + 2*y))./U_mn(m,n);
+    (t2 + 2.*y))./U_mn(m,n);
 
 C1_mn_r = @(m,n)R1_mn(m,n).*C1_mn_s(m,n) + T_mn(m,n,-d1).*C3_mn_s(m,n);
 C3_mn_r = @(m,n)R3_mn(m,n).*C3_mn_s(m,n) + T_mn(m,n,d2).*C1_mn_s(m,n);
@@ -118,13 +118,13 @@ for m = -mHigh:mRes:mHigh
     for n = -nHigh:nRes:nHigh
         if(m~=0 || n~=0) % m == 0 && n == 0 -> NaN
             p = real(-feval(f_mn_minus,m,n));
-            q = real(1i*(xi_m(m).*feval(f_mn_plus,m,n))./feval(k_mn,m,n));
+            %q = real(1i.*(xi_m(m))./k_mn(m,n).*f_mn_plus(m,n));
             S1 = S1 + p;
-            D1 = D1 + q;
+            %D1 = D1 + q;
         end
      end
      S2 = S2 + S1;
-     D2 = D2 + D1;
+     %D2 = D2 + D1;
      % check status waitbar
      waitbar(i/steps,h,sprintf('Loading...%.2f%%',i/steps*100))
      i = i + 1;
@@ -132,8 +132,8 @@ end
 
 amppertesla = L2*w2/mew_0;
 Force_lift = S2*amppertesla;
-Force_drag = D2*amppertesla;
-
+%Force_drag = D2*amppertesla;
+Force_drag = 0;
 delete(h)
 
 end
