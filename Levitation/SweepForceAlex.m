@@ -11,9 +11,6 @@ function [FliftPlot,FdragPlot] = SweepForce(filename,Values,steps)
 % example: >> SweepForce('MagnetEquationsData.csv', 'Initial')
 % example: >> SweepForce('MagnetEquationsData.csv', 'Final')
 
-s1 = 'Initial';
-s2 = 'Final';
-
 if(steps == 6)
     vlow = 0;
     vhigh = 5*8.3333;
@@ -31,20 +28,33 @@ end
 [~,cols] = size(vx);
 numIterations = cols;
 
-if(strcmp(Values,s1))
+if(strcmp(Values,'Initial')) % best results: m=2.235 mRes = 0.5 n = 0.3 nRes = 1 atol=rtol=0
     mbound = 2.235; % bound for fourier sums
     mRes = 0.50;
     nbound = 0.3;
     nRes = 1;
     atol = 1e0; % desired tolerance
-    rtol = 1e0;
+    rtol = 1e0; % has little to no effect?
     
     % reference values from null flux paper for vx = 0:8.3:5*8.3
-    liftREF = [0, 140,  262.5  337.5  380,  412];
+    liftREF = [0, 127.5, 270, 345, 382.5, 405];
     dragREF = [0, 26, 37.5, 44.5, 50, 55];
 end
 
-if(strcmp(Values,s2))
+if(strcmp(Values,'Final'))
+    mbound = 3.542; % bound for fourier sums
+    mRes = 0.50;
+    nbound = 0.3; %2925
+    nRes = 1;
+    atol = 1e0; % desired tolerance
+    rtol = 1e0; 
+    
+    % reference values from null flux paper for vx = 0:8.3:5*8.3
+    liftREF = [0, 16600, 32500, 40000, 44000,  46000];
+    dragREF = [0, 26, 37.5, 44.5, 50, 55]; 
+end
+
+if(strcmp(Values,'Experimental'))
     mbound = 2.235; % bound for fourier sums
     mRes = 0.50;
     nbound = 0.3;
@@ -53,7 +63,7 @@ if(strcmp(Values,s2))
     rtol = 1e0;
     
     % reference values from null flux paper for vx = 0:8.3:5*8.3
-    liftREF = [0, 140,  262.5  337.5  380,  412];
+    liftREF = [0, 120, 375, 740, 1050, 1333];
     dragREF = [0, 26, 37.5, 44.5, 50, 55]; 
 end
 
@@ -93,18 +103,34 @@ toc % time stop
 
 %% Plot Data
 
-vx = 0:vres:vhigh;
+vx = 0:8.3333:5*8.3333;
 vxKmh = vx*3.6;
+v = 0:8.3333:5*8.3333;
+vxREF = v*3.6;
 
-plot(vxKmh,FliftPlot)
+if(strcmp(Values,'Initial'))
+    factor = 1;
+    title(['Force Equations (Initial Values): mBound: ' num2str(mbound) ' mRes:  ' num2str(mRes)...
+            ' nBound: ' num2str(nbound) ' nRes:  ' num2str(nRes)])
+    ylabel('Force (N)');
+    hold on
+end
+
+if(strcmp(Values,'Final'))
+    factor = 1000;
+    title(['Force Equations (Final Values): mBound: ' num2str(mbound) ' mRes:  ' num2str(mRes)...
+            ' nBound: ' num2str(nbound) ' nRes:  ' num2str(nRes)])
+    ylabel('Force (kN)');
+end
+
+plot(vxKmh,FliftPlot/factor)
 hold on
-plot(0:8.3333:5*8.3333,liftREF,'--','LineWidth',2);
+plot(vxREF,liftREF/factor,'--','LineWidth',2);
 hold on
-plot(vxKmh,FdragPlot)
+plot(vxKmh,FdragPlot/factor)
 hold on
-plot(vxKmh,dragREF)
+plot(vxKmh,dragREF/factor,'--','LineWidth',2);
 xlabel('Vx (km/h)');
-ylabel('Force (N)');
-legend('Model_Lift','Reference_Lift','Model_Drag','Reference_Drag','location','northwest')
-
+legend('Model Lift','Reference Lift','Model Drag','Reference Drag','location','northwest')
+grid on
 

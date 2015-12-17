@@ -31,24 +31,24 @@ end
 
 if(strcmp(Values,s2))
     % Magnet Parameters (m):
-    tau = 0.1;    % pole pitch
-    L1 = 0.4;     % length of array
-    tau_m = 0.05; % length of single magnet
-    t1 = 0.1;     % magnet thickness
-    w1 = .05;      % width of single magnet
+    tau = 0.3;    % pole pitch
+    L1 = 1.2;     % length of array
+    tau_m = 0.15; % length of single magnet
+    t1 = 0.105;     % magnet thickness
+    w1 = .45;      % width of single magnet
     Br = 1.28;    % magnet remanence
     q = 2;        % number of magnets in one pole pair
     P = 2;        % Number of pole pairs
 
     % Track Parameters:
-    L2 = 0.8;       % length of plate
+    L2 = 2.4;       % length of plate
     t2 = 0.006;     % thickness of plate
     w2 = 1.2;       % width of aluminum plate
     sigma = 2.54*1e7; % conductivity of plate
 
     % Air-gap Parameters:
     d1 = 0.026;        % upper air gap
-    d2 = 0.032;        % lower air gap
+    d2 = 0.050;        % lower air gap
 end
     
 mew_0 = 4*pi*1e-7; % permeability of free space
