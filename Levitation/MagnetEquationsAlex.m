@@ -4,10 +4,7 @@ function [Force_lift,Force_drag] = MagnetEquationsAlex(Vx,Vy,Vz,mHigh,nHigh,aTol
 % computes lift force and drag of a dual halbach array EDS device from
 % 3-D velocities and specified computation bounds and resolution
 
-s1 = 'Initial';
-s2 = 'Final';
-
-if(strcmp(Values,s1))
+if(strcmp(Values,'Initial'))
     % Magnet Parameters (m):
     tau = 0.1;    % pole pitch
     L1 = 0.4;     % length of array
@@ -29,7 +26,7 @@ if(strcmp(Values,s1))
     d2 = 0.032;        % lower air gap
 end
 
-if(strcmp(Values,s2))
+if(strcmp(Values,'Final'))
     % Magnet Parameters (m):
     tau = 0.3;    % pole pitch
     L1 = 1.2;     % length of array
@@ -49,6 +46,50 @@ if(strcmp(Values,s2))
     % Air-gap Parameters:
     d1 = 0.026;        % upper air gap
     d2 = 0.050;        % lower air gap
+end
+
+if(strcmp(Values,'Experimental'))
+    % Magnet Parameters (m):
+    tau = 0.1;    % pole pitch
+    L1 = 0.4;     % length of array
+    tau_m = 0.05; % length of single magnet
+    t1 = 0.05;     % magnet thickness
+    w1 = .1;      % width of single magnet
+    Br = 1.1;    % magnet remanence
+    q = 2;        % number of magnets in one pole pair
+    P = 2;        % Number of pole pairs
+
+    % Track Parameters:
+    L2 = 2.4;       % length of plate
+    t2 = 0.003;     % thickness of plate
+    w2 = 1.2;       % width of aluminum plate
+    sigma = 2.57*1e7; % conductivity of plate
+
+    % Air-gap Parameters:
+    d1 = 0.021;        % upper air gap
+    d2 = 0.042;        % lower air gap
+end
+
+if(strcmp(Values,'Custom'))
+    % Magnet Parameters (m):
+    tau = 0.0254;    % pole pitch
+    L1 = 0.0635;     % length of array
+    tau_m = 0.0127; % length of single magnet
+    t1 = 0.0127;     % magnet thickness
+    w1 = 0.0127;      % width of single magnet
+    Br = 1.48;    % magnet remanence
+    q = 2;        % number of magnets in one pole pair
+    P = 2.5;        % Number of pole pairs
+
+    % Track Parameters:
+    L2 = 2.4;       % length of plate
+    t2 = 0.00047;     % thickness of plate
+    w2 = 1.2;       % width of aluminum plate
+    sigma = 2.57*1e7; % conductivity of plate
+
+    % Air-gap Parameters:
+    d1 = 0.021;        % upper air gap
+    d2 = 0.021;        % lower air gap
 end
     
 mew_0 = 4*pi*1e-7; % permeability of free space
@@ -118,13 +159,13 @@ for m = -mHigh:mRes:mHigh
     for n = -nHigh:nRes:nHigh
         if(m~=0 || n~=0) % m == 0 && n == 0 -> NaN
             p = real(-feval(f_mn_minus,m,n));
-            %q = real(1i.*(xi_m(m))./k_mn(m,n).*f_mn_plus(m,n));
+            q = real(1i.*(xi_m(m))./k_mn(m,n).*f_mn_plus(m,n));
             S1 = S1 + p;
-            %D1 = D1 + q;
+            D1 = D1 + q;
         end
      end
      S2 = S2 + S1;
-     %D2 = D2 + D1;
+     D2 = D2 + D1;
      % check status waitbar
      waitbar(i/steps,h,sprintf('Loading...%.2f%%',i/steps*100))
      i = i + 1;
@@ -132,8 +173,8 @@ end
 
 amppertesla = L2*w2/mew_0;
 Force_lift = S2*amppertesla;
-%Force_drag = D2*amppertesla;
-Force_drag = 0;
+Force_drag = D2*amppertesla;
+%Force_drag = 0;
 delete(h)
 
 end
