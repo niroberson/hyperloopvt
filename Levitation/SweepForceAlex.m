@@ -1,11 +1,13 @@
 
-function [FliftPlot,FdragPlot] = SweepForce(filename,Values,Profile,Velocity,Steps,SkipZero)
+function [FliftPlot,FdragPlot] = SweepForceAlex(filename,Values,Profile,Type,Geometry,Velocity,Steps,SkipZero)
 % This is called from the command line
 %
 % Inputs: Filename, Values, Profile, Velocity, Steps, SkipZero
 %   Filename: Any .csv format file name to store data
 %   Values: 'Initial', 'Final', 'Experimental', 'Custom'   
 %   Profile: 'Custom' or 'Reference'
+%   Type: 'Lift', 'Drag', or 'Both'
+%   Geometry: 'Double' or 'Single' sided halbach array
 %   Velocity: Final Velocity (if Profile set to 'Cutsom') (mph)
 %   Steps: How many steps/iterations, including zero
 %   SkipZero: Set equal to 1 to skip first (0) calculation
@@ -18,11 +20,11 @@ function [FliftPlot,FdragPlot] = SweepForce(filename,Values,Profile,Velocity,Ste
 
 %% Setup bound parameters and resolutions
 
-% best results: m=2.235 mRes = 0.5 n = 0.3 nRes = 1 atol=rtol=1e0
+% best results: m=2.235 mRes = 0.5 n = 0.3 nRes = 1 atol=rtol=1e0 (lift)
 if(strcmp(Values,'Initial')) 
     mbound = 2.235; % 2.235 bound for fourier sums
-    mRes = 0.50;
-    nbound = 0.3;
+    mRes = 0.5;
+    nbound = 1;
     nRes = 1;
     atol = 1e0; % desired tolerance
     rtol = 1e0; % has little to no effect?
@@ -31,29 +33,33 @@ if(strcmp(Values,'Initial'))
     liftREF = [0, 127.5, 270, 345, 382.5, 405];
     dragREF = [0, 26, 37.5, 44.5, 50, 55];
 
+% best results: m=3.542 mRes = 0.5 n = 0.3 nRes = 1 atol=rtol=1e0 (lift)
+% n = 0.4 (drag)
 elseif(strcmp(Values,'Final'))
     mbound = 3.542; %3.542 bound for fourier sums
     mRes = 0.50;
-    nbound = 0.3; 
+    nbound = 0.35; 
     nRes = 1;
     atol = 1e0; % desired tolerance
     rtol = 1e0; 
     
     % reference values from null flux paper (final values)
     liftREF = [0, 16600, 32500, 40000, 44000,  46000];
-    dragREF = [0, 26, 37.5, 44.5, 50, 55]; 
+    dragREF = [0, 3300, 3500, 3000, 2660, 2400]; 
 
-elseif(strcmp(Values,'Experimental')) % w2, l2 = w2,l2 final values
-    mbound = 3.235; % bound for fourier sums
+% best results mbound = 3.235 mRes: 0.5 nBound = 0.3 nRes = 1,
+% atol=rtol=1e0 (lift) w2, l2 from final values
+elseif(strcmp(Values,'Experimental'))
+    mbound = 3.233; % bound for fourier sums
     mRes = 0.5;
-    nbound = 0.3;
+    nbound = 0.29;
     nRes = 1;
     atol = 1e0; % desired tolerance
     rtol = 1e0;
     
     % reference values from null flux paper for vx = 0:8.3:5*8.3
     liftREF = [0, 120, 375, 740, 1050, 1333];
-    dragREF = [0, 26, 37.5, 44.5, 50, 55]; 
+    dragREF = [0, 187.5, 302, 396, 416, 435]; 
 
 elseif(strcmp(Values,'Custom'))
     mbound = 3.235; % bound for fourier sums
@@ -74,6 +80,11 @@ if(strcmp(Profile,'Reference'))
     vlow = 0;
     vres = 8.3333;
     vhigh = 5*vres;
+    if(strcmp(Values,'Experimental'))
+        vlow = 0;
+        vres = 5;
+        vhigh = 25;
+    end
     
 elseif(strcmp(Profile,'Custom'))
     % conver to m/s
@@ -103,13 +114,18 @@ tic % time start
 
 for vx = vlow:vres:vhigh
     % Calculate Lift and Drag Forces
-    [Flift,Fdrag] = MagnetEquationsAlex(vx,0,0,mbound,nbound,atol,rtol,mRes,nRes,Values);
+    if(strcmp(Geometry,'Double'))
+        [Flift,Fdrag] = MagnetEquationsAlex(vx,0,0,mbound,nbound,atol,rtol,mRes,nRes,Values,Type);
+    elseif(strcmp(Geometry,'Single'))
+        [Flift,Fdrag] = MagnetEquationsSingle(vx,0,0,mbound,nbound,atol,rtol,mRes,nRes,Values,Type);
+    end
     fprintf('Vx: %d mHigh: %d nHigh: %d Atol: %d Rtol: %d mRes: %d nRes: %d Values: %s Flift: %d Fdrag: %d \r',...
-        vx,mbound,nbound,atol,rtol,mRes,nRes,Values,Flift,Fdrag)
+        vx,mbound,nbound,atol,rtol,mRes,nRes,Values,Flift,Fdrag*-1)
     
     % Copy data
     FliftPlot(1,i) = Flift;
-    FdragPlot(1,i) = Fdrag;
+    FdragPlot(1,i) = Fdrag*-1; % Force given as a vector with -x being the 
+                               % direction of drag, therefore, multiply by -1
     
     % Output to file
     M = [vx,Flift,Fdrag];
@@ -155,11 +171,11 @@ if(strcmp(Profile,'Reference'))
         hold on
     end
 
-    plot(v,FliftPlot/factor)
+    plot(v,FliftPlot/factor,'LineWidth',2)
     hold on
     plot(vxREF,liftREF/factor,'--','LineWidth',2);
     hold on
-    plot(v,FdragPlot/factor)
+    plot(v,FdragPlot/factor,'LineWidth',2)
     hold on
     plot(vxREF,dragREF/factor,'--','LineWidth',2);
     xlabel('Vx (km/h)');

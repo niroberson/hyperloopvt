@@ -1,6 +1,6 @@
 % clear all; close all; 
 
-function [Force_lift,Force_drag] = MagnetEquationsAlex(Vx,Vy,Vz,mHigh,nHigh,aTol,rTol,mRes,nRes,Values)
+function [Force_lift,Force_drag] = MagnetEquationsAlex(Vx,Vy,Vz,mHigh,nHigh,aTol,rTol,mRes,nRes,Values,Type)
 % computes lift force and drag of a dual halbach array EDS device from
 % 3-D velocities and specified computation bounds and resolution
 
@@ -158,10 +158,18 @@ steps = mHigh*2/mRes;
 for m = -mHigh:mRes:mHigh
     for n = -nHigh:nRes:nHigh
         if(m~=0 || n~=0) % m == 0 && n == 0 -> NaN
-            p = real(-feval(f_mn_minus,m,n));
-            q = real(1i.*(xi_m(m))./k_mn(m,n).*f_mn_plus(m,n));
-            S1 = S1 + p;
-            D1 = D1 + q;
+            if(strcmp(Type,'Lift'))
+                p = real(-feval(f_mn_minus,m,n));
+                S1 = S1 + p;
+            elseif(strcmp(Type,'Drag'))
+                q = real(1i.*((xi_m(m))./k_mn(m,n)).*f_mn_plus(m,n));
+                D1 = D1 + q;
+            elseif(strcmp(Type,'Both'))
+                p = real(-feval(f_mn_minus,m,n));
+                S1 = S1 + p;
+                q = real(1i.*(xi_m(m))./k_mn(m,n).*f_mn_plus(m,n));
+                D1 = D1 + q;
+            end
         end
      end
      S2 = S2 + S1;
@@ -171,10 +179,20 @@ for m = -mHigh:mRes:mHigh
      i = i + 1;
 end
 
+% Force Coefficient
 amppertesla = L2*w2/mew_0;
-Force_lift = S2*amppertesla;
-Force_drag = D2*amppertesla;
-%Force_drag = 0;
+
+if(strcmp(Type,'Lift'))
+    Force_lift = S2*amppertesla;
+    Force_drag = 0;
+elseif(strcmp(Type,'Drag'))
+    Force_drag = D2*amppertesla;
+    Force_lift = 0;
+elseif(strcmp(Type,'Both'))
+    Force_lift = S2*amppertesla;
+    Force_drag = D2*amppertesla;
+end
+
 delete(h)
 
 end
