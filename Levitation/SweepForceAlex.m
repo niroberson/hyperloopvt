@@ -14,7 +14,7 @@ function [FliftPlot,FdragPlot] = SweepForceAlex(filename,Values,Profile,Type,Geo
 %
 % Outputs: data in .csv format, plots of forces
 %
-% example: >> SweepForce('MagnetEquationsData.csv', 'Initial', 'Reference', 200, 6, 1)
+% example: >> SweepForce('MagnetEquationsData.csv', 'Initial', 'Reference','Lift','Double', 200, 6, 1)
 % example: >> SweepForce('MagnetEquationsData.csv', 'Final', 'Custom', 200, 8, 0)
 
 
