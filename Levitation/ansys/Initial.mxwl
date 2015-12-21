@@ -1,0 +1,486 @@
+$begin 'AnsoftProject'
+	Created='Mon Dec 21 12:18:52 2015'
+	FileOwnedByWorkbench=false
+	Product='Maxwell'
+	NextUniqueID=0
+	MoveBackwards=false
+	$begin 'Desktop'
+		Version(16, 0)
+		InfrastructureVersion(1, 0)
+	$end 'Desktop'
+	$begin 'Maxwell3DEnvironment'
+		Version(1, 0)
+	$end 'Maxwell3DEnvironment'
+	$begin 'Maxwell2DEnvironment'
+		Version(1, 0)
+	$end 'Maxwell2DEnvironment'
+	$begin 'RMxprtEnvironment'
+		Version(1, 0)
+	$end 'RMxprtEnvironment'
+	$begin 'geometry3deditor'
+		Version(1, 0)
+	$end 'geometry3deditor'
+	$begin 'ProjectDatasets'
+		NextUniqueID=0
+		MoveBackwards=false
+		DatasetType='ProjectDatasetType'
+		$begin 'DatasetDefinitions'
+		$end 'DatasetDefinitions'
+	$end 'ProjectDatasets'
+	$begin 'Definitions'
+		$begin 'Folders'
+			Definitions(1104, 10000, 1, 1, 0, false, false)
+			Materials(1104, 9500, 9, 2, 1, false, false)
+		$end 'Folders'
+		$begin 'Materials'
+			$begin 'vacuum'
+				CoordinateSystemType='Cartesian'
+				$begin 'AttachedData'
+				$end 'AttachedData'
+				$begin 'ModifierData'
+				$end 'ModifierData'
+				permittivity='1'
+				ModTime=1028307964
+				Library='Materials'
+				LibLocation='SysLibrary'
+				ModSinceLib=false
+			$end 'vacuum'
+			$begin 'aluminum'
+				CoordinateSystemType='Cartesian'
+				$begin 'AttachedData'
+				$end 'AttachedData'
+				$begin 'ModifierData'
+				$end 'ModifierData'
+				permeability='1.000021'
+				conductivity='38000000'
+				thermal_conductivity='237.5'
+				mass_density='2689'
+				specific_heat='951'
+				youngs_modulus='69000000000'
+				poissons_ratio='0.31'
+				thermal_expansion_coeffcient='2.33e-005'
+				ModTime=1154373020
+				Library='Materials'
+				LibLocation='SysLibrary'
+				ModSinceLib=false
+			$end 'aluminum'
+			$begin 'aluminum_initial'
+				CoordinateSystemType='Cartesian'
+				$begin 'AttachedData'
+				$end 'AttachedData'
+				$begin 'ModifierData'
+				$end 'ModifierData'
+				conductivity='2.54*10e7'
+				ModTime=1450718287
+				Library=''
+				LibLocation='Project'
+				ModSinceLib=false
+			$end 'aluminum_initial'
+		$end 'Materials'
+		$begin 'Scripts'
+		$end 'Scripts'
+	$end 'Definitions'
+	DesignIDServer=2
+	MoveBackwards=false
+	$begin 'Maxwell3DModel'
+		RepRewriteV2=true
+		Name='Maxwell3DDesign1'
+		DesignID=0
+		'Allow Material Override'=false
+		$begin 'TemperatureSettings'
+			IncludeTemperatureDependence=false
+			EnableFeedback=false
+			Temperatures(6, '22cel')
+		$end 'TemperatureSettings'
+		ObjsEnabledForDeformation()
+		ComputeIncrementalMatrix=false
+		PerfectConductorThreshold=1e+030
+		InsulatorThreshold=1
+		SolutionType='Magnetostatic'
+		$begin 'OutputVariable'
+			NextUniqueID=0
+			MoveBackwards=false
+		$end 'OutputVariable'
+		$begin 'ModelSetup'
+			$begin 'Editor3D Doc Preferences'
+				'Plane Background'=true
+				BackgroundColor1=16777215
+				BackgroundColor2=0
+				'Need Lights'=true
+				'Ambient Light'=8355711
+				'Num Lights'=2
+				Light0[4: 8355711, 0.200000002980232, 0.400000005960464, 1]
+				Light1[4: 8355711, -0.200000002980232, -0.400000005960464, -1]
+			$end 'Editor3D Doc Preferences'
+			$begin 'DesignDatasets'
+				NextUniqueID=0
+				MoveBackwards=false
+				DatasetType='DesignDatasetType'
+				$begin 'DatasetDefinitions'
+				$end 'DatasetDefinitions'
+			$end 'DesignDatasets'
+			SnapMode=31
+			WorkingCS=1
+			$begin 'GeometryCore'
+				BlockVersionID=3
+				DataVersion=1
+				NativeKernel='ACIS'
+				NativeKernelVersionID=5
+				Units='mm'
+				InstanceID=-1
+				$begin 'ValidationOptions'
+					EntityCheckLevel='Strict'
+					IgnoreUnclassifiedObjects=false
+					SkipIntersectionChecks=false
+				$end 'ValidationOptions'
+				$begin 'GeometryOperations'
+					BlockVersionID=2
+					$begin 'AnsoftRangedIDServerManager'
+						$begin 'AnsoftRangedIDServer'
+							IDServerObjectTypeID=0
+							IDServerRangeMin=0
+							IDServerRangeMax=2146483647
+							NextUniqueID=33
+							MoveBackwards=false
+						$end 'AnsoftRangedIDServer'
+						$begin 'AnsoftRangedIDServer'
+							IDServerObjectTypeID=1
+							IDServerRangeMin=2146483648
+							IDServerRangeMax=2146485547
+							NextUniqueID=2146483654
+							MoveBackwards=false
+						$end 'AnsoftRangedIDServer'
+					$end 'AnsoftRangedIDServerManager'
+					StartBackGroundFaceID=2146483648
+					$begin 'CoordinateSystems'
+					$end 'CoordinateSystems'
+					$begin 'UserDefinedModels'
+					$end 'UserDefinedModels'
+					$begin 'ToplevelParts'
+						$begin 'GeometryPart'
+							$begin 'Attributes'
+								Name='Box1'
+								Flags=''
+								Color='(132 132 193)'
+								Transparency=0
+								PartCoordinateSystem=1
+								UDMId=-1
+								MaterialValue='"aluminum"'
+								SolveInside=true
+							$end 'Attributes'
+							$begin 'Operations'
+								$begin 'Operation'
+									OperationType='Box'
+									ID=5
+									ReferenceCoordSystemID=1
+									$begin 'BoxParameters'
+										KernelVersion=5
+										XPosition='0mm'
+										YPosition='0mm'
+										ZPosition='0mm'
+										XSize='400mm'
+										YSize='-6mm'
+										ZSize='1200mm'
+									$end 'BoxParameters'
+									ParentPartID=6
+									IsSuppressed=false
+									$begin 'OperationIdentity'
+										$begin 'Topology'
+											NumLumps=1
+											NumShells=1
+											NumFaces=6
+											NumWires=0
+											NumLoops=6
+											NumCoedges=24
+											NumEdges=12
+											NumVertices=8
+										$end 'Topology'
+										BodyID=6
+										StartFaceID=7
+										StartEdgeID=13
+										StartVertexID=25
+										NumNewFaces=6
+										NumNewEdges=12
+										NumNewVertices=8
+										FaceNameAndIDMap()
+										EdgeNameAndIDMap()
+										VertexNameAndIDMap()
+									$end 'OperationIdentity'
+								$end 'Operation'
+							$end 'Operations'
+						$end 'GeometryPart'
+					$end 'ToplevelParts'
+					$begin 'OperandParts'
+					$end 'OperandParts'
+					$begin 'Planes'
+					$end 'Planes'
+					$begin 'Points'
+					$end 'Points'
+					$begin 'GeometryEntityLists'
+					$end 'GeometryEntityLists'
+					$begin 'CachedNames'
+						$begin 'allobjects'
+							allobjects(-1)
+						$end 'allobjects'
+						$begin 'box'
+							box(1)
+						$end 'box'
+						$begin 'global'
+							global(-1)
+						$end 'global'
+					$end 'CachedNames'
+				$end 'GeometryOperations'
+				$begin 'GeometryDependencies'
+					$begin 'DependencyInformation'
+						NumParents=1
+						DependencyObject('GeometryBodyOperation', 5)
+						DependencyObject('CoordinateSystem', 1)
+					$end 'DependencyInformation'
+				$end 'GeometryDependencies'
+			$end 'GeometryCore'
+			GroupByMaterial('-1'=true)
+			GroupSheetByMaterial()
+			$begin 'LastUserInputs'
+			$end 'LastUserInputs'
+		$end 'ModelSetup'
+		$begin 'BoundarySetup'
+			$begin 'GlobalBoundData'
+				$begin 'Magnetization'
+					IsTarget=false
+					Objs[0:]
+				$end 'Magnetization'
+			$end 'GlobalBoundData'
+			$begin 'Boundaries'
+				NextUniqueID=0
+				MoveBackwards=false
+			$end 'Boundaries'
+			$begin 'ProductSpecificData'
+			$end 'ProductSpecificData'
+		$end 'BoundarySetup'
+		$begin 'MaxwellParameterSetup'
+			$begin 'MaxwellParameters'
+				NextUniqueID=0
+				MoveBackwards=false
+			$end 'MaxwellParameters'
+			MotionParams()
+		$end 'MaxwellParameterSetup'
+		$begin 'MeshSetup'
+			$begin 'MeshSettings'
+				$begin 'GlobalSurfApproximation'
+					SurfDevChoice=0
+					NormalDevChoice=1
+					AspectRatioChoice=1
+					PullToTrueSurf=true
+					SetFacePreservationLevel=0
+				$end 'GlobalSurfApproximation'
+				MeshMethod='Auto'
+			$end 'MeshSettings'
+			$begin 'MeshOperations'
+				NextUniqueID=0
+				MoveBackwards=false
+			$end 'MeshOperations'
+		$end 'MeshSetup'
+		$begin 'AnalysisSetup'
+			$begin 'SolveSetups'
+				NextUniqueID=0
+				MoveBackwards=false
+			$end 'SolveSetups'
+		$end 'AnalysisSetup'
+		$begin 'Optimetrics'
+			$begin 'OptimetricsSetups'
+				NextUniqueID=0
+				MoveBackwards=false
+			$end 'OptimetricsSetups'
+		$end 'Optimetrics'
+		$begin 'Solutions'
+		$end 'Solutions'
+		$begin 'FieldsReporter'
+			$begin 'FieldsCalculator'
+				Line_Discretization=1000
+			$end 'FieldsCalculator'
+			$begin 'PlotDefaults'
+				Default_SolutionId=-1
+				Default_PlotFolder='Automatic'
+			$end 'PlotDefaults'
+			$begin 'FieldsPlotManagerID'
+				NextUniqueID=0
+				MoveBackwards=false
+				NumQuantityType=0
+				NumPlots=0
+			$end 'FieldsPlotManagerID'
+			$begin 'Report3dInGeomWnd'
+				Report3dNum=0
+			$end 'Report3dInGeomWnd'
+		$end 'FieldsReporter'
+		$begin 'SolutionManager'
+			$begin 'Version ID Map'
+				V=1
+			$end 'Version ID Map'
+		$end 'SolutionManager'
+		$begin 'UserDefinedSolutionMgr'
+			NextUniqueID=1000000
+			MoveBackwards=false
+		$end 'UserDefinedSolutionMgr'
+		$begin 'DatasetSolutionMgr'
+			NextUniqueID=2000000
+			MoveBackwards=false
+		$end 'DatasetSolutionMgr'
+		Notes=$begin_cdata$		$end_cdata$
+		$begin 'AnimationSetups'
+		$end 'AnimationSetups'
+		CacheHeaderFile='HDR826212014507183331.tmp'
+	$end 'Maxwell3DModel'
+	$begin 'DataInstances'
+		$begin 'Instance'
+			DesignEditor='Maxwell3DDesign1'
+			$begin 'MaxwellDesignInstance'
+				DesignInstanceID=1
+				$begin 'WindowPosition'
+					$begin 'EditorWindow'
+						'3D Modeler'(Editor3d(View(WindowPos(3, -1, -1, -8, -31, 0, 0, 1097, 404), OrientationMatrix(0.00276303011924028, 0.000308255228446797, 0.00199386174790561, 0, -0.000935403339099139, 0.00319144292734563, 0.000802841503173113, 0, -0.00178762339055538, -0.00119353865738958, 0.00266171176917851, 0, 0.517162024974823, 0.6640465259552, -8.79159927368164, 1, 0, -1.80887377262115, 1.80887377262115, -1, 1, -4.02080535888672, 17.6172218322754), Drawings[1: 'Box1'], 'View Data'('Render Mode'=1, 'Show Ruler'=1), ClipPlanes(ClipPlaneOptions(DisableWhenDrawingNewPlane=true, ForceOpqaueForUnclipped=false, ShowClipped=false, Transparency=0, HandleColor=16776960)))))
+					$end 'EditorWindow'
+				$end 'WindowPosition'
+				$begin 'ReportSetup'
+					$begin 'ReportManager'
+						$begin 'Reports'
+						$end 'Reports'
+						NextUniqueID=0
+						MoveBackwards=false
+						$begin 'NextVersID'
+							NextUniqueID=0
+							MoveBackwards=false
+						$end 'NextVersID'
+					$end 'ReportManager'
+					$begin 'Reports'
+					$end 'Reports'
+					$begin 'ReportsWindowInfoList'
+					$end 'ReportsWindowInfoList'
+				$end 'ReportSetup'
+				$begin 'Properties'
+				$end 'Properties'
+				$begin 'UserDefinedDocument'
+					$begin 'Data'
+					$end 'Data'
+				$end 'UserDefinedDocument'
+			$end 'MaxwellDesignInstance'
+		$end 'Instance'
+	$end 'DataInstances'
+	$begin 'WBSystemIDToDesignInstanceIDMap'
+	$end 'WBSystemIDToDesignInstanceIDMap'
+	$begin 'WBSysIDSysDetails'
+	$end 'WBSysIDSysDetails'
+	$begin 'WBConnIDConnDetails'
+	$end 'WBConnIDConnDetails'
+$end 'AnsoftProject'
+$begin 'ProjectPreview'
+	Thumbnail64='/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE\
+BAQICAQECAQEBAgICAgICAgICAQICAgICAgICAgL/2wBDAQEBAQEBAQEBAQECAQEBAgICAgICAgICAg\
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL/wAARCABgAGADASIAAhEBAxEB/\
+8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQR\
+BRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUp\
+TVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5us\
+LDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAA\
+AECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHB\
+CSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ\
+3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4u\
+Pk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD+/iiiigAooooAKKK+GP8Agoj+2l4c/YR/Zv1H4\
+x6vFHfeItb8W+Gvhv8ADvRpNIu9eOqeLvEz3uoX1zBokOs6TD4jvNH8A6B438RQaFdeIPDCeKJvB0fh\
+a08SaNqmt2F7H0YTC18diaGDw1N1cRiZKEIrq5Oy9Et29kk29EKUlFOUnZI6Twz+3F8EvGP7bXxE/YI\
+8OL4x1H42fCj4O2Xxl8f6n/YFvZ/D/QdM1HUPA0Fn4R/t2/1SK81Txi+j/ErwVquLLTbnSFsta8p9WX\
+U7a706D7Dr+Jz/AIN79X8S+JP+CnXxb8T+N9W/4SLxz4i/Ya8Sah418USW1hb3/ivxNb/GP4A6RqPif\
+XbjT9Ptv7e8UX/9mRXOrazeRyavr+p3F3rmvXmo67qOo6jdf2x17nFOT0MjzGlgKE3V5cPRlOTekqko\
+/vJRVlaDldwT1UbJtu7M6M3Ui5NW1dvToFFFFfNmoUUUUAFFFFABRRRQAV/C7/wXA+PHjv4n/wDBRH4\
+rfBjxFLp//CC/s26N8IdJ8A6ZHYwXT29340+FNj8QtV8S2l/qaz3fhrxBe3vxN8R6fry6RcWOl+JdN8\
+K+CRrOmXOo+C9J1Kv7oq/z9f8Agrz/AMpaP22/+7bf/WavhpX6B4c06c84x85wUpUcHOUG1flk8RhoN\
+rs+Sco37SZy4tv2cdd5L8mz6h/4N5P+UlfxP/7Ma8af+r8+Clf201/E/wD8G813cP8A8FIPiRYtJm1t\
+v2IvH13DFsQbLi9+O/wIhuZN4Xc26OwtBgkqvlZUAsxb+2CsPEK/+sCvp/s9D8n/AF/mVhv4XzYUUUV\
+8MdAUUUUAFFFFABRRRQAV/n6/8Fef+UtH7bf/AHbb/wCs1fDSv9Aqv8/X/grz/wApaP22/wDu23/1mr\
+4aV+h+G3/I2zT/ALAZf+pWEOXF/wAOH+L/ANtkfUP/AAbyf8pK/if/ANmNeNP/AFfnwUr+2mv4lv8Ag\
+3k/5SV/E/8A7Ma8af8Aq/PgpX9tNcviF/yUC/7BqH/pLKw38L5sKKKK+GOgKKKKACiiigAooooAK/z9\
+f+CvP/KWj9tv/u23/wBZq+Glf6BVf5+v/BXn/lLR+23/AN22/wDrNXw0r9D8Nv8AkbZp/wBgMv8A1Kw\
+hy4v+HD/F/wC2yPqH/g3k/wCUlfxP/wCzGvGn/q/PgpX9tNfxLf8ABvJ/ykr+J/8A2Y140/8AV+fBSv\
+7aa5fEL/koF/2DUP8A0llYb+F82FFFFfDHQFFFFABRRRQAUUUUAFf5+v8AwV5/5S0ftt/922/+s1fDS\
+v8AQKr/AD9f+CvP/KWj9tv/ALtt/wDWavhpX6H4bf8AI2zT/sBl/wCpWEOXF/w4f4v/AG2R9Q/8G8n/\
+ACkr+J//AGY140/9X58FK/tpr+ML/g3P8DeKta/bm+PPxY0/SJJfAPgv9liX4aeINekubKBIPFfj74v\
++D/EHhC1srOa5WfVrO7tfhZ8TIWubSKaGyvPA95aag9pNLYLef2e1yeITT4hcU05Qw9BSXVNw5kmuj5\
+ZJ2fRp7NFYb+F82FFFFfDnQFFFFABRRRQAUUUUAFf5+3/BW7QPGXjT/gsH+1v8PPhro8niP4l/EXxL+\
+yR4C8AaDFdadYHUPFvjf4HfBvwX4bW41LWZI7DSLM+I/EejQm61Ga209Jr63hubmHz0Y/6BNfm38P8A\
+/gm38P8Awl/wUh+PP/BSDxF4t/4TTx38UfB3g7wf8OvA174K0W20z4O/2R8PPBfw78XeKbDxNfXl9ea\
+z4x1TR/BEFraX1jHoP9naR4s1/SLqLV4tTE9t9bwhneFyHF5pjcSvaSlg5wpU7O1St7fDzhCTSfLFqE\
+nKTsuVNJ8zinhXpyqRhGOnvXb7Kz/zPbf2IP2P/AH7Df7OvhH4BeAriPWm0u81zxP428byaLY6Jq3xC\
++IPizUpdV8SeKtXit5Z7ieNS9npekrqWoavqlj4e8N6PpN5rWqvpwvpvreiivmcTia+MxFbFYmo6uIx\
+EpTnJ2vKUnduyslq9kklskkbJKKUUrJaIKKKKwGFFFFAH//Z'
+	$begin 'DesignInfo'
+		DesignName='Maxwell3DDesign1'
+		Notes=''
+		Factory='Maxwell 3D'
+		IsSolved=false
+		'Nominal Setups'[0:]
+		'Optimetrics Setups'[0:]
+		'Optimetrics Experiment Types'[0:]
+		Image64='/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQE\
+BAQICAQECAQEBAgICAgICAgICAQICAgICAgICAgL/2wBDAQEBAQEBAQEBAQECAQEBAgICAgICAgICAg\
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgL/wAARCADIAMgDASIAAhEBAxEB/\
+8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQR\
+BRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUp\
+TVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5us\
+LDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAA\
+AECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHB\
+CSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ\
+3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4u\
+Pk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD+/iiiigAooooAKKKKACiiigAooooAKKKKACiiv\
+wTT/gq54l+In/BZn4Q/sQ/BjUfDeqfs/Wul/H74V/GhtY8H6hb+Kb347/C7wr428YeINQ8O6/LqivZ6\
+XoGrfDnTfD1pHLbWv2xtY8V31xp2qaVd+A/Ecfo5flWMzNY2WFgnDL6FXEVZO6jGnSi5PWz96SVoR+0\
++yTaic4w5eZ6yaS9WfvZRRRXnFhRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQ\
+AUUVx3xE8f+EvhR8P/ABz8UvH+rf2D4E+Gvg7xN4/8a679g1PVP7F8JeDtFvvEXiPVv7M0WzubzUfs2\
+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\
+UAf/9k='
+	$end 'DesignInfo'
+$end 'ProjectPreview'
