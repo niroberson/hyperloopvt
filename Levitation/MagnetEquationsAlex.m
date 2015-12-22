@@ -152,7 +152,9 @@ D2 = 0;
 
 h = waitbar(0,'Loading...','Name','MagnetEquations');
 i = 1;
-steps = mHigh*2/mRes;
+%steps = mHigh*2/mRes;
+m = -mHigh:mRes:mHigh;
+[~,steps] = size(m);
 
 % computations take place here
 for m = -mHigh:mRes:mHigh

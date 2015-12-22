@@ -1,5 +1,7 @@
 
-function [FliftPlot,FdragPlot] = SweepForceAlex(filename,Values,Profile,Type,Geometry,Velocity,Steps,SkipZero)
+function [FliftPlot,FdragPlot] = SweepForceAlex(filename,Values,Profile,...
+                                 Type,Geometry,M,mRes,N,nRes,...
+                                 Velocity,Steps,Iterations,SkipZero)
 % This is called from the command line
 %
 % Inputs: Filename, Values, Profile, Velocity, Steps, SkipZero
@@ -14,17 +16,18 @@ function [FliftPlot,FdragPlot] = SweepForceAlex(filename,Values,Profile,Type,Geo
 %
 % Outputs: data in .csv format, plots of forces
 %
-% example: >> SweepForce('MagnetEquationsData.csv', 'Initial', 'Reference','Lift','Double', 200, 6, 1)
+% example: >> SweepForce('MagnetEquationsData.csv', 'Initial', 'Reference','Lift','Double', 200, 6, 1, 1)
 % example: >> SweepForce('MagnetEquationsData.csv', 'Final', 'Custom', 200, 8, 0)
 
+fprintf('Running SweepForceAlex.m')
 
 %% Setup bound parameters and resolutions
 
 % best results: m=2.235 mRes = 0.5 n = 0.3 nRes = 1 atol=rtol=1e0 (lift)
 if(strcmp(Values,'Initial')) 
-    mbound = 2.235; % 2.235 bound for fourier sums
+    M = 2.235; % 2.235 bound for fourier sums
     mRes = 0.5;
-    nbound = 1;
+    N = 1;
     nRes = 1;
     atol = 1e0; % desired tolerance
     rtol = 1e0; % has little to no effect?
@@ -36,9 +39,9 @@ if(strcmp(Values,'Initial'))
 % best results: m=3.542 mRes = 0.5 n = 0.3 nRes = 1 atol=rtol=1e0 (lift)
 % n = 0.4 (drag)
 elseif(strcmp(Values,'Final'))
-    mbound = 3.542; %3.542 bound for fourier sums
+    M = 3.542; %3.542 bound for fourier sums
     mRes = 0.50;
-    nbound = 0.35; 
+    N = 0.35; 
     nRes = 1;
     atol = 1e0; % desired tolerance
     rtol = 1e0; 
@@ -47,13 +50,13 @@ elseif(strcmp(Values,'Final'))
     liftREF = [0, 16600, 32500, 40000, 44000,  46000];
     dragREF = [0, 3300, 3500, 3000, 2660, 2400]; 
 
-% best results mbound = 3.235 mRes: 0.5 nBound = 0.3 nRes = 1,
+% best results M = 3.235 mRes: 0.5 N = 0.3 nRes = 1,
 % atol=rtol=1e0 (lift) w2, l2 from final values
 elseif(strcmp(Values,'Experimental'))
-    mbound = 3.233; % bound for fourier sums
-    mRes = 0.5;
-    nbound = 0.29;
-    nRes = 1;
+    %M = 3.235; % bound for fourier sums
+    %mRes = 0.5;
+    %N = 0.285;
+    %nRes = 1;
     atol = 1e0; % desired tolerance
     rtol = 1e0;
     
@@ -62,9 +65,9 @@ elseif(strcmp(Values,'Experimental'))
     dragREF = [0, 187.5, 302, 396, 416, 435]; 
 
 elseif(strcmp(Values,'Custom'))
-    mbound = 3.235; % bound for fourier sums
+    M = 3.235; % bound for fourier sums
     mRes = 0.5;
-    nbound = 0.3;
+    N = 0.3;
     nRes = 1;
     atol = 1e0; % desired tolerance
     rtol = 1e0;
@@ -87,7 +90,7 @@ if(strcmp(Profile,'Reference'))
     end
     
 elseif(strcmp(Profile,'Custom'))
-    % conver to m/s
+    % convert to m/s
     Velocity = Velocity*0.44704;
     vlow = 0;
     vres = Velocity/(Steps-1);
@@ -105,31 +108,30 @@ end
 %% Setup Saving Data to File
 
 headers = {'Vx','Flift','Fdrag','mHigh','mRes','nHigh','nRes','Atol','Rtol','Values'};
-M = [0,0,0,mbound,mRes,nbound,nRes,atol,rtol,0];
-csvwrite_with_headers(filename,M,headers)
+Matrix = [0,0,0,M,mRes,N,nRes,atol,rtol,0];
+csvwrite_with_headers(filename,Matrix,headers)
 
 %% Start Computations
 
 tic % time start
 
-for vx = vlow:vres:vhigh
+for vx = vlow:vres:Iterations*vres
     % Calculate Lift and Drag Forces
     if(strcmp(Geometry,'Double'))
-        [Flift,Fdrag] = MagnetEquationsAlex(vx,0,0,mbound,nbound,atol,rtol,mRes,nRes,Values,Type);
+        [Flift,Fdrag] = MagnetEquationsAlex(vx,0,0,M,N,atol,rtol,mRes,nRes,Values,Type);
     elseif(strcmp(Geometry,'Single'))
-        [Flift,Fdrag] = MagnetEquationsSingle(vx,0,0,mbound,nbound,atol,rtol,mRes,nRes,Values,Type);
+        [Flift,Fdrag] = MagnetEquationsSingle(vx,0,0,M,N,atol,rtol,mRes,nRes,Values,Type);
     end
     fprintf('Vx: %d mHigh: %d nHigh: %d Atol: %d Rtol: %d mRes: %d nRes: %d Values: %s Flift: %d Fdrag: %d \r',...
-        vx,mbound,nbound,atol,rtol,mRes,nRes,Values,Flift,Fdrag*-1)
+        vx,M,N,atol,rtol,mRes,nRes,Values,Flift,Fdrag*-1)
     
     % Copy data
     FliftPlot(1,i) = Flift;
-    FdragPlot(1,i) = Fdrag*-1; % Force given as a vector with -x being the 
-                               % direction of drag, therefore, multiply by -1
+    FdragPlot(1,i) = Fdrag;
     
     % Output to file
-    M = [vx,Flift,Fdrag];
-    dlmwrite (filename, M,'-append');
+    Matrix = [vx,Flift,Fdrag];
+    dlmwrite (filename, Matrix,'-append');
     
     i = i + 1;
 end
@@ -144,8 +146,8 @@ if(strcmp(Profile,'Reference'))
         vx = 0:8.3333:5*8.3333;
         v = vx*3.6;
         vxREF = v;
-        title(['Force Equations (Initial Values): mBound: ' num2str(mbound) ' mRes:  ' num2str(mRes)...
-                ' nBound: ' num2str(nbound) ' nRes:  ' num2str(nRes)])
+        title(['Force Equations (Initial Values): M: ' num2str(M) ' mRes:  ' num2str(mRes)...
+                ' N: ' num2str(N) ' nRes:  ' num2str(nRes)])
         ylabel('Force (N)');
         hold on
     end
@@ -155,8 +157,8 @@ if(strcmp(Profile,'Reference'))
         vx = 0:8.3333:5*8.3333;
         v = vx*3.6;
         vxREF = v;
-        title(['Force Equations (Final Values): mBound: ' num2str(mbound) ' mRes:  ' num2str(mRes)...
-                ' nBound: ' num2str(nbound) ' nRes:  ' num2str(nRes)])
+        title(['Force Equations (Final Values): M: ' num2str(M) ' mRes:  ' num2str(mRes)...
+                ' N: ' num2str(N) ' nRes:  ' num2str(nRes)])
         ylabel('Force (kN)');
         hold on
     end
@@ -165,8 +167,8 @@ if(strcmp(Profile,'Reference'))
         factor = 1;
         v = 0:5:5*5;
         vxREF = v;
-        title(['Force Equations (Experimental Values): mBound: ' num2str(mbound) ' mRes:  ' num2str(mRes)...
-                ' nBound: ' num2str(nbound) ' nRes:  ' num2str(nRes)])
+        title(['Force Equations (Experimental Values): M: ' num2str(M) ' mRes:  ' num2str(mRes)...
+                ' N: ' num2str(N) ' nRes:  ' num2str(nRes)])
         ylabel('Force (N)');
         hold on
     end
