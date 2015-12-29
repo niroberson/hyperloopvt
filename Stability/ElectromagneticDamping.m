@@ -1,7 +1,9 @@
 %% EMS Stability
 
+%% Electromagnet Force Model
+
 u0 = 4*pi*1e-7; % permeability of free space
-N = 400 % Number of turns
+N = 400; % Number of turns
 A = 0.003; % Pole area (m^2)
 I = 5.3; % Coil current (A)
 z = 0.01; % Gap (m)

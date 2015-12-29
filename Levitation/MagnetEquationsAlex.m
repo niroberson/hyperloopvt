@@ -1,8 +1,10 @@
 % clear all; close all; 
 
-function [Force_lift,Force_drag] = MagnetEquationsAlex(Vx,Vy,Vz,mHigh,nHigh,aTol,rTol,mRes,nRes,Values,Type)
+function [Force_lift,Force_drag] = MagnetEquationsAlex(Vx,mHigh,nHigh,aTol,rTol,mRes,nRes,Values,Type)
 % computes lift force and drag of a dual halbach array EDS device from
 % 3-D velocities and specified computation bounds and resolution
+Vy = 0;
+Vz = 0;
 
 if(strcmp(Values,'Initial'))
     % Magnet Parameters (m):
@@ -61,6 +63,7 @@ if(strcmp(Values,'Experimental'))
 
     % Track Parameters:
     L2 = 2.4;       % length of plate
+    %L2 = 0.8;
     t2 = 0.003;     % thickness of plate
     w2 = 1.2;       % width of aluminum plate
     sigma = 2.57*1e7; % conductivity of plate
@@ -88,8 +91,8 @@ if(strcmp(Values,'Custom'))
     sigma = 2.57*1e7; % conductivity of plate
 
     % Air-gap Parameters:
-    d1 = 0.021;        % upper air gap
-    d2 = 0.021;        % lower air gap
+    d1 = 0.005;        % upper air gap
+    d2 = 0.005;        % lower air gap
 end
     
 mew_0 = 4*pi*1e-7; % permeability of free space
@@ -107,7 +110,6 @@ psi = @(x, y, z, x0, z0) (z-z0)./sqrt((x-x0).^2 + y.^2 + (z-z0));
 By_integrand = @(x, y, z, x0) B0*y/(2*pi).*(psi(x, y, z, x0, w2/2) - ...
     psi(x, y, z, x0, -w2/2)).*exp(1i.*x0.*pi/tau)./((x-x0).^2 + y.^2);
 
-
 C1_mn_s_integrand = @(x0,x,z,m,n) By_integrand(x,-d1,z,x0).*exp(-1i.*(xi_m(m).*x + ...
     k_n(n).*z));
 C1_mn_s_int = @(m,n) integral3(@(x0,x,z)C1_mn_s_integrand(x0,x,z,m,n),-L2/2, ...
@@ -121,6 +123,9 @@ C3_mn_s_int = @(m,n) integral3(@(x0,x,z)C3_mn_s_integrand(x0,x,z,m,n),-L2/2, L2/
     -L2/2, L2/2, -w2/2, w2/2,'Method','iterated',...
                                'AbsTol',aTol,'RelTol',rTol);
 C3_mn_s = @(m,n) C3_mn_s_int(m,n).*(1/(L2*w2));
+if(strcmp(Type,'Single'))
+    C3_mn_s = @(m,n) 0; %
+end
 
 lambda =  -0.5*v_y*mew_0*sigma;
 gamma_mn = @(m,n) sqrt(k_mn(m,n)^2 - 1i*mew_0*sigma*(xi_m(m).*v_x + k_n(n).*v_z));
@@ -138,8 +143,12 @@ T_mn = @(m,n,y) -4*beta_mn(m,n).*k_mn(m,n).*exp(beta_mn(m,n).*t2).*exp(lambda.*.
 C1_mn_r = @(m,n)R1_mn(m,n).*C1_mn_s(m,n) + T_mn(m,n,-d1).*C3_mn_s(m,n);
 C3_mn_r = @(m,n)R3_mn(m,n).*C3_mn_s(m,n) + T_mn(m,n,d2).*C1_mn_s(m,n);
 
-f_mn_plus = @(m,n) conj(C1_mn_s(m,n)).*C1_mn_r(m,n) + conj(C3_mn_s(m,n)).*C3_mn_r(m,n);
+f_mn_plus = @(m,n) conj(C1_mn_s(m,n)).*C1_mn_r(m,n) + conj(C3_mn_s(m,n)).*C3_mn_r(m,n); % EDIT THIS
 f_mn_minus = @(m,n) conj(C1_mn_s(m,n)).*C1_mn_r(m,n) - conj(C3_mn_s(m,n)).*C3_mn_r(m,n);
+if(strcmp(Type,'Single'))
+    f_mn_plus = @(m,n) conj(C1_mn_s(m,n)).*C1_mn_r(m,n);
+    f_mn_minus = @(m,n) conj(C1_mn_s(m,n)).*C1_mn_r(m,n);
+end
 
 % lift partial sums
 S1 = 0;
