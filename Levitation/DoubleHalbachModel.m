@@ -1,5 +1,9 @@
 function [Force_y, Force_z, n] = DoubleHalbachModel(v,parameters,geometry,tau_factor)
+<<<<<<< HEAD
 % Different coefficients for single sided.
+=======
+
+>>>>>>> e241c6b46824e4265e11ba402c4addb6f5f738c7
 % Inputs:
 %   v: velocity (m/s)
 %   parameters: which values to use - '3D-Final', '3D'Initial', 'Fig4'
@@ -17,7 +21,10 @@ if(strcmp(parameters,'Fig4'))
 
     % Track Parameters
     l = 0.003; % Thickness of track (m)
+<<<<<<< HEAD
     rho_alum = 3.92*1e-8; % Resistivity of track (Ohm*m)
+=======
+>>>>>>> e241c6b46824e4265e11ba402c4addb6f5f738c7
    
     % Air gap Parameters
     d1 = 0.026; % Upper air gap (m)
@@ -34,13 +41,18 @@ if(strcmp(parameters,'Fig7'))
 
     % Track Parameters
     l = 0.01; % Thickness of track (m)
+<<<<<<< HEAD
     rho_alum = 3.92*1e-8; % Resistivity of track (Ohm*m)
     
+=======
+   
+>>>>>>> e241c6b46824e4265e11ba402c4addb6f5f738c7
     % Air gap Parameters
     d1 = 0.015; % Upper air gap (m)
     d2 = 0.060; % Lower air gap (m)
 end
 
+<<<<<<< HEAD
 if(strcmp(parameters,'Second-2D'))
     % Magnet Parameters
     M = 4; % Number of Magnets in Wavelength
@@ -109,6 +121,8 @@ if(strcmp(parameters,'Magplane'))
     d2 = 0; % Lower air gap (m)
 end
 
+=======
+>>>>>>> e241c6b46824e4265e11ba402c4addb6f5f738c7
 if(strcmp(parameters,'3D-Initial'))
     % Magnet Parameters
     M = 4; % Number of Magnets in Wavelength
@@ -119,8 +133,12 @@ if(strcmp(parameters,'3D-Initial'))
 
     % Track Parameters
     l = 0.006; % Thickness of track (m)
+<<<<<<< HEAD
     rho_alum = 3.92*1e-8; % Resistivity of track (Ohm*m)
     
+=======
+   
+>>>>>>> e241c6b46824e4265e11ba402c4addb6f5f738c7
     % Air gap Parameters
     d1 = 0.026; % Upper air gap (m)
     d2 = 0.032; % Lower air gap (m)
@@ -136,8 +154,12 @@ if(strcmp(parameters,'3D-Final'))
 
     % Track Parameters
     l = 0.006; % Thickness of track (m)
+<<<<<<< HEAD
     rho_alum = 3.92*1e-8; % Resistivity of track (Ohm*m)
     
+=======
+   
+>>>>>>> e241c6b46824e4265e11ba402c4addb6f5f738c7
     % Air gap Parameters
     d1 = 0.026; % Upper air gap (m)
     d2 = 0.050; % Lower air gap (m)
@@ -153,8 +175,12 @@ if(strcmp(parameters,'3D-Experimental'))
 
     % Track Parameters
     l = 0.003; % Thickness of track (m)
+<<<<<<< HEAD
     rho_alum = 3.92*1e-8; % Resistivity of track (Ohm*m)
     
+=======
+   
+>>>>>>> e241c6b46824e4265e11ba402c4addb6f5f738c7
     % Air gap Parameters
     d1 = 0.021; % Upper air gap (m)
     d2 = 0.042; % Lower air gap (m)
@@ -170,8 +196,12 @@ if(strcmp(parameters,'Custom'))
 
     % Track Parameters
     l = 0.00047; % Thickness of track (m)
+<<<<<<< HEAD
     rho_alum = 3.92*1e-8; % Resistivity of track (Ohm*m)
     
+=======
+   
+>>>>>>> e241c6b46824e4265e11ba402c4addb6f5f738c7
     % Air gap Parameters
     d1 = 0.010; % Upper air gap (m)
     d2 = 0.020; % Lower air gap (m)
@@ -180,9 +210,15 @@ end
 u0 = 4*pi*1e-7; % permeability of free space
 epsilon = 8.8541878176*1e-12; % Permitivity of free space
 
+<<<<<<< HEAD
 
 rho_air = 1.30*1e16; % resistivity of air 
 
+=======
+rho_alum = 3.92*1e-8; % Resistivity of track (Ohm*m)
+rho_air = 1.30*1e16; % resistivity of air 
+
+>>>>>>> e241c6b46824e4265e11ba402c4addb6f5f738c7
 gamma_one = 1/rho_air; % Conductivity of air (S/m)
 gamma_two = 1/rho_alum; % Conductivity of aluminum (S/m)
 gamma_three = gamma_one; % Conductivity of air (S/m)
@@ -202,9 +238,12 @@ if(strcmp(geometry,'Single'))
 end
 
 Bym = @(y) B0.*(exp(-p*(y+d1)) - exp(-p*(-y+d2+l)));
+<<<<<<< HEAD
 if(strcmp(geometry,'Single'))
     Bym = @(y) B0.*(exp(-p*(y+d1)));
 end
+=======
+>>>>>>> e241c6b46824e4265e11ba402c4addb6f5f738c7
 
 % Propogation functions for air (i=1,3) and track (i=2)
 k1 = sqrt(-1i*omega*u0*(gamma_one + 1i*omega*epsilon));  
@@ -225,6 +264,7 @@ B = f*(-p*exp(-p*(d1+l)) + p*exp(-p*d2));
 C = f*(exp(-p*d1) - exp(-p*(d2+l)));
 D = f*(exp(-p*(d1+l)) - exp(-p*d2));
 
+<<<<<<< HEAD
 if(strcmp(geometry,'Single'))
     A = f*(-p*exp(-p*d1));
     B = f*(-p*exp(-p*(d1+l)));
@@ -232,6 +272,8 @@ if(strcmp(geometry,'Single'))
     D = f*(exp(-p*(d1+l)));
 end
     
+=======
+>>>>>>> e241c6b46824e4265e11ba402c4addb6f5f738c7
 % Coefficients
 C1 = 0;
 C6 = 0;
@@ -272,7 +314,10 @@ C5 = (B*R1*a - B*R2*a - B*R1*b - B*R2*b - D*R2^2*a + D*R2^2*b...
      - R2^2*a + R1*R2*a - R1*R3*a + R2*R3*a + R1*R2*b + R1*R3*b + R2*R3*b));
 
 theta = @(y) u0*gamma_two*v*Bym(y)./(k2.^2);
+<<<<<<< HEAD
 
+=======
+>>>>>>> e241c6b46824e4265e11ba402c4addb6f5f738c7
 A_2x = @(y,z) (C3*exp(-R2.*y) + C4*exp(R2.*y) + theta(y)).*exp(1i*p.*z + omega.*t);
 
 By = @(y,z) Bsy(y,z) + 1i*p*A_2x(y,z);
@@ -282,7 +327,11 @@ By = @(y,z) Bsy(y,z) + 1i*p*A_2x(y,z);
 %      + f.*(-p.*exp(-p.*(y+d1)) + p.*exp(-p.*(-y+d2+l)))...
 %      .*exp(1i.*p.*z + omega.*t));
 
+<<<<<<< HEAD
 % Bz2
+=======
+% Bz1
+>>>>>>> e241c6b46824e4265e11ba402c4addb6f5f738c7
 Bz = @(y,z) Bsz(y,z) - (-R2*C3.*exp(-R2.*y) + R2*C4.*exp(R2.*y) ...
      + (u0*gamma_two.*v.*B0.*(-p.*exp(-p.*(y+d1)) + p.*exp(-p.*(-y+d2+l))))./(k2.^2))...
      .*exp(1i.*p.*z + omega.*t);
