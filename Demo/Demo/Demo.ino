@@ -17,14 +17,15 @@
 Servo servo;  // create servo object to control a servo
 Servo motor;  // create servo object to control motor
 
-int servoPot = 0;  // analog pin used to connect the servo control pot
-int motorPot = 1;  // analog pin used to connect the motor control pot
+int servoPot = A0;  // analog pin used to connect the servo control pot
+int motorPot = A1;  // analog pin used to connect the motor control pot
 int servoVal;      // variable to read the value from the analog pin
 int motorVal;      // variable to read the value from the analog pin
 int velocity;      // variable that relates potentiometer location to velocity
 bool topSpeed = false;
+int pos = 0;
 
-enum operatingState {INTERACTIVE_DEMO, TRAJECTORY_DEMO, STOP};
+enum operatingState {INTERACTIVE_DEMO, TRAJECTORY_DEMO, STOP, RAMP};
 operatingState opState = INTERACTIVE_DEMO;
 
 void setup() {
@@ -40,18 +41,42 @@ void setup() {
 
   if(opState == INTERACTIVE_DEMO) Serial.println("Interactive Demo");
   else if(opState == TRAJECTORY_DEMO) Serial.println("Trajectory Demo");
+
+  Serial.println("Press button to begin.");
+  while(!Serial.available())
+  {
+  }
+  Serial.println("Starting Demo");
 }
 
 void loop() {
 
   switch (opState) 
   {
-    case INTERACTIVE_DEMO: 
+    case RAMP:
 
-      servoVal = analogRead(servoPot);                 // reads the value of the potentiometer (value between 0 and 1023)
-      servoVal = map(servoVal, 0, 1023, 0, 180);       // scale it to use it with the servo (value between 0 and 180)
-      servo.write(servoVal);                           // sets the servo position according to the scaled value
-      delay(15);                                       // waits for the servo to get there
+      Serial.println("Press button to begin.");
+      while(!Serial.available())
+      {
+      }
+      Serial.println("Starting motor ramp.");
+      for(pos = 0; pos < 120; pos++)
+      {
+        motor.write(pos);
+        delay(40);
+      }
+      Serial.print("Done Ramping");
+      opState = INTERACTIVE_DEMO;
+      
+    break;
+    
+    case INTERACTIVE_DEMO: 
+      //Serial.println("Debug: Interactive_Demo");
+      
+      //servoVal = analogRead(servoPot);                 // reads the value of the potentiometer (value between 0 and 1023)
+      //servoVal = map(servoVal, 0, 1023, 0, 180);       // scale it to use it with the servo (value between 0 and 180)
+      //servo.write(servoVal);                           // sets the servo position according to the scaled value
+      //delay(15);                                       // waits for the servo to get there
 
       motorVal = analogRead(motorPot);
       motorVal = map(motorVal, 0, 1023, 0, 180);
