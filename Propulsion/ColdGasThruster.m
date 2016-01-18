@@ -1,55 +1,66 @@
-function Fth = ColdGasThruster(gas_spec)
-% Isp : Specific Impulse
-% Rsp (J/(kg*K)) : Specific Gas constant
-% Tc (K) : Chamber Temperature
-% m_dot (kg/s) : Mass flow
-% Ue (m/s) : Exhaust velocity
-% Pe (Pa) : Exit pressure
-% Pa (Pa) : Ambient pressure
-% Pc (Pa) : Chamber Pressure
-% Ae (m) : Exit Area (x-section)
-% gamma : Ratio of specific heats
-
-%% Load nitrogen spec
-nitrogen = load_spec('nitrogen');
-R = nitrogen.R; %specific gas constant for Nitrogen in J/kg*K
-gamma = nitrogen.gamma; %ratio of specific heats for Nitrogen (and air)
-density = 20.4427; %density of Nitrogen in pressure vessel fully compressed in kg/m^3
-m_N = rho_N*V_vessel; %mass of Nitrogen in pressure vessel fully compressed in kg
-T_c = 300; %temperature of Nitrogen in tank in K
-c_star = 434.4*0.8; % m/s cstar at room temperature of nitrogen
-
-%% Rocket propulsion equations
+clear, clc
+%% Gas constans
+k = 1.4;
+R = 297;
+Isp = 73;
 g = 9.81;
 
-% fth = m_dot*u_exhuast + (P_exit - P_ambient) * A_exit;
-% u_eq = u_exhuats + (P_exit - P_ambient)/m_dot*A_exit;
-% Fth = m_dot*u_eq;
-% Isp = u_eq/g;
-% Fth = m_dot*Isp*g;
-% lambda = (1+cos(alpha))/2 % alpha: half-angle of cone 15 degrees
-% Fth = lambda*m_dot*Isp*g;
+%% Stagnation Properties
+P0 = 2.4132e+7; % Pa
+T0 = 300; % K
+Z = 1.0899825392; % http://www.peacesoftware.de/einigewerte/calc_stickstoff.php5
+rho0 = P0/(Z*R*T0);
+c0 = 449.02992528; % Speed of sound
 
-% Isp = 1 / g * sqrt( 2 * gamma / (gamma - 1) * Rsp * Tc * (1 - (P_exit / P_chamber)^((gamma - 1) / gamma)));
-%
+%% Throat Properties
+% Pstar = 0.528*P0; % Choked flow since Pe < Pstar
+% Cd = 0.61;
+% mdott = Cd*At*sqrt(k*rho0*P0*(2/(k+1))^((k+1)/(k-1)));
+Tt = T0*(2/(k+1));
+rhot = rho0*(2/(k+1))^(1/(k-1));
+Pt = P0*(2/(k+1))^(k/(k-1));
+Vt = sqrt(2*k/(k+1)*R*T0); % = sqrt(k*R*Tt)
+At = (0.006 / 2)^2*pi; % m2
+mdott = rhot*At*Vt; % kg/s
 
-%% Thermodynamic equations
-% Ideal gas law with compressibility
-% P = Z*density*Rsp*T;
+%% Exhaust Properties
+Me = 2;
+Pe = P0/(1+(k-1)/2*Me^2)^(k/(k-1)); % Pa
+Te = T0/(1+(k-1)/2*Me^2);
+Z_e = 0.8637;
+rhoe = rho0*((Pe/P0)^(1/k));
+Ve = Vt*sqrt((k+1)/(k-1)*(1 - (Pe/P0)^((k-1)/k)));
+gam = sqrt(k)*(2/(k+1))^((k+1)/(2*(k-1)));
+Ae = At*gam/sqrt((2*k/(k-1))*(Pe/P0)^(2/k)*(1-(Pe/P0)^((k-1)/k)));
+mdote = rhoe*Ae*Ve;
+Fth = mdote*Ve
 
+%% Chamber Properties
+Ac = (0.01905/2)^2*pi;
+Vc = mdott/(rho0*Ac);
+mdotc = rho0*Vc*Ac;
 
+%% Get Nozzle Geometry from areas
+re = sqrt(Ae/pi);
+rt = sqrt(At/pi);
+alpha = 15*pi/180;
+L_noz = re/sin(alpha) - rt/sin(alpha);
 
-%% Calulate the Thrust Force of the CGT
-P_c = 18202159.3; %gauge pressure in Pa
-P_e = 150; % Pa nozzle exit 
-P_ambient = tube.p; %ambient tube pressure in Pa
-v_e = sqrt(((2*gamma*R*T_c)/(gamma-1))*((1-(P_e/P_c))^((gamma-1)/2))); %exit flow veclocity in m/s
-a_tube = sqrt(gamma*287*355); %speed of sound in tube in m/s
-M_e = v_e/a_tube; %mach number at exit
-A_e = (0.0042/2).^2 * pi; %Area of diverging nozzle exit
-A_t = A_e/((1/M_e)*sqrt(((2/(gamma+1))*(1+((gamma-1)/2)*(M_e^2)))^((gamma+1)/(gamma-1)))); %area of the choke point in m/s
-m_dot = P_c*A_t/c_star;
-A_c = V_vessel/L; %area of the converging nozzle in m^2
-% t_e = m_N/m_dot; %time gas is expelled in s
-Fth = m_dot*v_e + A_e*(P_e - P_ambient);
-end
+%% Gas Depletion time
+% Volume_Tank = 
+% mdotc
+
+%% Force needed from propulsion
+l_track = 1609.34; % 5280 ft
+l_pusher= 243.84; % 800 ft
+l_braking = 609.6; % 2000 ft
+l_prop = l_track - l_pusher - l_braking;
+m_pod = 500;
+v0 = 90;
+vf = 100;
+a = (vf^2 - v0^2)/(2*l_prop);
+Fd = 130; % N
+F_needed = m_pod*a + Fd;
+t = sqrt(2*(vf - v0)/a);
+a_actual = (Fth-Fd)/m_pod;
+Vf_actual = sqrt((a_actual*2*l_prop)+(90^2));
