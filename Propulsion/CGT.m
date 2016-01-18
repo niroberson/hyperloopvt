@@ -4,6 +4,7 @@ k = 1.4;
 R = 297;
 Isp = 73;
 g = 9.81;
+Pamb = 140; % Pa
 
 %% Stagnation Properties
 Z = 1.0899825392; % http://www.peacesoftware.de/einigewerte/calc_stickstoff.php5
@@ -39,6 +40,6 @@ if abs(mdote - mdott) >= 10^-2
 end
 
 %% Force thrust
-Fth = mdote*Ve;
+Fth = mdote*Ve + (Pe - Pamb)*Ae;
 
 end
