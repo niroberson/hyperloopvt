@@ -1,4 +1,4 @@
-function Fth = CGT(P0, T0, Me, At)
+function [Fth, mdott] = CGT(P0, T0, Me, At)
 %% Gas constans
 k = 1.4;
 R = 297;
@@ -36,8 +36,6 @@ mdote = rhoe*Ae*Ve;
 %% Assumptions
 if abs(mdote - mdott) >= 10^-2
     disp('Error! Difference in mass flow between throat and exhaust')
-    mdote
-    mdott
 end
 
 %% Force thrust
