@@ -3,14 +3,18 @@
 close all;
 clear all;
 
-%parameters = 'Hyperloop-Doubles';
-parameters = 'Hyperloop-Stilts';
+parameters = 'Hyperloop-Doubles';
+%parameters = 'Hyperloop-Stilts';
 %parameters = 'Hyperloop-Brakes';
 %parameters = 'Hyperloop-Lateral';
 
 %profile = 'Brakes-';
-profile = 'Stability';
+profile = 'Stability-';
 coeff = 'Set2';
+
+Jc = 0;
+Jm = 0;
+u0 = 4*pi*1e-7; % permeability of free space
     
 %% Test Bench Parameters
 
@@ -44,32 +48,36 @@ end
 if(strcmp(parameters,'Hyperloop-Doubles'))
     vfinal = 135;
     tau_factor = 2;
-    width = .08;
-    %width = 0.0762;
-    numArrays = 6;
-    %numArrays = 1.25;
     geometry = 'Double';
     
     % Magnet Parameters
     M = 4; % Number of Magnets in Wavelength
-    lengthMag = 0.1016;
-    tau = 2*lengthMag;
-    tau = 0.15; % Pole pitch (m)
+    Br = 1.48; % Magnet remanence (T)
+    
+    % Magnet Geometry 
+    %tau = 0.24; %1
+    %h = 0.01905; %1
+    %width = 0.06; %1
+    
+    tau = 0.1016*2;% 2
+    %h = 0.0254; % 2
+    h = 0.03175;
+    %h = 0.03;
+    %h = 0.03175;
+    width = 0.03175*2;
+    %width = 0.0254*2;
+    numArrays = 4;
    
-    Br = 1.32; % Magnet remanence (T)
-    h = 0.018; % Height of permanent magnet (m)
-    %h = 0.0254;
+    lambda = 2*tau;
     
     % Track Parameters
     l = 0.0104648; % Thickness of track (m)
     rho_track = 3.99*1e-8; % Resistivity of track (Ohm*m)
+    sigma = 1/rho_track;
 
     % Air gap Parameters
-    d1 = 0.020; % Upper air gap (m)
+    d1 = 0.017; % Upper air gap (m)
     d2 = 0.030; % Lower air gap (m)
-    
-    % Electromagnet Parameters
-    %Bre = ur*u0*Ne*Ie;
     
     % Pod Parameters
     PodWeight = 2000; % Pod weight (N)
@@ -77,48 +85,49 @@ if(strcmp(parameters,'Hyperloop-Doubles'))
 elseif(strcmp(parameters,'Hyperloop-Stilts'))
     vfinal = 135;
     tau_factor = 2;
-    geometry = 'Stability';
+    geometry = 'Single';
     
     % Magnet Parameters
     M = 4; % Number of Magnets in Wavelength
     Hc = 11.2*1e3; % Coercive Force of Magnet
-    Br = 1; % Magnet remanence (T)
+    Br = 1.48; % Magnet remanence (T)
    
-    tau = 0.0508; % Pole pitch (m)
+    tau = 0.0254*2; % Pole pitch (m)
     h = 0.0254; % Height of permanent magnet (m)
-    width = .127; % Width of magnet (m)
+    width = 0.0254; % Width of magnet (m)
     numArrays = 1.25; % Number of arrays to simulate
-    lengthSingleMagnet = tau/2;
+    lengthSingleMagnet = tau/2; 
+    lambda = 2*tau;
     
     % Track Parameters
     l = 0.0127; % Thickness of track (m)
     rho_track = 2.8*1e-8; % Resistivity of track (Ohm*m)
+    sigma = 1/rho_track;
 
     % Air gap Parameters
-    d1 = 0.020; % Upper air gap (m)
+    d1 = 0.017; % Upper air gap (m)
     d2 = 0; % Lower air gap (m)
     
     % Electromagnet Parameters
-    %Bre = ur*u0*Ne*Ie;
-    
-    % Pod Parameters
-    PodWeight = 2000; % Pod weight (N)
-    Jc = 30*1e6; % Current density coil
+    Jc = 13*1e5; % Current density coil
     Jm = h*Hc; % Current density magnet
+    
+    PodWeight = 2000; % Pod weight (N)
   
 elseif(strcmp(parameters,'Hyperloop-Brakes'))
     vfinal = 135;
     tau_factor = 2;
-    width = .08;
-    numArrays = 1.25;
+    
     geometry = 'Double';
     
     % Magnet Parameters
     M = 4; % Number of Magnets in Wavelength
+    
     tau = 0.2; % Pole pitch (m)
     Br = 1.48; % Magnet remanence (T)
     h = 0.0225; % Heigh of permanent magnet (m)
-
+    width = .08;
+    
     % Track Parameters
     l = 0.0079502; % Thickness of track (m)
     rho_track = 3.99*1e-8; % Resistivity of track (Ohm*m)
@@ -130,27 +139,38 @@ elseif(strcmp(parameters,'Hyperloop-Brakes'))
 elseif(strcmp(parameters,'Hyperloop-Lateral'))
     vfinal = 135;
     tau_factor = 2;
-    width = .04;
-    numArrays = 1;
     geometry = 'Double';
     
     % Magnet Parameters
     M = 4; % Number of Magnets in Wavelength
-    tau = 0.2; % Pole pitch (m)
+    tau = 0.0254*2; % Pole pitch (m)
     Br = 1.48; % Magnet remanence (T)
-    h = 0.0225; % Heigh of permanent magnet (m)
-
+    h = 0.0254; % Heigh of permanent magnet (m)
+    width = .045; % Width 
+    numArrays = 1.25; 
+    lambda = 2*tau;
+    
     % Track Parameters
     l = 0.0079502; % Thickness of track (m)
     rho_track = 3.99*1e-8; % Resistivity of track (Ohm*m)
+    sigma = 1/rho_track;
 
     % Air gap Parameters
-    d1 = 0.025; % Upper air gap (m)
+    d1 = 0.020; % Upper air gap (m)
     d2 = 0.025; % Lower air gap (m)
     
 end
 
 %% Weight and Cost Estimates
+
+numMagnets = numArrays*M*2*2;
+length = tau*2*numArrays;
+length_feet = 3.28084*length
+if(strcmp(geometry,'Single'))
+    numMagnets = numArrays*M;
+end
+ 
+numMagnets
 
 volumeOneMagnet = h*width*(tau/2);
 volumeOneArray = volumeOneMagnet*M;
@@ -164,6 +184,10 @@ if(strcmp(geometry,'Single'))
     weightEstimate_kg = weightEstimate_kg/2;
     weightEstimate_lbs = weightEstimate_lbs/2;
 end
+%if(strcmp(geometry,'Hybrid'))
+%    weightEstimate_kg = weightEstimate_kg/2;
+%    weightEstimate_lbs = weightEstimate_lbs/2;
+%end
 
 weightEstimate_kg
 weightEstimate_lbs
@@ -185,6 +209,7 @@ F_drag = zeros(1,size);
 n = zeros(1,size);
 m = zeros(1,size);
 o = zeros(1,size);
+skin_depth = zeros(1,size);
 i = 1;
 
 for v = 0.1:vres:vfinal
@@ -196,6 +221,7 @@ for v = 0.1:vres:vfinal
     n(1,i) = lift_drag_ratio;
     m(1,i) = F_lift(1,i)/weight;
     o(1,i) = (F_lift(1,i)-weight)/weight;
+    skin_depth(1,i) = sqrt(1/(pi*(v./lambda)*u0*sigma));
     i = i + 1;
 end
 
@@ -269,8 +295,8 @@ if(strcmp(parameters,'Hyperloop-Doubles'))
     set(ax(1),'XTick',[0:15:135])
     set(ax(1),'YLim',[0 125])
     set(ax(1),'YTick',[0:25:125])
-    set(ax(2),'YLim',[0 6])
-    set(ax(2),'YTick',[0:1:6])
+    set(ax(2),'YLim',[0 14])
+    set(ax(2),'YTick',[0:2:14])
     set(ax(2),'XLim',[0 135])
     set(ax(2),'XTick',[0:15:135])
     grid on;
@@ -291,10 +317,10 @@ if(strcmp(parameters,'Hyperloop-Doubles'))
     xlabel(ax(1),'Velocity (m/s)')  % label x-axis
     ylabel(ax(1),'Drag Force (N)') % label left y-axis
     ylabel(ax(2),'Lift Force (N)') % label right y-axis
-    set(ax(1),'YLim',[0 100])
-    set(ax(1),'YTick',[0:10:100])
-    set(ax(2),'YLim',[0 100])
-    set(ax(2),'YTick',[0:10:100])
+    set(ax(1),'YLim',[0 300])
+    set(ax(1),'YTick',[0:50:300])
+    set(ax(2),'YLim',[0 300])
+    set(ax(2),'YTick',[0:50:300])
     set(ax(1),'XLim',[0 135])
     set(ax(1),'XTick',[0:15:135])
     set(ax(2),'XLim',[0 135])
@@ -406,5 +432,9 @@ elseif(strcmp(parameters,'Hyperloop-Lateral'))
     
 end
 
-
+%figure('Name','Skin Depth');
+%plot(v,skin_depth)
+%title('Skin Depth');
+%xlabel('Velocity (m)');
+%ylabel('Skin Depth (m)');
 
