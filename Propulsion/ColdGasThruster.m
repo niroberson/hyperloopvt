@@ -13,9 +13,6 @@ rho0 = P0/(Z*R*T0);
 c0 = 449.02992528; % Speed of sound
 
 %% Throat Properties
-% Pstar = 0.528*P0; % Choked flow since Pe < Pstar
-% Cd = 0.61;
-% mdott = Cd*At*sqrt(k*rho0*P0*(2/(k+1))^((k+1)/(k-1)));
 Tt = T0*(2/(k+1));
 rhot = rho0*(2/(k+1))^(1/(k-1));
 Pt = P0*(2/(k+1))^(k/(k-1));
