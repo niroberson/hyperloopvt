@@ -4,7 +4,7 @@ P0 = 2.4132e+7; % Pa
 T0 = 300; % K
 At = (0.006 / 2)^2*pi; % m2
 Me = 2;
-Fth = CGT(P0, T0, Me, At);
+Fth = CGT(P0, T0, Me, At)
 
 %% Sweep Area of Throat
 clear, clc

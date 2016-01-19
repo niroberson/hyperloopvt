@@ -7,14 +7,15 @@ g = 9.81;
 Pamb = 140; % Pa
 
 %% Stagnation Properties
-Z = 1.0899825392; % http://www.peacesoftware.de/einigewerte/calc_stickstoff.php5
+% Z = 1.0899825392; % http://www.peacesoftware.de/einigewerte/calc_stickstoff.php5
+Z_e = 1;
 % Needs to be a lookup or calculation
-rho0 = P0/(Z*R*T0);
+rho0 = P0/(Z_e*R*T0);
 
 %% Throat Properties
-Tt = T0*(2/(k+1));
+% Tt = T0*(2/(k+1));
 rhot = rho0*(2/(k+1))^(1/(k-1));
-Pt = P0*(2/(k+1))^(k/(k-1));
+% Pt = P0*(2/(k+1))^(k/(k-1));
 Vt = sqrt(2*k/(k+1)*R*T0); % = sqrt(k*R*Tt)
 mdott = rhot*At*Vt; % kg/s
 
@@ -27,7 +28,8 @@ if Te < 70
     disp('Temperature at exhaust lower than 70K')
 end
 
-Z_e = 0.8637; % Needs to be a lookup or calculation
+% Z_e = 0.8637; % Needs to be a lookup or calculation
+Z_e = 1;
 rhoe = rho0*((Pe/P0)^(1/k));
 Ve = Vt*sqrt((k+1)/(k-1)*(1 - (Pe/P0)^((k-1)/k)));
 gam = sqrt(k)*(2/(k+1))^((k+1)/(2*(k-1)));
