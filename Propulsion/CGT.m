@@ -1,4 +1,4 @@
-function [Fth, mdott] = CGT(P0, T0, Me, At)
+function [Fth, mdott, Pe] = CGT(P0, T0, Me, At)
 %% Gas constans
 k = 1.4;
 R = 297;
