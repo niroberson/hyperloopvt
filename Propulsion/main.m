@@ -1,42 +1,71 @@
-%% Actual configuration
 clear, clc
-P0 = 2.4132e+7; % Pa
+%% Gas Constants
+k = 1.4;
+R = 297;
+Isp = 73;
+g = 9.81;
+Pamb = 140; % Pa
 T0 = 300; % K
-At = (0.006 / 2)^2*pi; % m2
-Me = 2;
-Fth = CGT(P0, T0, Me, At)
 
-%% Sweep Area of Throat
-clear, clc
+%% Design Constraints - Scuba Tank
+P0 = 2.4132e+7;
+Volume_tank = 0.018; % m3
+
+%% Design Constraints - COPV Orbital Atk
 P0 = 2.4132e+7; % Pa
-dt = 0.001:0.01:0.1;
+Volume_tank = 0.0672689; % m3
+
+%% Calculate the propellant mass
+rho0 = P0/(R*T0);
+mass_prop = rho0*Volume_tank; % kg
+
+%% Sweep Area of Throat with several mach numbers at exit
+dt = 0.001:0.001:0.01905;
 At = (dt / 2).^2*pi; % m2
-Me = [1.5, 2, 2.5, 3];
-T0 = 300;
+Me = [1.5, 2, 2.5, 3, 3.5, 4];
+Fmax = 500*2*9.8;
 figure, hold on
+leg = {};
 for j = 1:numel(Me)
-    F = [];
+    Fth = [];
+    mdott = [];
+    Pe = [];
+    Ae = [];
     for i=1:numel(At)
-        F(end+1) = CGT(P0, T0, Me(j), At(i));
+        [Fth(end+1), mdott(end+1), Pe(end+1), Ae(end+1)]  = CGT(P0, T0, Me(j), At(i));
     end
-    plot(At, F, 'r.')
-    % Add in legent or label for Ma
+    plot(dt/2, Fth)
+    leg{end+1} = ['M_{3}=' num2str(Me(j))];
+    % Add in legend or label for Ma
 end
 
-%% Testing Underexpanded flow
-P0 = 2.4132e+7; % Pa
-[Fth, mdot, Pe] = CGT()  
+% Plot area ratio vs thrust
+legend(leg, 'location', 'best')
 
-%% Testing Tank Temperature
-% CGT does not yet have isothermic or pressure drop off in tank model
-clear, clc
-P0 = 2.4132e+7; % Pa
-At = (0.006 / 2)^2*pi; % m2
-Me = 2;
-T0 = 250:10:300;
-F = [];
-for i=1:numel(T0)
-    F(end+1) = CGT(P0, T0(i), Me, At);
-end
+% Plot max thrust force
+plot([dt(1)/2 dt(end)/2], [Fmax Fmax])
+% Plot chamber radius
+dc = 0.01905;
+plot([dc/2 dc/2], [Fth(1) Fth(end)])
+xlabel('Radius of Throat (m)')
+ylabel('Force of Thrust (N)')
+title('Effect of Nozzle Throat Radius on Propulsion Force')
 
-figure, plot(T0, F, 'r.')
+%% Find Rt for a given force
+% Set the exit mach at 3.5
+Me_chosen = 3.5;
+[Fth, mdot, Pe, Ae] = CGT(P0, T0, Me_chosen, At);
+Fchosen = 9800;
+[val, idx] = min(abs(Fth-Fchosen));
+Achosen = At(idx);
+
+%% Calculate the flow characteristics based on this geometry and mach
+[Fth, mdot, Pe, Ae] = CGT(P0, T0, Me_chosen, Achosen);
+
+%% Using the mass of propellant and mass flow calculate the time of depletion
+t = mass_prop/mdot;
+
+%% Calculate distance of propulsion and final velocity
+a_prop = Fchosen/500;
+[vmax, xprop] = v_prop(a_prop, t, 98);
+
