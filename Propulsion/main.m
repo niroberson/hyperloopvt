@@ -20,7 +20,7 @@ rho0 = P0/(R*T0);
 mass_prop = rho0*Volume_tank; % kg
 
 %% Sweep Area of Throat with several mach numbers at exit
-dt = 0.001:0.001:0.01905;
+dt = 0.001:0.0001:0.01905;
 At = (dt / 2).^2*pi; % m2
 Me = [1.5, 2, 2.5, 3, 3.5, 4];
 Fmax = 500*2*9.8;
@@ -51,21 +51,21 @@ xlabel('Radius of Throat (m)')
 ylabel('Force of Thrust (N)')
 title('Effect of Nozzle Throat Radius on Propulsion Force')
 
-%% Find Rt for a given force
-% Set the exit mach at 3.5
+%% Choose characteristics
 Me_chosen = 3.5;
-[Fth, mdot, Pe, Ae] = CGT(P0, T0, Me_chosen, At);
-Fchosen = 9800;
-[val, idx] = min(abs(Fth-Fchosen));
-Achosen = At(idx);
+[F_chosen, mdot] = CGT(P0, T0, Me_chosen, At);
+Vpush = 97.7677;
 
-%% Calculate the flow characteristics based on this geometry and mach
-[Fth, mdot, Pe, Ae] = CGT(P0, T0, Me_chosen, Achosen);
+%% Loop over chosen forces
+figure, hold on
+for i = 1:numel(F_chosen)
+    % Find Rt for a given force
+    F_chosen(i)
+    a_prop = F_chosen(i)/500;
+    % Using the mass of propellant and mass flow calculate the time of depletion
+    t = mass_prop/mdot(i);
 
-%% Using the mass of propellant and mass flow calculate the time of depletion
-t = mass_prop/mdot;
-
-%% Calculate distance of propulsion and final velocity
-a_prop = Fchosen/500;
-[vmax, xprop] = v_prop(a_prop, t, 98);
-
+    % Calculate distance of propulsion and final velocity
+    [vmax, xprop] = v_prop(a_prop, t, Vpush);
+    plot(F_chosen(i), vmax, '.')
+end
