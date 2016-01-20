@@ -1,6 +1,8 @@
 % Plot Cd data from 3d simulation
-cd_data = importdata('cd-1-history');
+cd_data_1 = importdata('cd-1-history-1');
+cd_data_2 = importdata('cd-1-history-2');
+
 % Plot Integral of Dynamic Pressure
-int_p = importdata('int_dynamic_pressure');
-figure, plot(cd_data.data(:,1), cd_data.data(:,2))
-figure,plot(int_p.data(:,1), int_p.data(:,2))
+figure, hold on
+plot(cd_data_1.data(:,1), cd_data_1.data(:,2))
+plot(cd_data_2.data(:,1), cd_data_2.data(:,2))
