@@ -8,11 +8,11 @@ Pamb = 140; % Pa
 T0 = 300; % K
 
 %% Design Constraints - Scuba Tank
-P0 = 2.4132e+7;
+P0 = 3.1026e+7;
 Volume_tank = 0.018; % m3
 
 %% Design Constraints - COPV Orbital Atk
-P0 = 2.4132e+7; % Pa
+P0 = 3.1026e+7; % Pa
 Volume_tank = 0.0672689; % m3
 
 %% Sweep Area of Throat with several mach numbers at exit
@@ -50,7 +50,6 @@ title('Effect of Nozzle Throat Radius on Propulsion Force')
 %% Choose characteristics flow
 Me_chosen = 3.5;
 [F_chosen, mdot] = CGT(P0, T0, Me_chosen, At);
-Vpush = 97.7677;
 
 %% Calculate the propellant mass
 rho0 = P0/(R*T0);
