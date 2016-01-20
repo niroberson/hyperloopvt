@@ -1,5 +1,5 @@
 function [Fth, mdott, Pe, Ae] = CGT(P0, T0, Me, At)
-%% Gas constans
+%% Gas constants
 k = 1.4;
 R = 297;
 Isp = 73;
