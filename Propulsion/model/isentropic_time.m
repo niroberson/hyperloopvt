@@ -14,13 +14,14 @@ V = 0.06737;
 gamma = k*(2/(k+1))^((k+1)/(2*(k-1)));
 
 %% Choose Nozzle geometry based on initial conditions
-At = (4.75/1000)^2*pi;
-Me0 = 3.5;
-[Fth0, mdott0, Pe0, Ae] = CGT(Pi, Ti, Me0, At);
+At = (4/1000)^2*pi;
+Me0 = 3.7;
+[Fth0, mdott0, Pe0, Ae] = CGT(Pi, Ti, Me0, At)
+re = sqrt(Ae/pi)
 rt = sqrt(At/pi);
 re = sqrt(Ae/pi);
 alpha = 15*pi/180;
-L = re/tan(alpha) - rt/tan(alpha);
+L = re/tan(alpha) - rt/tan(alpha)
 
 %% Time relationships
 P0 = @(t)Pi./(1+(k-1)/(2*k)*(k*R*Ti)^(1/2)*gamma*(At/V)*t).^(2*k/(k-1));
