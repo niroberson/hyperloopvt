@@ -1,24 +1,33 @@
 % Plot Cd data from 3d simulation
-cd_data_1 = importdata('cd-1-history-1');
-cd_data_2 = importdata('cd-1-history-2');
+v1_cd_1 = importdata('v1-cd-1-history-1');
+v1_cd_2 = importdata('v1-cd-1-history-2');
+v2_Cd = importdata('v2-cd-1-history');
+v3_cd = importdata('v3-cd-1-history');
+
+v1_time = [v1_cd_1.data(: , 1); v1_cd_2.data(:,1)];
+v1_Cd = [v1_cd_1.data(:,2); v1_cd_2.data(:,2)];
+v2_time = v2_cd.data(:,1);
+v2_Cd = v2_cd.data(:,2);
+v3_time = v3_cd.data(:,1);
+v3_Cd = v3_cd.data(:,2);
+
+v1_time_steady = v1_time(v1_time>0.12);
+v1_Cd_steady = v1_Cd(v1_time>0.12);
 
 % Plot Integral of Dynamic Pressure
 figure, hold on
-plot([0.12, 0.12], [0, 6], '--g')
-plot(cd_data_1.data(:,1), cd_data_1.data(:,2), 'b')
-plot(cd_data_2.data(:,1), cd_data_2.data(:,2), 'b')
+plot(v1_time_steady - 0.12, v1_Cd_steady, 'b')
+plot(v2_time, v2_Cd, 'm')
+plot(v3_time, v3_Cd, 'r')
 xlabel('Simulation Time (s)')
 ylabel('Cd')
-title('Drag Coefficient Over Simulation')
-legend({'Steady State'})
-
+title('Drag Coefficient for Design Iterations')
+legend({'First Iteration', 'Second Iteration', 'Third Iteration'})
+ylim([0.4 1.7])
 %% Get the vortex shedding frequency
-time = [cd_data_1.data(: , 1); cd_data_2.data(:,1)];
-Cd = [cd_data_1.data(:,2); cd_data_2.data(:,2)];
-time_steady = time(time>0.12);
-Cd_steady = Cd(time>0.12);
-[val, idx_peaks] = findpeaks(Cd_steady);
-t_peaks = time_steady(idx_peaks);
+
+[val, idx_peaks] = findpeaks(v1_Cd_steady);
+t_peaks = v1_time_steady(idx_peaks);
 
 f_shed = [];
 for i = 2:numel(t_peaks)
