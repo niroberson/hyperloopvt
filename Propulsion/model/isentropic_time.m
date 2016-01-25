@@ -6,7 +6,7 @@ function isentropic_time(k, R, t)
 % the decrease in tank pressure over time
 % Initial Conditions
 Pi = 3.1026e+7; % Pascals
-Ti = 300; % K
+Ti = 80; % K
 Pamb = 140; % Pa
 % Tank conditions
 V = 0.06737;
@@ -25,7 +25,7 @@ L = re/tan(alpha) - rt/tan(alpha)
 
 %% Time relationships
 P0 = @(t)Pi./(1+(k-1)/(2*k)*(k*R*Ti)^(1/2)*gamma*(At/V)*t).^(2*k/(k-1));
-T0 = @(t) Ti*(P0(t)/Pi).^((k-1)/k);
+T0 = @(t) Ti*(P0(t)/Pi).^((k-1)/k) + 900;
 mdot = @(t) gamma*At*P0(t)./sqrt(k*R*T0(t));
 Vt = @(t) sqrt(2*k/(k+1)*R.*T0(t));
 Tt = @(t) T0(t).*(2/(k+1));
@@ -34,7 +34,7 @@ Pe = @(t) P0(t)./(1+(k-1)./2.*Me0.^2).^(k/(k-1));
 Te = @(t) Tt(t)*(Pe(t)/Pt(t)).^((k-1)/k);
 Ve = @(t) Vt(t).*sqrt((k+1)/(k-1)*(1 - (Pe(t)./P0(t)).^((k-1)/k)));
 Fth = @(t) mdot(t).*Ve(t) + (Pe(t) - Pamb)*Ae;
-Mprop = @(t) V*Pi^((k-1)/k)/(R*Ti)*P0(t)^(1/k);
+Mprop = @(t) V*Pi.^((k-1)/k)./(R*Ti)*P0(t).^(1/k);
 %% Mass Flow in System Decay
 figure
 [ax, p1, p2] = plotyy(t, P0(t)/Pi, t, mdot(t));
@@ -68,3 +68,6 @@ ylabel(ax(2),'Distance (m)')
 title('Velocity and Displacement')
 set(gca,'YMinorTick','on');
 hold off
+
+%% Plot Mass of propellant
+figure, plot(t, Mprop(t))

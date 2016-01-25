@@ -1,1 +1,5 @@
-rho0 = P0/(Z_e*R*T0);
+%% Initial Conditions
+Pi = 30e6; % MPA
+Ti = 100; % K Liquid nitrogen temperature
+rhoi = 700; % kg/m3
+
