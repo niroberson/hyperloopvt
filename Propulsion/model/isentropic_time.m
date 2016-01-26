@@ -63,6 +63,19 @@ ylabel(ax(2),'Exit Temperature (K)')
 title('Pressure and Temperature at Nozzle Exit')
 set(gca,'YMinorTick','on');
 
+%% Pressure and temperature at throat
+figure
+[ax,p1,p2] = plotyy(t, Pt(t),t,Tt(t));
+xlabel(ax(1),'Time (s)')
+ylabel(ax(1),'Throat Pressure (N)')
+ylabel(ax(2),'Throat Temperature (K)')                                                                                                               
+title('Pressure and Temperature at Nozzle Exit')
+set(gca,'YMinorTick','on');
+
+
+
+% Velocity at exit
+figure, plot(t, Ve(t))
 %% Final Velocity
 VPusher = 97.7677;
 for i = 1:numel(t)
@@ -79,3 +92,7 @@ ylabel(ax(2),'Distance (m)')
 title('Velocity and Displacement')
 set(gca,'YMinorTick','on');
 hold off
+
+%% Calculate total impulse
+I = sum(Fth(t))/numel(t)*t(end)
+Isp = Fth0/(mdott0*9.8)
