@@ -10,8 +10,6 @@ Ti = 300; % K
 Pamb = 140; % Pa
 % Tank conditions
 V = 0.06737;
-% Mangetic Drag
-Fmd = 1000
 % Isentropic ratio
 gamma = k*(2/(k+1))^((k+1)/(2*(k-1)));
 
@@ -37,7 +35,7 @@ Pt = @(t) P0(t)*(2/(k+1))^(k/(k-1));
 Pe = @(t) P0(t)./(1+(k-1)./2.*Me0.^2).^(k/(k-1));
 Te = @(t) Tt(t)*(Pe(t)/Pt(t)).^((k-1)/k);
 Ve = @(t) Vt(t).*sqrt((k+1)/(k-1)*(1 - (Pe(t)./P0(t)).^((k-1)/k)));
-Fth = @(t) mdot(t).*Ve(t) + (Pe(t) - Pamb)*Ae - Fmd;
+Fth = @(t) mdot(t).*Ve(t) + (Pe(t) - Pamb)*Ae;
 Mprop = @(t) V*Pi.^((k-1)/k)./(R*Ti)*P0(t).^(1/k);
 %% Mass Flow in System Decay
 figure
