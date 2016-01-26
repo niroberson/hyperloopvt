@@ -15,7 +15,7 @@ gamma = k*(2/(k+1))^((k+1)/(2*(k-1)));
 
 %% Choose Nozzle geometry based on initial conditions
 At = (4.5/1000)^2*pi;
-Me0 = 3.7;
+Me0 = 5;
 [Fth0, mdott0, Pe0, Ae] = CGT(Pi, Ti, Me0, At)
 re = sqrt(Ae/pi)
 rt = sqrt(At/pi);
@@ -52,6 +52,15 @@ xlabel(ax(1),'Time (s)')
 ylabel(ax(1),'Thrust Force (N)')
 ylabel(ax(2),'Temperature (K)')                                                                                                               
 title('Temperature Change in Pressure Vessel and Thrust Decay')
+set(gca,'YMinorTick','on');
+
+%% Pressure and temperature at exit
+figure
+[ax,p1,p2] = plotyy(t, Pe(t),t,Te(t));
+xlabel(ax(1),'Time (s)')
+ylabel(ax(1),'Exit Pressure (N)')
+ylabel(ax(2),'Exit Temperature (K)')                                                                                                               
+title('Pressure and Temperature at Nozzle Exit')
 set(gca,'YMinorTick','on');
 
 %% Final Velocity
