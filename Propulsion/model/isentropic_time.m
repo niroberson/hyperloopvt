@@ -37,28 +37,20 @@ Te = @(t) Tt(t)*(Pe(t)/Pt(t)).^((k-1)/k);
 Ve = @(t) Vt(t).*sqrt((k+1)/(k-1)*(1 - (Pe(t)./P0(t)).^((k-1)/k)));
 Fth = @(t) mdot(t).*Ve(t) + (Pe(t) - Pamb)*Ae;
 Mprop = @(t) V*Pi.^((k-1)/k)./(R*Ti)*P0(t).^(1/k);
+
 %% Mass Flow in System Decay
 figure
-[ax, p1, p2] = plotyy(t, P0(t)/Pi, t,  Mprop(t)/Mprop(0));
+[ax, p1, p2] = plotyy(t, Fth(t), t,  Mprop(t)/Mprop(0));
 xlabel(ax(1),'Time (s)')
-ylabel(ax(1),'P(t)/Pi')
+ylabel(ax(1),'Fth (N)')
 ylabel(ax(2), 'M(t)/Mi')
-title('Pressure and Fuel Gauge in Tank')
-
-%% Temperature Change and Thrust Decay
-figure
-[ax,p1,p2] = plotyy(t, Fth(t),t,T0(t));
-xlabel(ax(1),'Time (s)')
-ylabel(ax(1),'Thrust Force (N)')
-ylabel(ax(2),'Temperature (K)')                                                                                                               
-title('Temperature Change in Pressure Vessel and Thrust Decay')
-set(gca,'YMinorTick','on');
+title(' Thrust and Fuel Gauge')
 
 %% Pressure and temperature at exit
 figure
 [ax,p1,p2] = plotyy(t, Pe(t),t,Te(t));
 xlabel(ax(1),'Time (s)')
-ylabel(ax(1),'Exit Pressure (N)')
+ylabel(ax(1),'Exit Pressure (Pa)')
 ylabel(ax(2),'Exit Temperature (K)')                                                                                                               
 title('Pressure and Temperature at Nozzle Exit')
 set(gca,'YMinorTick','on');
@@ -67,31 +59,27 @@ set(gca,'YMinorTick','on');
 figure
 [ax,p1,p2] = plotyy(t, Pt(t),t,Tt(t));
 xlabel(ax(1),'Time (s)')
-ylabel(ax(1),'Throat Pressure (N)')
+ylabel(ax(1),'Throat Pressure (Pa)')
 ylabel(ax(2),'Throat Temperature (K)')                                                                                                               
-title('Pressure and Temperature at Nozzle Exit')
+title('Pressure and Temperature at Nozzle Throat')
 set(gca,'YMinorTick','on');
 
-
-
-% Velocity at exit
-figure, plot(t, Ve(t))
 %% Final Velocity
-VPusher = 97.7677;
-for i = 1:numel(t)
-    v(i) = integral(Fth, 0, t(i))/500 + VPusher;
-    d(i) = (v(i)/2)*t(i);
-end
+% VPusher = 97.7677;
+% for i = 1:numel(t)
+%     v(i) = integral(Fth, 0, t(i))/500 + VPusher;
+%     d(i) = (v(i)/2)*t(i);
+% end
 
 %% Velocity and Displacement
-figure, hold on
-[ax,p1,p2] = plotyy(t, v,t,d);
-xlabel(ax(1),'Time (s)')
-ylabel(ax(1),'Velocity (m/s)')
-ylabel(ax(2),'Distance (m)')
-title('Velocity and Displacement')
-set(gca,'YMinorTick','on');
-hold off
+% figure, hold on
+% [ax,p1,p2] = plotyy(t, v,t,d);
+% xlabel(ax(1),'Time (s)')
+% ylabel(ax(1),'Velocity (m/s)')
+% ylabel(ax(2),'Distance (m)')
+% title('Velocity and Displacement')
+% set(gca,'YMinorTick','on');
+% hold off
 
 %% Calculate total impulse
 I = sum(Fth(t))/numel(t)*t(end)
