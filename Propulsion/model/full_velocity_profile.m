@@ -2,7 +2,7 @@ function full_velocity_profile()
 %% Constants
 l_track = 1609.34; % 5280 ft or 1 mile
 mPod = 500; % kg
-dt = 0.001;
+dt = 0.01;
 
 %% Set up global trackers
 gt = [];
@@ -16,12 +16,18 @@ gx = xpush;
 gv = Vpush;
 
 %% Run propulsion
-for t=0:dt:15
+for t=0:dt:20
     Fth = propulsion(t);
-    Factual = Fth - magnetic_drag(gv(end));
+    if t > 8
+        Fbrakes = brake(gv(end));
+        Factual = Fth - magnetic_drag(gv(end)) - Fbrakes;
+    else
+        Factual = Fth - magnetic_drag(gv(end));
+    end
+    
     at = Factual/mPod;
-    vNext = gv(end) + 0.5*at*dt^2;
-    dx = (vNext^2 - gv(end)^2)/(2*at);
+    vNext = gv(end) + at*dt;
+    dx = gv(end)*dt + 0.5*at*dt^2;
     
     % Track timestep
     gt(end+1) = gt(end) + dt;
@@ -29,35 +35,15 @@ for t=0:dt:15
     gv(end+1) = vNext;  
 end
 
-%% Run Coast
-for t = 0:dt:15
-   Factual = -magnetic_drag(gv(end));
-   at = Factual/mPod;
-   vNext = gx(end) + 0.5*at*dt^2;
-   dx = (vNext^2 - gv(end)^2)/(2*at);
-   
-% Track timestep
-   gt(end+1) = gt(end) + dt;
-   gx(end+1) = gx(end) + dx;
-   gv(end+1) = vNext;
-end
+figure, hold on
+plot(gt, gv)
+xlabel('Time (s)')
+ylabel('Velocity')
+plot([gt(1) gt(end)], [mean(gv) mean(gv)])
 
-%% Run brakes
-for t = 0:dt:15
-   Fbrakes = brake(gv(end));
-   Factual = -mangetic_drag(gv(end))-Fbrakes;
-   at = Factual/mPod;
-   vNext = gx(end) + 0.5*at*dt^2;
-   dx = (vNext^2 - gv(end)^2)/(2*at);
-   
-   % Track timestep
-   gt(end+1) = gt(end) + dt;
-   gx(end+1) = gx(end) + dx;
-   gv(end+1) = vNext;
-end
-
-figure,plot(gt, gv)
-
+figure,plot(gx, gv)
+xlabel('Position (m)')
+ylabel('Velocity')
 end
 
 %% Run Brakes
@@ -68,7 +54,7 @@ l_pusher= 243.84; % 800 ft
 xpush = 0:l_pusher;
 aPush = 2*9.8;
 Vpush = sqrt(2*aPush.*xpush);
-tpush = sqrt(Vpush(end)*2./aPush);
+tpush = sqrt(Vpush.*2/aPush);
 end
 
 function Fth = propulsion(tprop)
@@ -81,12 +67,17 @@ end
 function Force_z = brake(v)
     %% Calculate Eddy Brake Drag
     profile = 'Brakes';
-    
+    coeff = 'Set2';
+
     width = .045; % Width (m)
     tau = width/1.5; % Pole pitch (m)
     h = 0.0635; % Heigh of permanent magnet (m)
     P = 24;
-
+    % Global Magnet Parameters
+    M = 4; % Number of Magnets in Wavelength
+    Br = 1.48; % Magnet remanence (T)
+    Jc = 0;
+    Jm = 0;  
     % Track Parameters
     l = 0.0079502; % Thickness of track (m)
     rho_track = 3.99*1e-8; % Resistivity of track (Ohm*m)
