@@ -18,7 +18,7 @@ gv = Vpush;
 %% Run propulsion
 for t=0:dt:20
     Fth = propulsion(t);
-    if t > 8
+    if t > 8.5
         Fbrakes = brake(gv(end));
         Factual = Fth - magnetic_drag(gv(end)) - Fbrakes;
     else
@@ -36,14 +36,15 @@ for t=0:dt:20
 end
 
 figure, hold on
+plot([gt(1) gt(end)], [mean(gv) mean(gv)])
+legend({'Average Velocity'})
 plot(gt, gv)
 xlabel('Time (s)')
-ylabel('Velocity')
-plot([gt(1) gt(end)], [mean(gv) mean(gv)])
+ylabel('Velocity (m/s)')
 
 figure,plot(gx, gv)
 xlabel('Position (m)')
-ylabel('Velocity')
+ylabel('Velocity (m/s)')
 end
 
 %% Run Brakes
