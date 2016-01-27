@@ -31,7 +31,7 @@ end
 
 %% Run Coast
 for t = 0:dt:15
-   Factual = -mangetic_drag(gv(end));
+   Factual = -magnetic_drag(gv(end));
    at = Factual/mPOd;
    vNext = gx(end) + 0.5*at*dt^2;
    dx = (vNext^2 - gv(end)^2)/(2*at);

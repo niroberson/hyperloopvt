@@ -23,10 +23,10 @@ mdott = rhot*At*Vt; % kg/s
 Pe = P0/(1+(k-1)/2*Me^2)^(k/(k-1)); % Pa
 Te = T0/(1+(k-1)/2*Me^2);
 
-% Be sure the gas is not liquifying
-if Te < 70
-    disp('Temperature at exhaust lower than 70K')
-end
+% % Be sure the gas is not liquifying
+% if Te < 70
+%     disp('Temperature at exhaust lower than 70K')
+% end
 
 % Z_e = 0.8637; % Needs to be a lookup or calculation
 Z_e = 1;
