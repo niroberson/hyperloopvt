@@ -32,7 +32,7 @@ end
 %% Run Coast
 for t = 0:dt:15
    Factual = -magnetic_drag(gv(end));
-   at = Factual/mPOd;
+   at = Factual/mPod;
    vNext = gx(end) + 0.5*at*dt^2;
    dx = (vNext^2 - gv(end)^2)/(2*at);
    
@@ -45,10 +45,10 @@ end
 %% Run brakes
 for t = 0:dt:15
    Fbrakes = brake(gv(end));
-   Factual = -mangetic_drag(vStart)-Fbrakes;
-   at = Factual/mPOd;
+   Factual = -mangetic_drag(gv(end))-Fbrakes;
+   at = Factual/mPod;
    vNext = gx(end) + 0.5*at*dt^2;
-   dx = (vNext^2 - vStart^2)/(2*at);
+   dx = (vNext^2 - gv(end)^2)/(2*at);
    
    % Track timestep
    gt(end+1) = gt(end) + dt;
