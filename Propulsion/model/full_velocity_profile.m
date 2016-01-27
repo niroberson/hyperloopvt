@@ -2,6 +2,7 @@ function full_velocity_profile()
 %% Constants
 l_track = 1609.34; % 5280 ft or 1 mile
 mPod = 500; % kg
+dt = 0.001;
 
 %% Set up global trackers
 gt = [];
@@ -15,27 +16,47 @@ gx = xpush;
 gv = Vpush;
 
 %% Run propulsion
-vStart = Vpush(end);
-dt = 0.001;
 for t=0:dt:15
     Fth = propulsion(t);
-    at = Fth/mPod;
-    vNext = vStart + 0.5*at*dt^2;
-    dx = (vNext^2 - vStart^2)/(2*at);
+    Factual = Fth - magnetic_drag(gv(end));
+    at = Factual/mPod;
+    vNext = gv(end) + 0.5*at*dt^2;
+    dx = (vNext^2 - gv(end)^2)/(2*at);
     
     % Track timestep
     gt(end+1) = gt(end) + dt;
     gx(end+1) = gx(end) + dx;
-    gv(end+1) = vNext;
-    
-    vStart = vNext;
+    gv(end+1) = vNext;  
 end
 
 %% Run Coast
 for t = 0:dt:15
-    
+   Factual = -mangetic_drag(gv(end));
+   at = Factual/mPOd;
+   vNext = gx(end) + 0.5*at*dt^2;
+   dx = (vNext^2 - gv(end)^2)/(2*at);
+   
+% Track timestep
+   gt(end+1) = gt(end) + dt;
+   gx(end+1) = gx(end) + dx;
+   gv(end+1) = vNext;
 end
 
+%% Run brakes
+for t = 0:dt:15
+   Fbrakes = brake(gv(end));
+   Factual = -mangetic_drag(vStart)-Fbrakes;
+   at = Factual/mPOd;
+   vNext = gx(end) + 0.5*at*dt^2;
+   dx = (vNext^2 - vStart^2)/(2*at);
+   
+   % Track timestep
+   gt(end+1) = gt(end) + dt;
+   gx(end+1) = gx(end) + dx;
+   gv(end+1) = vNext;
+end
+
+figure,plot(gt, gv)
 
 end
 
@@ -47,7 +68,7 @@ l_pusher= 243.84; % 800 ft
 xpush = 0:l_pusher;
 aPush = 2*9.8;
 Vpush = sqrt(2*aPush.*xpush);
-tpush = sqrt(Vpush(end)*2/aPush);
+tpush = sqrt(Vpush(end)*2./aPush);
 end
 
 function Fth = propulsion(tprop)
