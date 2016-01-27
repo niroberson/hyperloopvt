@@ -1,4 +1,4 @@
-function isentropic_time(k, R, t)
+function Fthp = isentropic_time(k, R, t)
 %% Pressure in Tank over time 
 % Citation: http://carbon.ucdenver.edu/~swelch/me5161/quasi_one_dimensional_flow_examples.pdf
 % Citation: http://www.osti.gov/scitech/servlets/purl/786430-dbaImH/webviewable/
@@ -84,3 +84,5 @@ set(gca,'YMinorTick','on');
 %% Calculate total impulse
 I = sum(Fth(t))/numel(t)*t(end)
 Isp = Fth0/(mdott0*9.8)
+
+Fthp = Fth(t);

@@ -47,27 +47,37 @@ mean(f_shed)
 % figure,plot(time(time>0.12), Cd(time>0.12))
 
 %% Coefficients of lift
-v1_cl_1 = importdata('v1-cl-1-history-1');
-v1_cl_2 = importdata('v1-cl-1-history-2');
+v1_cl = importdata('v1-cl-1-history');
 v2_cl = importdata('v2-cl-1-history');
 v3_cl = importdata('v3-cl-1-history');
 
-v1_time = [v1_cd.data(: , 1); v1_cl_2.data(:,1)];
-v1_cl = [v1_cd.data(:,2); v1_cl_2.data(:,2)];
+v1_time = v1_cl.data(: , 1);
+v1_cl = v1_cl.data(:,2);
 v2_time = v2_cl.data(:,1);
 v2_cl = v2_cl.data(:,2);
 v3_time = v3_cl.data(:,1);
 v3_cl = v3_cl.data(:,2);
 
-% Steady state
-dt = 0.17;
-v1_time_steady = v1_time(v1_time> dt);
-v1_cl_steady = v1_cl(v1_time> dt);
-
 
 figure, hold on
-plot(v1_time_steady-dt, v1_cl_steady, 'b')
+plot(v1_time, v1_cl, 'b')
 plot(v2_time, v2_cl, 'm')
 plot(v3_time, v3_cl, 'r')
 
 %% Coefficient of Moment
+v1_cm = importdata('v1-cm-1-history');
+v2_cm = importdata('v2-cm-1-history');
+v3_cm = importdata('v3-cm-1-history');
+
+v1_time = v1_cm.data(: , 1);
+v1_cm = v1_cm.data(:,2);
+v2_time = v2_cm.data(:,1);
+v2_cm = v2_cm.data(:,2);
+v3_time = v3_cm.data(:,1);
+v3_cm = v3_cm.data(:,2);
+
+
+figure, hold on
+plot(v1_time, v1_cm, 'b')
+plot(v2_time, v2_cm, 'm')
+plot(v3_time, v3_cm, 'r')
