@@ -4,13 +4,16 @@ clear all;
 num_poles = 4; %2p
 p = num_poles/2; %unused
 tau = 50e-3; %pole pitch
-g = 12.7e-3; %air gap length
+%g = 12.7e-3; %air gap length
+g = 5e-3;
 wp = 48e-3; %primary width
 d = 20e-3; %magnet depth
 lm = 25e-3; %magnet pole length
 B_rem = 1.2; %Brem, magnetic remanence, in Tesla
 w_p = 152.4e-3; %plate width
-plate_thickness = 9.5e-3;
+%plate_thickness = 9.5e-3;
+plate_thickness = 0.0104648; %.412 inc
+%plate_thickness = 0.0079502; %.313 inc
 d_sc = plate_thickness/2;
 s_p = 34.5e6; %plate conductivity
 
@@ -78,7 +81,7 @@ plot(u, F_Brake./1000, 'k:');
 plot(u, F_Brake_E./1000, 'k');
 
 title('Braking Force vs Speed');
-axis([0 105 0 2.5]);
+axis([0 105 0 7.5]);
 xlabel('Speed, m/s');
 ylabel('Braking Force, kN');
 

@@ -5,8 +5,8 @@ vpk = 5;
 F_bmax = 3000;
 velocity = 105;
 
-%v = 0:1:velocity;      % (m/s)
-%f_b = 2*F_bmax*((v*vpk)./(v.^2 + vpk.^2)); % (N)
+v = 0:1:velocity;      % (m/s)
+f_b = 2*F_bmax*((v*vpk)./(v.^2 + vpk.^2)); % (N)
 
 i = 1;
 

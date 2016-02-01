@@ -162,12 +162,14 @@ D2 = 0;
 h = waitbar(0,'Loading...','Name','MagnetEquations');
 i = 1;
 %steps = mHigh*2/mRes;
-m = -mHigh:mRes:mHigh;
+%m = -mHigh:mRes:mHigh;
+%[~,steps] = size(m);
+m = 1:2:mHigh;
 [~,steps] = size(m);
 
 % computations take place here
-for m = -mHigh:mRes:mHigh
-    for n = -nHigh:nRes:nHigh
+for m = -mHigh:2:mHigh %m = -mHigh:mRes:mHigh
+    for n = -nHigh:2:nHigh %n = -nHigh:nRes:nHigh
         if(m~=0 || n~=0) % m == 0 && n == 0 -> NaN
             if(strcmp(Type,'Lift'))
                 p = real(-feval(f_mn_minus,m,n));
