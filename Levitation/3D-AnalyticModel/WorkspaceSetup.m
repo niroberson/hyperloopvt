@@ -1,7 +1,7 @@
 %% Workspace Setup
 % Decreasing nRes (increasing denominator), seems to decrease Fdrag faster
 % than Flift (good). 
-filename = 'DataCollects/12_25_15.csv';
+filename = '12_25_15.csv';
 Values = 'Final';
 Profile = 'Reference';
 Type = 'Both';
@@ -13,12 +13,12 @@ if(strcmp(Values,'Final'))
     dragREF = [0, 3300, 3500, 3000, 2660, 2400]; 
 end
 
-mFactor = 1
-nFactor = 6
+mFactor = 1;
+nFactor = 8;
 
-M = 2.4;
+M = 9;
 mRes = M/mFactor;
-N = 1.2;
+N = 3;
 nRes = N/nFactor;
 
 Velocity = 1;
