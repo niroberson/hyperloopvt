@@ -13,12 +13,12 @@ if(strcmp(Values,'Final'))
     dragREF = [0, 3300, 3500, 3000, 2660, 2400]; 
 end
 
-mFactor = 1;
-nFactor = 8;
+mFactor = 2;
+nFactor = 16;
 
-M = 9;
+M = 1.2/2;
 mRes = M/mFactor;
-N = 3;
+N = 0.450/2;
 nRes = N/nFactor;
 
 Velocity = 1;

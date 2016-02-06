@@ -515,6 +515,34 @@ elseif(strcmp(parameters,'Halbach-Brakes'))
     title('Lift/Weight Ratio');
     xlabel('Velocity(m/s)');
     
+elseif(strcmp(parameters,'Test-Rig2'))
+    subplot(3,1,1);
+    [ax,p1,p2] = plotyy(v,F_drag,v,F_lift,'plot','plot');
+    title('Lift and Drag Forces');
+    xlabel(ax(1),'Velocity (m/s)') % label x-axis
+    ylabel(ax(1),'Drag Force (N)') % label left y-axis
+    ylabel(ax(2),'Lift Force (N)') % label right y-axis
+    set(ax(1),'YLim',[0 60])
+    set(ax(1),'YTick',[0:10:60])
+    set(ax(2),'YLim',[0 60])
+    set(ax(2),'YTick',[0:10:60])
+    set(ax(1),'XLim',[0 25])
+    set(ax(1),'XTick',[0:5:25])
+    grid on;
+    
+    subplot(3,1,2);
+    plot(v,n);
+    title('Lift/Drag Ratio');
+    xlabel('Velocity (m/s)');
+    axis([0 25 0 4])
+    grid on;
+    
+    subplot(3,1,3)
+    plot(v,m);
+    title('Lift/Weight Ratio');
+    xlabel('Velocity(m/s)');
+    axis([0 25 0 12])
+    
 end
 
 %figure('Name','Skin Depth');

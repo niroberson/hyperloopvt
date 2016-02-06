@@ -27,6 +27,30 @@ if(strcmp(parameters,'Test-Rig'))
     d2 = 0;%030; % Lower air gap (m)
 end
 
+if(strcmp(parameters,'Test-Rig2'))
+    vfinal = 50;
+    P = 1.25;
+    profile = 'Single';
+    
+    % Magnet Parameters
+    M = 4; % Number of Magnets in Wavelength
+    Br = 1.32; % Magnet remanence (T)
+    width = 0.0381;
+    length = 0.0127;
+    tau = 2*length; % Pole pitch (m)
+    h = length; % Heigh of permanent magnet (m)
+    %fprintf('W x L x H (in) =  %.2f, %.2f, %.2f \r', width, tau/2, h)
+    
+    % Track Parameters
+    l = 0.0104648; % Thickness of track (m)
+    rho_track = 3.99*1e-8; % Resistivity of track (Ohm*m)
+    sigma = 1/rho_track;
+
+    % Air gap Parameters
+    d1 = 0.015; % Upper air gap (m)
+    d2 = 0;%030; % Lower air gap (m)
+end
+
 %% Hyperloop Design Specs   
 
 if(strcmp(parameters,'Hyperloop-Doubles'))
@@ -241,9 +265,8 @@ elseif(strcmp(parameters,'3D-Experimental'))
 
 elseif(strcmp(parameters,'Fig4'))
     vfinal = 55;
-    tau_factor = 2;
-    numArrays = 1;
-    geometry = 'Double';
+    P = 1;
+    profile = 'Double';
     
     % Magnet Parameters
     M = 4; % Number of Magnets in Wavelength
@@ -283,7 +306,7 @@ elseif(strcmp(parameters,'Fig7'))
     
 elseif(strcmp(parameters,'Second-2D'))
     vfinal = 69;
-    geometry = 'Single';
+    profile = 'Single';
     
     % Magnet Parameters
     M = 4; % Number of Magnets in Wavelength
@@ -291,7 +314,7 @@ elseif(strcmp(parameters,'Second-2D'))
     tau = 0.07; % Pole pitch (m)
     h = 0.035; % Heigh of permanent magnet (m)
     width = 0.200;
-    numArrays = 2;
+    P = 2;
     
     % Track Parameters
     l = 0.03; % Thickness of track (m)
@@ -326,10 +349,9 @@ elseif(strcmp(parameters,'Third-2D'))
     
 elseif(strcmp(parameters,'Fourth-2D'))
     vfinal = 69;
-    tau_factor = 2;
-    geometry = 'Single';
+    profile = 'Single';
     width = 0.1;
-    numArrays = 2.25;
+    P = 2.25;
     
     % Magnet Parameters
     M = 4; % Number of Magnets in Wavelength
@@ -348,17 +370,16 @@ elseif(strcmp(parameters,'Fourth-2D'))
 % Magplane Paper
 elseif(strcmp(parameters,'Magplane'))
     vfinal = 60;
-    tau_factor = 2;
-    geometry = 'Single';
+    profile = 'Single';
     width = 0.48;
-    numArrays = 2.125;
+    P = 2.125;
     
     % Magnet Parameters
     M = 8; % Number of Magnets in Wavelength
     tau = 0.48; % Pole pitch (m)
     Br = 0.85; % Magnet remanence (T)
     h = 0.2; % Heigh of permanent magnet (m)
-    rho_track = 1.7*1e-8; % Resistivity of track (Ohm*m)
+    rho_track = 1.6*1e-8; % Resistivity of track (Ohm*m)
     
     % Track Parameters
     l = 0.02; % Thickness of track (m)
@@ -391,8 +412,7 @@ elseif(strcmp(parameters,'Brakes-Paper'))
 
 elseif(strcmp(parameters,'Halbach-Brakes'))
     vfinal = 70;
-    tau_factor = 2; %0.35
-    geometry = 'Single';
+    profile = 'Single';
     
     % Magnet Parameters
     M = 8; % Number of Magnets in Wavelength
@@ -400,7 +420,7 @@ elseif(strcmp(parameters,'Halbach-Brakes'))
     
     tau = 0.030; % Pole pitch (m)
     width = 0.015;
-    numArrays = 2;
+    P = 2;
     h = 0.015; % Heigh of permanent magnet (m)
     
     % Track Parameters

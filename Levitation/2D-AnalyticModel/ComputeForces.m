@@ -6,6 +6,7 @@ close all;
 %parameters = 'Hyperloop-Stilts';
 %parameters = 'Hyperloop-Brakes';
 %parameters = 'Hyperloop-Lateral';
+%parameters = 'Test-Rig2';
 
 %% Paper Replica Parameters
 %parameters = '3D-Initial';
@@ -26,7 +27,7 @@ parameters = '3D-Final';
           = ParameterSelect(parameters);
 
 %% Setup Simulation
-vres = 1;
+vres = 0.1;
 size = vfinal/vres;
 
 F_lift = zeros(1,size);
@@ -48,6 +49,23 @@ for v = 0.1:vres:vfinal
     skin_depth(1,i) = skinDepth;
     i = i + 1;
 end
+
+%% Magnet Dimensions
+length = tau/(M/2);
+fprintf('\nSingle Magnet W x L x H (mm) =  %.2f, %.2f, %.2f \r', width*1000,...
+         length*1000, h*1000)
+fprintf('One Array W x L x H (mm) =  %.2f, %.2f, %.2f \r', width*1000,...
+         2*tau, h*1000)
+width = width * 39.3701;
+length = (tau/2) * 39.3701;
+h = h * 39.3701;
+
+fprintf('\nSingle Magnet W x L x H (in) =  %.2f, %.2f, %.2f \r',...
+        width, length, h)
+fprintf('One Array W x L x H (in) =  %.2f, %.2f, %.2f \r', width,...
+         length*M, h)
+fprintf('\nMass/Weight Estimates: %.2f (kg), %.2f (lbs), %.2f (N) \r',...
+        weightEstimate_kg, weightEstimate_lbs, weightEstimate_kg*9.81)  
 
 %% Plot Forces
 plotForces(parameters,vres,vfinal,F_drag,F_lift,n,m);
