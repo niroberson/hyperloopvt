@@ -123,12 +123,10 @@ elseif(strcmp(parameters,'Hyperloop-Stilts'))
     width = 0.100; % Width of magnet (m)
     tau = width/1.5; % Pole pitch (m)
     h = tau*.4; % Height of permanent magnet (m)
-    length = tau/2;
-    P = 1; % Number of arrays to simulate
+    P = 1.25; % Number of arrays to simulate
     if(strcmp(plot_setting,'Four-Stilts'))
         P = 5;
     end
-    lengthSingleMagnet = tau/2; 
     
     % Track Parameters
     l = 0.0127; % Thickness of track (m)
@@ -137,7 +135,7 @@ elseif(strcmp(parameters,'Hyperloop-Stilts'))
 
     % Air gap Parameters
     %d1 = 0.020; % Upper air gap (m)
-    d1 = 0.023; 
+    d1 = 0.020; 
     d2 = 0; % Lower air gap (m)
     
     % Electromagnet Parameters
@@ -171,7 +169,6 @@ elseif(strcmp(parameters,'Hyperloop-Brakes'))
     
 elseif(strcmp(parameters,'Hyperloop-Lateral'))
     vfinal = 135;
-    tau_factor = 2;
     profile = 'Double';
     
     % Magnet Parameters
