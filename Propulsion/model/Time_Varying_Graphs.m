@@ -5,7 +5,6 @@ function isentropic_time(k, R, t)
 % Assume (a) Isentropic and (b) Isothermal to determine
 % the decrease in tank pressure over time
 
-
 % Initial Conditions
 Pi = 3.1026e+7; % Pascals
 Ti = 300; % K
