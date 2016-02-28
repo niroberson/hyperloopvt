@@ -1,15 +1,6 @@
-function [Fth, I, Ae] = nozzle(tank_volume, tank_pressure, throat_area, k_gas, R_gas, T_min)
+function [Fth, I, Ae] = cold_gas_thruster()
 %% Constants
-Ti = 273.15; % K
-Pvac = 861.84466;
-k = k_gas;
-R = R_gas;
-V = tank_volume;
-Pi = tank_pressure;
-t_stop = 10;
-
-%% Determine Area of throat
-At = throat_area;
+config = config_info('big_tank', 'nitrogen');
 
 %% Determine mass flow in system
 gamma = k*(2/(k+1))^((k+1)/(2*(k-1)));
