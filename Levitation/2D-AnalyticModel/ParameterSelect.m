@@ -23,35 +23,188 @@ if(strcmp(parameters,'Test-Rig'))
     sigma = 1/rho_track;
 
     % Air gap Parameters
-    d1 = 0.01; % Upper air gap (m)
+    d1 = 0.02; % Upper air gap (m)
     d2 = 0;%030; % Lower air gap (m)
 end
 
 if(strcmp(parameters,'Test-Rig2'))
     vfinal = 50;
-    P = 1.25;
+    %P = 1.25;
+    P = 2;
     profile = 'Single';
+    %profile = 'Double';
+    %profile = 'Brakes';
     
     % Magnet Parameters
     M = 4; % Number of Magnets in Wavelength
     Br = 1.32; % Magnet remanence (T)
-    width = 0.0381;
+    
+    %width = 0.0381;
+    %length = 0.0127;
+    %h = length; % Heigh of permanent magnet (m)
+    
+    %width = 0.1016;
+    %length = 0.0254;
+    %h = length;
+    
+    %width = 3*0.0254;
+    %length = 0.0254;
+    %h = length;
+    
+    %length = 0.0381;
+    %width = 0.1143;
+    %h = length;
+    
+    %length = 0.0254;
+    %width = 0.1016;
+    %h = length;
+    
     length = 0.0127;
-    tau = 2*length; % Pole pitch (m)
-    h = length; % Heigh of permanent magnet (m)
-    %fprintf('W x L x H (in) =  %.2f, %.2f, %.2f \r', width, tau/2, h)
+    width = 0.0381;
+    h = 0.0127;
+    tau = 2*length; % Pole Pitch (m)
     
     % Track Parameters
-    l = 0.0104648; % Thickness of track (m)
+    l = 0.0079502; % Thickness of track (m)
+    %l = 0.00635;
+    %l = 0.009525; % Thickness of track (m)
     rho_track = 3.99*1e-8; % Resistivity of track (Ohm*m)
     sigma = 1/rho_track;
 
     % Air gap Parameters
-    d1 = 0.015; % Upper air gap (m)
+    d1 = 0.010; % Upper air gap (m)
     d2 = 0;%030; % Lower air gap (m)
-end
+    equilib = 0.015;
+    if(strcmp(profile,'Double'))
+        perturb = 0.010; % Perturbation in (m)
+        %d1 = equilib - perturb; % Upper air gap (m)
+        %d2 = equilib + perturb; % Lower air gap (m)
+        d1 = 0.015;
+        d1 = 0.005;
+    elseif(strcmp(profile,'Brakes'))
+        d1 = 0.010;
+        d2 = 0.010;
+    end
 
-%% Hyperloop Design Specs   
+elseif(strcmp(parameters,'Hyperloop-Stilts'))
+    vfinal = 135;
+    profile = 'Single';
+    plot_setting = 'Four-Stilts';
+    
+    % Magnet Parameters
+    M = 4; % Number of Magnets in Wavelength
+    Hc = 11.2*1e3; % Coercive Force of Magnet
+    Br = 1.48; % Magnet remanence (T)
+   
+    width = 0.100; % Width of magnet (m)
+    length = (width/1.5)/2; 
+    %tau = 2*length - (0.0031496/2);% - 0.0031496;
+    tau = width/1.5; % Pole pitch (m)
+    h = tau*.4; % Height of permanent magnet (m)
+    P = 1;
+    %P = 1.25; % Number of arrays to simulate
+    if(strcmp(plot_setting,'Four-Stilts'))
+        %P = (10*tau - 0.0031496)/2;
+        P = 5;
+    end
+    
+    % Track Parameters
+    l = 0.0127; % Thickness of track (m)
+    rho_track = 2.8*1e-8; % Resistivity of track (Ohm*m)
+    sigma = 1/rho_track;
+
+    % Air gap Parameters
+    %d1 = 0.020; % Upper air gap (m)
+    d1 = 0.020; 
+    d2 = 0; % Lower air gap (m)
+    
+    % Electromagnet Parameters
+    Jc = 13*1e5; % Current density coil
+    Jm = h*Hc; % Current density magnet
+    
+    PodWeight = 4905; % Total pod force (with payload) (N)
+  
+elseif(strcmp(parameters,'Hyperloop-Brakes'))
+    vfinal = 135;
+    profile = 'Brakes';
+    
+    % Magnet Parameters
+    M = 4; % Number of Magnets in Wavelength
+    Br = 1.32; % Magnet remanence (T)
+    
+    width = .030; % Width (m)
+    tau = width/1.45; % Pole pitch (m)
+    h = 0.090; % Heigh of permanent magnet (m)
+    P = 45; 
+  
+    % Track Parameters
+    l = 0.0079502; % Thickness of track (m)
+    rho_track = 3.99*1e-8; % Resistivity of track (Ohm*m)
+    
+    % Air gap Parameters
+    d1 = 0.007; % Upper air gap (m)
+    d2 = 0.0070; % Lower air gap (m)
+    
+elseif(strcmp(parameters,'Hyperloop-Lateral'))
+    vfinal = 135;
+    profile = 'Double';
+    
+    % Magnet Parameters
+    M = 4; % Number of Magnets in Wavelength
+    Br = 1.32; % Magnet remanence (T)
+    
+    width = 0.0435;
+    %width = 0.0560832;
+    %width = .045; % Width (m)
+    tau = width/1.5; % Pole pitch (m)
+    h = tau*0.4; % Heigh of permanent magnet (m)
+    P = 4; % Pole pair 
+    
+    % Track Parameters
+    l = 0.0079502; % Thickness of track (m)
+    rho_track = 3.99*1e-8; % Resistivity of track (Ohm*m)
+
+    % Air gap Parameters
+    perturb = 0.015; % Perturbation in (m)
+    d1 = 0.020 - perturb; % Upper air gap (m)
+    d2 = 0.020 + perturb; % Lower air gap (m)
+    
+    elseif(strcmp(parameters,'Hyperloop-Hybrid'))
+    vfinal = 135;
+    profile = 'Brakes';
+    %profile = 'Double';
+    
+    % Magnet Parameters
+    M = 4; % Number of Magnets in Wavelength
+    Br = 1.48; % Magnet remanence (T)
+    
+    width = .0435; % Width (m)
+    tau = width/1.25; % Pole pitch (m)
+    h = 0.0635; % Heigh of permanent magnet (m)
+    P = 24; 
+    
+    %length = 0.0127;
+    %width = 0.0381;
+    %h = 0.0127;
+    %tau = 2 * length;
+    %tau = 0.05;
+
+    % Track Parameters
+    l = 0.0079502; % Thickness of track (m)
+    rho_track = 3.99*1e-8; % Resistivity of track (Ohm*m)
+    
+    % Air gap Parameters
+    if(strcmp(profile,'Double'))
+        perturb = 0.010;
+        equilib = 0.020;
+        d1 = equilib - perturb;  % Upper air gap (m)
+        d2 = d1 + (perturb*2); % Lower air gap (m)
+    elseif(strcmp(profile,'Brakes'))
+        d1 = 0.015;
+        d2 = 0.015;
+    end
+end    
+    %% Hyperloop Design Specs   
 
 if(strcmp(parameters,'Hyperloop-Doubles'))
     vfinal = 135;
@@ -109,87 +262,6 @@ if(strcmp(parameters,'Hyperloop-Doubles'))
     %d2 = 0.042 + l;
     
     % Pod Parameters
-
-elseif(strcmp(parameters,'Hyperloop-Stilts'))
-    vfinal = 135;
-    profile = 'Single';
-    plot_setting = 'Four-Stilts';
-    
-    % Magnet Parameters
-    M = 4; % Number of Magnets in Wavelength
-    Hc = 11.2*1e3; % Coercive Force of Magnet
-    Br = 1.48; % Magnet remanence (T)
-   
-    width = 0.100; % Width of magnet (m)
-    tau = width/1.5; % Pole pitch (m)
-    h = tau*.4; % Height of permanent magnet (m)
-    P = 1.25; % Number of arrays to simulate
-    if(strcmp(plot_setting,'Four-Stilts'))
-        P = 5;
-    end
-    
-    % Track Parameters
-    l = 0.0127; % Thickness of track (m)
-    rho_track = 2.8*1e-8; % Resistivity of track (Ohm*m)
-    sigma = 1/rho_track;
-
-    % Air gap Parameters
-    %d1 = 0.020; % Upper air gap (m)
-    d1 = 0.020; 
-    d2 = 0; % Lower air gap (m)
-    
-    % Electromagnet Parameters
-    Jc = 13*1e5; % Current density coil
-    Jm = h*Hc; % Current density magnet
-    
-    PodWeight = 4905; % Total pod force (with payload) (N)
-  
-elseif(strcmp(parameters,'Hyperloop-Brakes'))
-    vfinal = 135;
-    profile = 'Brakes';
-    
-    % Magnet Parameters
-    M = 4; % Number of Magnets in Wavelength
-    Br = 1.48; % Magnet remanence (T)
-    
-    width = .045; % Width (m)
-    tau = width/1.5; % Pole pitch (m)
-    h = 0.0635; % Heigh of permanent magnet (m)
-    P = 24; 
-    
-    lambda = 2*tau;
-    
-    % Track Parameters
-    l = 0.0079502; % Thickness of track (m)
-    rho_track = 3.99*1e-8; % Resistivity of track (Ohm*m)
-    
-    % Air gap Parameters
-    d1 = 0.017; % Upper air gap (m)
-    d2 = 0.017; % Lower air gap (m)
-    
-elseif(strcmp(parameters,'Hyperloop-Lateral'))
-    vfinal = 135;
-    profile = 'Double';
-    
-    % Magnet Parameters
-    M = 4; % Number of Magnets in Wavelength
-    Br = 1.48; % Magnet remanence (T)
-    
-    width = .045; % Width (m)
-    tau = width/1.5; % Pole pitch (m)
-    h = tau*0.4; % Heigh of permanent magnet (m)
-    P = 1; % Pole pair 
-    lambda = 2*tau;
-    
-    % Track Parameters
-    l = 0.0079502; % Thickness of track (m)
-    rho_track = 3.99*1e-8; % Resistivity of track (Ohm*m)
-    sigma = 1/rho_track;
-
-    % Air gap Parameters
-    d1 = 0.020; % Upper air gap (m)
-    d2 = 0.020; % Lower air gap (m)
-    
 end
 
 %% Paper Replica Parameters
@@ -218,9 +290,7 @@ if(strcmp(parameters,'3D-Final'))
     
 elseif(strcmp(parameters,'3D-Initial'))
     vfinal = 41;
-    tau_factor = 2;
-    numArrays = 2;
-    geometry = 'Double';
+    profile = 'Double';
     
     % Magnet Parameters
     M = 4; % Number of Magnets in Wavelength
@@ -228,6 +298,7 @@ elseif(strcmp(parameters,'3D-Initial'))
     Br = 1.28; % Magnet remanence (T)
     h = 0.1; % Heigh of permanent magnet (m)
     width = 0.05; % Width of magnet (m)
+    P = 2;
 
     % Track Parameters
     l = 0.006; % Thickness of track (m)
@@ -240,9 +311,7 @@ elseif(strcmp(parameters,'3D-Initial'))
     
 elseif(strcmp(parameters,'3D-Experimental'))
     vfinal = 41;
-    tau_factor = 2;
-    numArrays = 2;
-    geometry = 'Double';
+    profile = 'Double';
     
     % Magnet Parameters
     M = 4; % Number of Magnets in Wavelength
@@ -250,6 +319,7 @@ elseif(strcmp(parameters,'3D-Experimental'))
     Br = 1.1; % Magnet remanence (T)
     h = 0.05; % Heigh of permanent magnet (m)
     width = 0.100; % Width of permanent magnet (m)
+    P = 2;
     
     % Track Parameters
     l = 0.003; % Thickness of track (m)

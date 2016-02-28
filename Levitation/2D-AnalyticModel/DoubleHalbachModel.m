@@ -6,7 +6,7 @@
 
 function [Force_y, Force_z, LtD, LtW, numMagnets, weightEstimate_kg,...
           weightEstimate_lbs, length_feet, costEstimate, skinDepth]...
-                                = DoubleHalbachModel(parameters,v)
+                                = DoubleHalbachModel(parameters,v,d1,h)
 % Inputs:
 %   v: velocity (m/s)
 %   parameters: which values to use - '3D-Final', '3D'Initial', 'Fig4'
@@ -20,9 +20,9 @@ function [Force_y, Force_z, LtD, LtW, numMagnets, weightEstimate_kg,...
 %   l: track thickness (m)
 
 %% Select Parameters
-[vfinal,profile,M,tau,Br,h,width,l,rho_track,d1,d2,P,PodWeight]...
+[vfinal,profile,M,tau,Br,h,width,l,rho_track,d1_old,d2,P,PodWeight]...
           = ParameterSelect(parameters);
-
+%tau = tau_pass
 %% Universal Constants 
 u0 = 4*pi*1e-7; % permeability of free space
 epsilon = 8.8541878176*1e-12; % Permitivity of free space
@@ -34,7 +34,7 @@ gamma_three = gamma_one; % Conductivity of air (S/m)
 
 %% Variables
 p = pi/tau; 
-lambda = 2*tau; % Array wavelength(m)
+lambda = 2*tau % Array wavelength(m)
 omega = 2*pi.*v./lambda;
 sigma = 1/rho_track;
 t = 0;
@@ -150,11 +150,11 @@ elseif(strcmp(profile,'Stability'))
 end
     
 C3 = (B*(-R1 + R2) - A*b*(R1 + R2) + R1*(D*(-R1 + R2) + b*C*(R1 + R2)))/...
-     (a*(R1 - R2)^2 - b*(R1 + R2)^2);
- 
+    (a*(R1 - R2)^2 - b*(R1 + R2)^2);
+
 C4 = (a*(A - C*R1)*(R1 - R2) + (B + D*R1)*(R1 + R2))/...
-     (a*(R1 - R2)^2 - b*(R1 + R2)^2);
- 
+    (a*(R1 - R2)^2 - b*(R1 + R2)^2);
+
 %% Theta/A_2x
 theta = @(y) u0*gamma_two*v*Bym(y)./(k2_square);
 A_2x = @(y,z) (C3*exp(-R2.*y) + C4*exp(R2.*y) + theta(y)).*exp(1i*p.*z + omega.*t);
