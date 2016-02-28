@@ -62,7 +62,11 @@ function Fth = propulsion(tprop)
 %% Nitrogen
 k = 1.4;
 R = 297;
-Fth = isentropic_time(k, R, tprop);
+Pi = 3.1026e+7; % Pascals Tank Pressure
+Pc = Pi;
+Ti = 300;
+V = 0.06737; % m3 Tank Volume
+Fth = isentropic_time(Pi, Ti, V, Pc, k, R, tprop);
 end
 
 function Force_z = brake(v)

@@ -10,22 +10,28 @@ Pamb = 140; % Pa
 % Isentropic ratio
 gamma = k*(2/(k+1))^((k+1)/(2*(k-1)));
 
-%% Time relationships
+%% Choose Nozzle geometry based on initial conditions
+At = (4.5/1000)^2*pi;
+Me0 = 5;
+
+
 P0 = @(t)Pc./(1+(k-1)/(2*k)*(k*R*Ti)^(1/2)*gamma*(At/V)*t).^(2*k/(k-1));
+Pe = @(t) P0(t)./(1+(k-1)./2.*Me0.^2).^(k/(k-1));
+
+Ae = At*gamma/sqrt((2*k/(k-1))*(Pe(0)/P0(0))^(2/k)*(1-(Pe(0)/P0(0))^((k-1)/k)));
+
+%% Time relationships
 T0 = @(t) Ti*(P0(t)/Pc).^((k-1)/k);
 mdot = @(t) gamma*At*P0(t)./sqrt(k*R*T0(t));
 Vt = @(t) sqrt(2*k/(k+1)*R.*T0(t));
 Tt = @(t) T0(t).*(2/(k+1));
 Pt = @(t) P0(t)*(2/(k+1))^(k/(k-1));
-Pe = @(t) P0(t)./(1+(k-1)./2.*Me0.^2).^(k/(k-1));
 Te = @(t) Tt(t)*(Pe(t)/Pt(t)).^((k-1)/k);
 Ve = @(t) Vt(t).*sqrt((k+1)/(k-1)*(1 - (Pe(t)./P0(t)).^((k-1)/k)));
 Fth = @(t) mdot(t).*Ve(t) + (Pe(t) - Pamb)*Ae;
 Mprop = @(t) V*Pi.^((k-1)/k)./(R*Ti)*P0(t).^(1/k);
 
-%% Choose Nozzle geometry based on initial conditions
-Ae = At*gam/sqrt((2*k/(k-1))*(Pe(0)/P0(0))^(2/k)*(1-(Pe/P0)^((k-1)/k)));
-At = (4.5/1000)^2*pi;
+%%
 re = sqrt(Ae/pi);
 rt = sqrt(At/pi);
 re = sqrt(Ae/pi);
@@ -34,7 +40,6 @@ beta = 60*pi/180;
 Ld = re/tan(alpha);
 Lc = rt/tan(beta);
 
-Me0 = 5;
 
 %% Mass Flow in System Decay
 figure
@@ -63,7 +68,7 @@ end
 
 % Velocity and Displacement
 figure, hold on
-[ax,p1,p2] = plotyy(t, v,t,d);
+[ax,p1,p2] = plotyy(t, v, t,d);
 xlabel(ax(1),'Time (s)')
 ylabel(ax(1),'Velocity (m/s)')
 ylabel(ax(2),'Distance (m)')
@@ -73,5 +78,5 @@ hold off
 
 %% Calculate total impulse
 I = sum(Fth(t))/numel(t)*t(end);
-Isp = Fth0/(mdott0*9.8);
+% Isp = Fth0/(mdott0*9.8);
 Fthp = Fth(t);

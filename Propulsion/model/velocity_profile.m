@@ -12,6 +12,7 @@ Vpush = sqrt(V0^2 + 2*aPush.*xpush);
 
 %% Propulsion
 Fth = 3500;
+Fmd = 1000;
 lprop = 200; % m
 xprop = l_pusher:(l_pusher + lprop);
 aProp = (Fth - (Fmd + Fd))/mPod;
