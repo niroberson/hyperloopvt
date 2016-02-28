@@ -1,43 +1,33 @@
-function [Fth, I, Ae] = cold_gas_thruster()
+function [Fth, I, Ae] = cold_gas_thruster(configuration)
 %% Constants
 config = config_info('big_tank', 'nitrogen');
+Ti = config.Ti;
+Pi = config.Pi;
+V = config.V;
+At = config.At;
+k = config.k;
+R = config.R;
 
-%% Determine mass flow in system
-gamma = k*(2/(k+1))^((k+1)/(2*(k-1)));
-P0 = @(t)Pi.*(1/(1+(k-1)/(2*k)*(k*R*Ti)^(1/2)*gamma*(At/V)*t).^(2*k/(k-1)));
-T0 = @(t) Ti*(P0(t)/Pi).^((k-1)/k);
-mdot = @(t) gamma*At*P0(t)./sqrt(k*R*T0(t));
+%% Setup empty variable storage
+P0 = []; T0 = []; Tt = []; Pt = []; Vt = []; Pe = []; Te = []; Ve = [];
 
-%% Find t where P0/Pi < 0.1, 0.05, 0.01
-t_crit = 0;
-while P0(t_crit)/Pi > 0.01 && t_crit<t_stop
-    t_crit = t_crit + 0.01;
+%% Transient behavior
+for t=0:0.001:t_prop
+    [P0(end+1), T0(end+1)] = tank(Ti, Pi, V, At, k, R, t);
+    if strcmp(configuration,'converging')
+        [Te(end+1), Pe(end+1), Ve(end+1)] = nozzle_converging(T0(end), P0(end), k, R);
+        Ae = At;
+    elseif strcmp(configuration,'converging-diverging')
+        [Tt(end+1), Pt(end+1), Vt(end+1)] = nozzle_converging(T0(end), P0(end), k, R);
+        [Pe(end+1), Te(end+1), Ve(end+1)] = nozzle_diverging(P0(end), Me, k, R);
+        Ae = At/Me*(((k+1)/2)/(1 + (k-1)/2*Me^2))^(-(k+1)/(2*(k-1)));
+    end
 end
-
-%% Determine Me keeping Te(t_crit) above a minimun temperature
-Me = 1;
-Tt = @(t) T0(t).*(2/(k+1));
-Pt = @(t) P0(t)*(2/(k+1))^(k/(k-1));
-Pe = @(t) P0(t)./(1+(k-1)./2.*Me.^2).^(k/(k-1));
-Te = @(t) Tt(t)*(Pe(t)/Pt(t)).^((k-1)/k);
-
-while Te(t_crit) > T_min % Liquifaction point of gas
-    Me = Me + 0.01;
-    Pe = @(t) P0(t)./(1+(k-1)./2.*Me.^2).^(k/(k-1));
-    Te = @(t) Tt(t)*(Pe(t)/Pt(t)).^((k-1)/k);
-end
-
-%% Determine exit area
-Ae = At*gamma/sqrt((2*k/(k-1))*(Pe(0)/P0(0))^(2/k)*(1-(Pe(0)/P0(0))^((k-1)/k)));
 
 %% Determine the thrust produced over time
-Vt = @(t) sqrt(2*k/(k+1)*R.*T0(t));
-Ve = @(t) Vt(t).*sqrt((k+1)/(k-1)*(1 - (Pe(t)./P0(t)).^((k-1)/k)));
-Fth = @(t) Ve(t).*mdot(t) + (Pe(t) - Pvac)*Ae;
+mdot = gamma*At*P0./sqrt(k*R*T0);
+Fth = Ve.*mdot + (Pe - Pvac)*Ae;
 
 %% Find the toal impulse in the alloted time
 I = integral(Fth, 0, t_stop);
-
-%% Determine thrust from converging section
-FthC = @(t) Vt(t).*mdot(t) + (Pt(t) - Pvac)*At;
 end
