@@ -8,7 +8,6 @@ plot(Ae, I, 'o')
 
 %%
 [V, Pi, At, T_min, k, R] = optimization('big_tank' , 'air');
-T_min = 0;
 [Fth, I, Ae] = nozzle(V, Pi, At, k, R, T_min);
 plot(Ae, I, 'o')
 

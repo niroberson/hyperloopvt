@@ -46,4 +46,7 @@ Fth = @(t) Ve(t).*mdot(t) + (Pe(t) - Pvac)*Ae;
 
 %% Find the toal impulse in the alloted time
 I = integral(Fth, 0, t_stop);
+
+%% Determine thrust from converging section
+FthC = @(t) Vt(t).*mdot(t) + (Pt(t) - Pvac)*At;
 end
