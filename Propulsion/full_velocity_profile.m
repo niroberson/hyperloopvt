@@ -1,7 +1,7 @@
 function full_velocity_profile()
 %% Constants
 l_track = 1609.34; % 5280 ft or 1 mile
-mPod = 350; % kg
+mPod = 250; % kg
 dt = 0.01;
 
 %% Set up global trackers
@@ -16,7 +16,7 @@ gx = xpush;
 gv = Vpush;
 
 %% Get propulsion forces
-t_prop = 5;
+t_prop = 3;
 Fth = propulsion(t_prop);
 
 %% Run trajectory
@@ -43,13 +43,15 @@ for t=0:dt:30
 end
 
 figure, hold on
+subplot(2,1,1)
 plot([gt(1) gt(end)], [mean(gv) mean(gv)])
 legend({'Average Velocity'})
 plot(gt, gv)
 xlabel('Time (s)')
 ylabel('Velocity (m/s)')
 
-figure,plot(gx, gv)
+subplot(2,1,2)
+plot(gx, gv)
 xlabel('Position (m)')
 ylabel('Velocity (m/s)')
 end
@@ -67,7 +69,7 @@ end
 
 function Fth = propulsion(t_prop)
 %% Nitrogen
-configuration = 'converging';
+configuration = 'converging-diverging';
 [Fth, I, Ae] = cold_gas_thruster(configuration, t_prop);
 end
 
