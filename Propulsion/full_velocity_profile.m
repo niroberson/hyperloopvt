@@ -16,16 +16,17 @@ gx = xpush;
 gv = Vpush;
 
 %% Get propulsion forces
-t_prop = 10;
+t_prop = 5;
 Fth = propulsion(t_prop);
 
 %% Run trajectory
-for t=0:dt:20
-    if t > 8.5
+i = 1;
+for t=0:dt:30
+    if t > t_prop
         Fbrakes = brake(gv(end));
-        Factual = Fth(t) - magnetic_drag(gv(end)) - Fbrakes;
+        Factual = - magnetic_drag(gv(end)) - Fbrakes;
     else
-        Factual = Fth(t) - magnetic_drag(gv(end));
+        Factual = Fth(i) - magnetic_drag(gv(end));
     end
     
     at = Factual/mPod;
@@ -35,7 +36,10 @@ for t=0:dt:20
     % Track timestep
     gt(end+1) = gt(end) + dt;
     gx(end+1) = gx(end) + dx;
-    gv(end+1) = vNext;  
+    gv(end+1) = vNext;
+    
+    % Advance Timestep
+    i = i+1;
 end
 
 figure, hold on
@@ -64,7 +68,7 @@ end
 function Fth = propulsion(t_prop)
 %% Nitrogen
 configuration = 'converging';
-[Fth, I, Ae] = cold_gas_thruster(configuration, t_prop)
+[Fth, I, Ae] = cold_gas_thruster(configuration, t_prop);
 end
 
 function Force_z = brake(v)
