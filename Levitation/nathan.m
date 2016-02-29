@@ -44,6 +44,9 @@ for k=1:numel(velocity)
                                 = DoubleHalbachModel(parameters,velocity(k),d1);
         
         d1 = d1 + gapRes;
+        if d1 > gapFinal
+            break;
+        end
     end
     ride_height(end+1) = d1;
 end
