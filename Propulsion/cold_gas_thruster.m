@@ -12,7 +12,7 @@ R = config.R;
 P0 = []; T0 = []; Tt = []; Pt = []; Vt = []; Pe = []; Te = []; Ve = [];
 
 %% Transient behavior
-for t=0:0.001:t_prop
+for t=0:0.01:t_prop
     [P0(end+1), T0(end+1)] = tank(Ti, Pi, V, At, k, R, t);
     if strcmp(configuration,'converging')
         [Te(end+1), Pe(end+1), Ve(end+1)] = nozzle_converging(T0(end), P0(end), k, R);
@@ -26,7 +26,7 @@ for t=0:0.001:t_prop
 end
 
 %% Determine the thrust produced over time
-mdot = sqrt(k/R)*Pe(end);
+mdot = Pe./(R*Te)*(Me*sqrt(k*R*T))*Ae;
 Fth = Ve.*mdot + (Pe - Pvac)*Ae;
 
 %% Find the toal impulse in the alloted time

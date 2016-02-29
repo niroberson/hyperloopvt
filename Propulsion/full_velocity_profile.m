@@ -15,14 +15,17 @@ gt = tpush;
 gx = xpush;
 gv = Vpush;
 
-%% Run propulsion
+%% Get propulsion forces
+t_prop = 10;
+Fth = propulsion(t_prop);
+
+%% Run trajectory
 for t=0:dt:20
-    Fth = propulsion(t);
     if t > 8.5
         Fbrakes = brake(gv(end));
-        Factual = Fth - magnetic_drag(gv(end)) - Fbrakes;
+        Factual = Fth(t) - magnetic_drag(gv(end)) - Fbrakes;
     else
-        Factual = Fth - magnetic_drag(gv(end));
+        Factual = Fth(t) - magnetic_drag(gv(end));
     end
     
     at = Factual/mPod;
@@ -58,15 +61,10 @@ Vpush = sqrt(2*aPush.*xpush);
 tpush = sqrt(Vpush.*2/aPush);
 end
 
-function Fth = propulsion(tprop)
+function Fth = propulsion(t_prop)
 %% Nitrogen
-k = 1.4;
-R = 297;
-Pi = 3.1026e+7; % Pascals Tank Pressure
-Pc = Pi;
-Ti = 300;
-V = 0.06737; % m3 Tank Volume
-Fth = isentropic_time(Pi, Ti, V, Pc, k, R, tprop);
+configuration = 'converging';
+[Fth, I, Ae] = cold_gas_thruster(configuration, t_prop)
 end
 
 function Force_z = brake(v)
