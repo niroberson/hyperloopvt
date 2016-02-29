@@ -1,19 +1,9 @@
-function full_velocity_profile()
+function [gt, gv] = full_velocity_profile()
 %% Constants
 l_track = 1609.34; % 5280 ft or 1 mile
-mPod = 250; % kg
-dt = 0.01;
-
-%% Set up global trackers
-gt = [];
-gv = [];
-gx = [];
-
-%% Experience pusher
-[xpush, tpush, Vpush] = pusher();
-gt = tpush;
-gx = xpush;
-gv = Vpush;
+l_pusher= 243.84; % 800 ft
+mPod = 270; % kg
+dt = 0.1;
 
 %% Get propulsion forces
 t_prop = 3;
@@ -21,8 +11,10 @@ Fth = propulsion(t_prop);
 
 %% Run trajectory
 i = 1;
-for t=0:dt:30
-    if t > t_prop
+for t=0:dt:20
+    if gx(end) > l_pusher
+        Factual = pusher(mPod);
+    elseif t > t_prop
         Fbrakes = brake(gv(end));
         Factual = - magnetic_drag(gv(end)) - Fbrakes;
     else
@@ -57,14 +49,11 @@ ylabel('Velocity (m/s)')
 end
 
 %% Run Brakes
-function [xpush, tpush, Vpush] = pusher()
+function Fpush = pusher(mPod)
 %% Pusher Acceleration
 % v = v0 + 1/2at^2
-l_pusher= 243.84; % 800 ft
-xpush = 0:l_pusher;
 aPush = 2*9.8;
-Vpush = sqrt(2*aPush.*xpush);
-tpush = sqrt(Vpush.*2/aPush);
+Fpush = aPush*mPod;
 end
 
 function Fth = propulsion(t_prop)
