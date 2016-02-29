@@ -1,4 +1,4 @@
-function [Fth, I, Ae] = cold_gas_thruster(configuration)
+function [Fth, I, Ae] = cold_gas_thruster(configuration, t_prop)
 %% Constants
 config = config_info('big_tank', 'nitrogen');
 Ti = config.Ti;
@@ -17,6 +17,7 @@ for t=0:0.001:t_prop
     if strcmp(configuration,'converging')
         [Te(end+1), Pe(end+1), Ve(end+1)] = nozzle_converging(T0(end), P0(end), k, R);
         Ae = At;
+        Me = 1;
     elseif strcmp(configuration,'converging-diverging')
         [Tt(end+1), Pt(end+1), Vt(end+1)] = nozzle_converging(T0(end), P0(end), k, R);
         [Pe(end+1), Te(end+1), Ve(end+1)] = nozzle_diverging(P0(end), Me, k, R);
@@ -25,7 +26,7 @@ for t=0:0.001:t_prop
 end
 
 %% Determine the thrust produced over time
-mdot = gamma*At*P0./sqrt(k*R*T0);
+mdot = sqrt(k/R)*Pe(end);
 Fth = Ve.*mdot + (Pe - Pvac)*Ae;
 
 %% Find the toal impulse in the alloted time
