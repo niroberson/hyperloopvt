@@ -17,7 +17,7 @@ t_pusher = 0;
 %% Run trajectory
 i = 1;
 for t=0:dt:20
-    if gx(end) > l_pusher
+    if gx(end) < l_pusher
         Factual = pusher(mPod);
         t_pusher = t;
     elseif t - t_pusher > t_prop
@@ -25,6 +25,7 @@ for t=0:dt:20
         Factual = - magnetic_drag(gv(end)) - Fbrakes;
     else
         Factual = Fth(i) - magnetic_drag(gv(end));
+        i = i+1;
     end
     
     at = Factual/mPod;
@@ -35,9 +36,6 @@ for t=0:dt:20
     gt(end+1) = gt(end) + dt;
     gx(end+1) = gx(end) + dx;
     gv(end+1) = vNext;
-    
-    % Advance Timestep
-    i = i+1;
 end
 
 figure, hold on
