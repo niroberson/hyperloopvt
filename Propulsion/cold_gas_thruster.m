@@ -1,4 +1,4 @@
-function [Fth, I, Ae] = cold_gas_thruster(configuration, t_prop)
+function [Fth, I, Ae, Te] = cold_gas_thruster(configuration, t_prop)
 %% Constants
 config = config_info('big_tank', 'nitrogen');
 Ti = config.Ti;
@@ -21,7 +21,7 @@ for t=0:0.01:t_prop
     elseif strcmp(configuration,'converging-diverging')
         Me = 2;
         [Tt(end+1), Pt(end+1), Vt(end+1)] = nozzle_converging(T0(end), P0(end), k, R);
-        [Pe(end+1), Te(end+1), Ve(end+1)] = nozzle_diverging(P0(end), Me, k, R);
+        [Pe(end+1), Te(end+1), Ve(end+1)] = nozzle_diverging(T0(end), P0(end), Me, k, R);
         Ae = At/Me*(((k+1)/2)/(1 + (k-1)/2*Me^2))^(-(k+1)/(2*(k-1)));
     end
 end

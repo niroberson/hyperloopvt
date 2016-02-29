@@ -1,7 +1,7 @@
 function full_velocity_profile()
 %% Constants
 l_track = 1609.34; % 5280 ft or 1 mile
-mPod = 250; % kg
+mPod = 350; % kg
 dt = 0.01;
 
 %% Set up global trackers
