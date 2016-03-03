@@ -16,7 +16,7 @@ Fth = propulsion(t_prop);
 t_pusher = 0;
 %% Run trajectory
 i = 1;
-for t=0:dt:20
+for t=0:dt:25
     if gx(end) < l_pusher
         Factual = pusher(mPod);
         t_pusher = t;
