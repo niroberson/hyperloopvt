@@ -7,11 +7,15 @@ switch tank
     case 'big_tank'
         V = 0.1206907; % m3 Tank Volume
         Pi = 2.3442e+7; % Pascals Tank Pressure
-        At = (10/1000)^2*pi; % 3/4 in pipe
+        At = (8/1000)^2*pi; % 3/4 in pipe
     case 'small_tank'
         V = 0.0672689;
         Pi = 3.1026e+7;
         At = (4.6/1000)^2*pi;
+    case 'full_scale'
+        V = 0.36; % m3 Tank Volume
+        Pi = 2.3442e+7; % Pascals Tank Pressure
+        At = (10/1000)^2*pi; % 3/4 in pipe
 end
 
 %% Propellant Choice

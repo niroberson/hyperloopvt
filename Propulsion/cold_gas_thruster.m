@@ -12,7 +12,7 @@ R = config.R;
 P0 = []; T0 = []; Tt = []; Pt = []; Vt = []; Pe = []; Te = []; Ve = [];
 
 %% Transient behavior
-dt = 0.1;
+dt = 0.01;
 for t=0:dt:t_prop
     [P0(end+1), T0(end+1)] = tank(Ti, Pi, V, At, k, R, t);
     if strcmp(configuration,'converging')

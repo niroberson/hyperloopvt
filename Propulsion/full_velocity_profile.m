@@ -11,7 +11,7 @@ gv = 0;
 gx = 0;
 
 %% Get propulsion forces
-t_prop = 5.5;
+t_prop = 3;
 Fth = propulsion(t_prop);
 t_pusher = 0;
 %% Run trajectory
