@@ -12,7 +12,17 @@ gx = 0;
 
 %% Get propulsion forces
 t_prop = 3;
-Fth = propulsion(t_prop);
+config = struct();
+config.k = 1.4;
+config.R = 297;
+config.T_min = 77;
+config.At = At;
+config.Me = 2.5;
+config.V = 0.0672689;
+config.Pi = 3.1026e+7;
+config.Ti = 273.15;
+config.Pvac = 861.84466;
+Fth = propulsion(t_prop, config);
 t_pusher = 0;
 %% Run trajectory
 i = 1;
@@ -60,10 +70,10 @@ aPush = 2*9.8;
 Fpush = aPush*mPod;
 end
 
-function Fth = propulsion(t_prop)
+function Fth = propulsion(t_prop, config_info)
 %% Nitrogen
 configuration = 'converging-diverging';
-[Fth, I, Ae] = cold_gas_thruster(configuration, t_prop);
+[Fth, I, Ae] = cold_gas_thruster(configuration, t_prop, config_info);
 end
 
 function Force_z = brake(v)
