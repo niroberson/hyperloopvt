@@ -1,14 +1,15 @@
-function [Fth, I, Ae, Te] = cold_gas_thruster(configuration, t_prop, config_info)
+function [Fth, I, Ae, Te] = cold_gas_thruster(configuration, t_prop, config)
 %% Constants
-if ~exist(config_info, 'var')
+if nargin < 3
     config = config_info('big_tank', 'nitrogen');
-    Ti = config.Ti;
-    Pi = config.Pi;
-    V = config.V;
-    At = config.At;
-    k = config.k;
-    R = config.R;
 end
+
+Ti = config.Ti;
+Pi = config.Pi;
+V = config.V;
+At = config.At;
+k = config.k;
+R = config.R;
 
 %% Setup empty variable storage
 P0 = []; T0 = []; Tt = []; Pt = []; Vt = []; Pe = []; Te = []; Ve = [];
@@ -22,7 +23,7 @@ for t=0:dt:t_prop
         Ae = At;
         Me = 1;
     elseif strcmp(configuration,'converging-diverging')
-        Me = config_info.Me;
+        Me = config.Me;
         [Tt(end+1), Pt(end+1), Vt(end+1)] = nozzle_converging(T0(end), P0(end), k, R);
         [Pe(end+1), Te(end+1), Ve(end+1)] = nozzle_diverging(T0(end), P0(end), Me, k, R);
         Ae = At/Me*(((k+1)/2)/(1 + (k-1)/2*Me^2))^(-(k+1)/(2*(k-1)));
