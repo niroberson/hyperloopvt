@@ -1,9 +1,9 @@
-function [gt, gv] = full_velocity_profile(mPod)
+function [gt, gx, gv] = full_velocity_profile(mPod)
 %% Constants
 l_track = 1609.34; % 5280 ft or 1 mile
 l_pusher= 243.84; % 800 ft
 mPod = 270; % kg
-dt = 0.1;
+dt = 0.001;
 
 %% Set up global trackers
 gt = 0;
@@ -78,15 +78,16 @@ end
 
 function Force_z = brake(v)
     %% Calculate Eddy Brake Drag
-    parameters = 'Hyperloop-Brakes';
+%     parameters = 'Hyperloop-Brakes';
     
-    [vfinal,profile,M,tau,Br,h,width,l,rho_track,d1,d2,P,PodWeight]...
-          = ParameterSelect(parameters);
+%     [vfinal,profile,M,tau,Br,h,width,l,rho_track,d1,d2,P,PodWeight]...
+%           = ParameterSelect(parameters);
+%     
+%     [Force_y, Force_z, LtD, LtW, numMagnets, weightEstimate_kg,...
+%           weightEstimate_lbs, length_feet, costEstimate, skinDepth]...
+%                                 = DoubleHalbachModel(parameters,v,d1,h);
     
-    [Force_y, Force_z, LtD, LtW, numMagnets, weightEstimate_kg,...
-          weightEstimate_lbs, length_feet, costEstimate, skinDepth]...
-                                = DoubleHalbachModel(parameters,v,d1,h);
-    
+    Force_z = 900;
 end
 
 function Force_z = magnetic_drag(v)
