@@ -29,83 +29,83 @@ end
 
 if(strcmp(parameters,'Test-Rig2'))
     vfinal = 50;
-    %P = 1.25;
-    P = 2;
     profile = 'Single';
     %profile = 'Double';
     %profile = 'Brakes';
-    
-    % Magnet Parameters
-    M = 4; % Number of Magnets in Wavelength
-    Br = 1.32; % Magnet remanence (T)
-    
-    %width = 0.0381;
-    %length = 0.0127;
-    %h = length; % Heigh of permanent magnet (m)
-    
-    %width = 0.1016;
-    %length = 0.0254;
-    %h = length;
-    
-    %width = 3*0.0254;
-    %length = 0.0254;
-    %h = length;
-    
-    %length = 0.0381;
-    %width = 0.1143;
-    %h = length;
-    
-    %length = 0.0254;
-    %width = 0.1016;
-    %h = length;
-    
+    extend = 'yes-';
+   
     length = 0.0127;
     width = 0.0381;
     h = 0.0127;
     tau = 2*length; % Pole Pitch (m)
     
+    M = 4; % Number of Magnets in Wavelength
+    Br = 1.32; % Magnet remanence (T)
+    P = 3;
+    
+    if strcmp(extend,'yes')
+        P = 1.5;
+        tau = 4*length;
+    end
+    
     % Track Parameters
     l = 0.0079502; % Thickness of track (m)
-    %l = 0.00635;
-    %l = 0.009525; % Thickness of track (m)
     rho_track = 3.99*1e-8; % Resistivity of track (Ohm*m)
     sigma = 1/rho_track;
 
     % Air gap Parameters
-    d1 = 0.010; % Upper air gap (m)
-    d2 = 0;%030; % Lower air gap (m)
-    equilib = 0.015;
-    if(strcmp(profile,'Double'))
-        perturb = 0.010; % Perturbation in (m)
-        %d1 = equilib - perturb; % Upper air gap (m)
-        %d2 = equilib + perturb; % Lower air gap (m)
-        d1 = 0.015;
-        d1 = 0.005;
+    if strcmp(profile, 'Single')
+        d1 = 0.010; % Upper air gap (m)
+        d2 = 0;     % Lower air gap (m)
+    elseif(strcmp(profile,'Double'))
+        d1 = 0.010;
+        d2 = 0.015;
     elseif(strcmp(profile,'Brakes'))
         d1 = 0.010;
         d2 = 0.010;
     end
+    
+elseif strcmp(parameters,'Lateral-Opt')
+    profile = 'Double';
+    vfinal = 140;
+    
+    % Magnet Paramters
+    M = 4; % Number of Magnets in Wavelength
+    Br = 1.32; % Magnet remanence (T)
+    P = 1;
+    
+    width = 0.035;
+    d1 = 0.015;
+    d2 = 0.025;
+    
+    tau = width/1.5;
+    h = 0.1;
+
+    % Track Parameters
+    l = 0.0079502; % Thickness of track (m)
+    rho_track = 3.99*1e-8; % Resistivity of track (Ohm*m)
+    sigma = 1/rho_track;
 
 elseif(strcmp(parameters,'Hyperloop-Stilts'))
     vfinal = 135;
     profile = 'Single';
-    plot_setting = 'Four-Stilts';
+    plot_setting = 'Four-Stilts-';
     
     % Magnet Parameters
     M = 4; % Number of Magnets in Wavelength
-    Hc = 11.2*1e3; % Coercive Force of Magnet
-    Br = 1.48; % Magnet remanence (T)
+    Br = 1.32; % Magnet remanence (T)
    
-    width = 0.100; % Width of magnet (m)
+    %width = 0.100; % Width of magnet (m)
+    width = 0.0762;
     length = (width/1.5)/2; 
     %tau = 2*length - (0.0031496/2);% - 0.0031496;
     tau = width/1.5; % Pole pitch (m)
     h = tau*.4; % Height of permanent magnet (m)
-    P = 1;
+    P = 3;
     %P = 1.25; % Number of arrays to simulate
     if(strcmp(plot_setting,'Four-Stilts'))
         %P = (10*tau - 0.0031496)/2;
-        P = 5;
+        P = 4*P;
     end
     
     % Track Parameters
@@ -117,11 +117,7 @@ elseif(strcmp(parameters,'Hyperloop-Stilts'))
     %d1 = 0.020; % Upper air gap (m)
     d1 = 0.020; 
     d2 = 0; % Lower air gap (m)
-    
-    % Electromagnet Parameters
-    Jc = 13*1e5; % Current density coil
-    Jm = h*Hc; % Current density magnet
-    
+   
     PodWeight = 4905; % Total pod force (with payload) (N)
   
 elseif(strcmp(parameters,'Hyperloop-Brakes'))
@@ -132,18 +128,21 @@ elseif(strcmp(parameters,'Hyperloop-Brakes'))
     M = 4; % Number of Magnets in Wavelength
     Br = 1.32; % Magnet remanence (T)
     
-    width = .030; % Width (m)
-    tau = width/1.45; % Pole pitch (m)
-    h = 0.090; % Heigh of permanent magnet (m)
-    P = 45; 
+    P = 23;
+    width = 0.0254;
+    %length = 0.0127;
+    tau = width*1.25;
+    h = width*1.25;
   
     % Track Parameters
-    l = 0.0079502; % Thickness of track (m)
+    %l = 0.0079502; % Thickness of track (m)
+    l = 0.0105; % Proposed new web thickness
     rho_track = 3.99*1e-8; % Resistivity of track (Ohm*m)
     
     % Air gap Parameters
-    d1 = 0.007; % Upper air gap (m)
+    d1 = 0.0070; % Upper air gap (m)
     d2 = 0.0070; % Lower air gap (m)
+    %d2 = 0.01;
     
 elseif(strcmp(parameters,'Hyperloop-Lateral'))
     vfinal = 135;
@@ -152,22 +151,27 @@ elseif(strcmp(parameters,'Hyperloop-Lateral'))
     % Magnet Parameters
     M = 4; % Number of Magnets in Wavelength
     Br = 1.32; % Magnet remanence (T)
+    P = 14; % Pole pair 
     
-    width = 0.0435;
-    %width = 0.0560832;
-    %width = .045; % Width (m)
-    tau = width/1.5; % Pole pitch (m)
-    h = tau*0.4; % Heigh of permanent magnet (m)
-    P = 4; % Pole pair 
+    %width = 0.01905;
+    %width = 0.0381;
+    width = 0.0254;
+    %length = 0.0127;
+    tau = width/1.5;
+    %tau = width;
+    h = tau*.7; 
     
     % Track Parameters
     l = 0.0079502; % Thickness of track (m)
+    %l = 0.0105; % Proposed new web thickness
     rho_track = 3.99*1e-8; % Resistivity of track (Ohm*m)
 
     % Air gap Parameters
-    perturb = 0.015; % Perturbation in (m)
-    d1 = 0.020 - perturb; % Upper air gap (m)
-    d2 = 0.020 + perturb; % Lower air gap (m)
+    perturb = 0.013; % Perturbation in (m)
+    %d1 = 0.020 - perturb; % Upper air gap (m)
+    %d2 = 0.020 + perturb; % Lower air gap (m)
+    d1 = 0.007;
+    d2 = 0.033;
     
     elseif(strcmp(parameters,'Hyperloop-Hybrid'))
     vfinal = 135;
@@ -352,7 +356,8 @@ elseif(strcmp(parameters,'Fig4'))
     
 elseif(strcmp(parameters,'Fig7'))
     vfinal = 55;
-    geometry = 'Double';
+    profile = 'Double';
+    P = 1;
    
     % Magnet Parameters
     M = 4; % Number of Magnets in Wavelength
@@ -361,7 +366,6 @@ elseif(strcmp(parameters,'Fig7'))
     tau = 0.8; % Pole pitch (m)
     h = 0.3; % Heigh of permanent magnet (m)
     width = 0.1; % Width of array (m)
-    numArrays = 1; % Number of arrays
     
     % Track Parameters
     l = 0.01; % Thickness of track (m)

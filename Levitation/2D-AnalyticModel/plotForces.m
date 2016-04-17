@@ -1,6 +1,7 @@
-function plotForces(parameters,vres,vfinal,F_drag,F_lift,n,m,skin_depth)
+function plotForces(parameters,vres,vfinal,F_drag,F_lift,n,m,skin_depth,l,...
+                    weight,skin,profile,d1,d2)
 
-skin = 'plot';
+
 plot_setting = 'Four-Stilts';
 v = 0.1:vres:vfinal;
 v_kmh = v*3.6;
@@ -120,7 +121,28 @@ if(strcmp(parameters,'Hyperloop-Doubles'))
         set(ax(1),'XTick',[0:15:135])
         set(ax(2),'XLim',[0 135])
         set(ax(2),'XTick',[0:15:135])
-        grid on;
+%         grid on;
+%         weight
+%         subplot(1,2,1);
+%         [ax,p1,p2] = plotyy(v,F_lift/1000,...
+%                         [0.1, vfinal],[weight/1000, weight/1000],'plot','plot');
+%         maxV = max((F_lift/1000))
+%         title('Lift and Drag Forces');
+%         xlabel(ax(1),'Velocity (m/s)')  % label x-axis
+%         ylabel(ax(1),'Drag Force (kN)') % label left y-axis
+%         ylabel(ax(2),'Lift Force (kN)') % label right y-axis
+%         set(ax(1),'YLim',[0 maxV])
+%         set(ax(1),'YTick',[0:maxV/5:maxV])
+%         set(ax(2),'YLim',[0 maxV])
+%         set(ax(2),'YTick',[0:maxV/5:maxV])
+%         set(ax(1),'XLim',[0 135])
+%         set(ax(1),'XTick',[0:15:135])
+%         set(ax(2),'XLim',[0 135])
+%         set(ax(2),'XTick',[0:15:135])
+%         grid on;
+%         
+%         
+       
     end
     
     subplot(1,2,2);
@@ -176,14 +198,38 @@ if(strcmp(parameters,'Hyperloop-Doubles'))
     %text(20,25,TeXString)
     grid on;
     
-    if(strcmp(geometry,'Single'))
-        set(ax(1),'YLim',[0 50])
-        set(ax(1),'YTick',[0:10:50])
-        set(ax(2),'YLim',[0 50])
-        set(ax(2),'YTick',[0:10:50])
-        set(ax(1),'XLim',[0 50])
-        set(ax(1),'XTick',[0:5:50]) 
-    end
+%     if(strcmp(profile,'Single'))
+%         set(ax(1),'YLim',[0 50])
+%         set(ax(1),'YTick',[0:10:50])
+%         set(ax(2),'YLim',[0 50])
+%         set(ax(2),'YTick',[0:10:50])
+%         set(ax(1),'XLim',[0 50])
+%         set(ax(1),'XTick',[0:5:50]) 
+%     end
+%     
+%     subplot(2,1,2);
+%     plot(v,n);
+%     title('Lift/Drag Ratio');
+%     xlabel('Velocity (m/s)');
+%     grid on;
+    
+elseif(strcmp(parameters,'Hyperloop-Brakes'))
+    subplot(2,1,1);
+    [ax,p1,p2] = plotyy(v,(F_drag),...
+                        v,F_lift,'plot','plot');
+    title('Lift and Drag Forces');
+    xlabel(ax(1),'Velocity (m/s)') % label x-axis
+    ylabel(ax(1),'Drag Force (N)') % label left y-axis
+    ylabel(ax(2),'Lift Force (N)') % label right y-axis
+    set(ax(1),'YLim',[0 5000])
+    set(ax(1),'YTick',[0:1000:5000])
+    set(ax(2),'YLim',[0 5000])
+    set(ax(2),'YTick',[0:1000:5000])
+    set(ax(1),'XLim',[0 135])
+    set(ax(1),'XTick',[0:10:135])
+    %TeXString = texlabel('d1 = 10mm, d2 = 15mm');
+    %text(20,25,TeXString)
+    grid on;
     
     subplot(2,1,2);
     plot(v,n);
@@ -191,7 +237,7 @@ if(strcmp(parameters,'Hyperloop-Doubles'))
     xlabel('Velocity (m/s)');
     grid on;
     
-elseif(strcmp(parameters,'Hyperloop-Brakes'))
+elseif(strcmp(parameters,'Hyperloop-Hybrid'))
     subplot(2,1,1);
     [ax,p1,p2] = plotyy(v,(F_drag),...
                         v,F_lift,'plot','plot');
@@ -223,10 +269,10 @@ elseif(strcmp(parameters,'Hyperloop-Lateral'))
     xlabel(ax(1),'Velocity (m/s)') % label x-axis
     ylabel(ax(1),'Drag Force (N)') % label left y-axis
     ylabel(ax(2),'Lift Force (N)') % label right y-axis
-    set(ax(1),'YLim',[0 500])
-    set(ax(1),'YTick',[0:100:500])
-    set(ax(2),'YLim',[0 500])
-    set(ax(2),'YTick',[0:100:500])
+    set(ax(1),'YLim',[0 600])
+    set(ax(1),'YTick',[0:100:600])
+    set(ax(2),'YLim',[0 600])
+    set(ax(2),'YTick',[0:100:600])
     set(ax(1),'XLim',[0 135])
     set(ax(1),'XTick',[0:10:135])
     %TeXString = texlabel('d1 = 10mm, d2 = 15mm');
@@ -235,9 +281,13 @@ elseif(strcmp(parameters,'Hyperloop-Lateral'))
     
     subplot(2,1,2);
     plot(v,n);
-    title('Lift/Drag Ratio');
+    ylabel('Lift/Drag Ratio');
     xlabel('Velocity (m/s)');
     grid on; 
+    hold on
+    
+    plot(v,m)
+    ylabel('Lift/Weight Ratio');
     
 end
 
@@ -518,32 +568,53 @@ elseif(strcmp(parameters,'Halbach-Brakes'))
     xlabel('Velocity(m/s)');
     
 elseif(strcmp(parameters,'Test-Rig2'))
-    subplot(3,1,1);
-    [ax,p1,p2] = plotyy(v,F_drag,v,F_lift,'plot','plot');
-    title('Lift and Drag Forces');
-    xlabel(ax(1),'Velocity (m/s)') % label x-axis
-    ylabel(ax(1),'Drag Force (N)') % label left y-axis
-    ylabel(ax(2),'Lift Force (N)') % label right y-axis
-    set(ax(1),'YLim',[0 60])
-    set(ax(1),'YTick',[0:10:60])
-    set(ax(2),'YLim',[0 60])
-    set(ax(2),'YTick',[0:10:60])
-    set(ax(1),'XLim',[0 25])
-    set(ax(1),'XTick',[0:5:25])
-    grid on;
-    
-    subplot(3,1,2);
-    plot(v,n);
-    title('Lift/Drag Ratio');
+    figure, hold on;
+    %[ax,p1,p2] = plotyy(v,F_drag,v,F_lift,'plot','plot');
+    if strcmp(profile,'Single')
+        title('Repulsion and Drag Forces - Levitation');
+        str = sprintf('Air Gap: %0.1f (mm)',d1*1000);
+    elseif strcmp(profile,'Double')
+        title('Repulsion and Drag Forces - Lateral Stability');
+        str = sprintf('Air Gap: %0.1f (mm), %0.1f (mm)',d1*1000,d2*1000);
+    elseif strcmp(profile,'Brakes')
+        title('Repulsion and Drag Forces - Braking');
+        str = sprintf('Air Gap: %0.1f (mm), %0.1f (mm)',d1*1000,d2*1000);
+        F_lift = -F_lift;
+    end
+%     xlabel(ax(1),'Velocity (m/s)') % label x-axis
+%     ylabel(ax(1),'Drag Force (N)') % label left y-axis
+%     ylabel(ax(2),'Lift Force (N)') % label right y-axis
+%     %set(ax(1),'YLim',[0 5000])
+%     %set(ax(1),'YTick',[0:1000:5000])
+%     %set(ax(2),'YLim',[0 5000])
+%     %set(ax(2),'YTick',[0:1000:5000])
+%     set(ax(1),'YLim',[0 400])
+%     set(ax(1),'YTick',[0:50:400])
+%     set(ax(2),'YLim',[0 400])
+%     set(ax(2),'YTick',[0:50:400])
+%     set(ax(1),'XLim',[0 25])
+%     set(ax(1),'XTick',[0:5:25])
+    dim = [0.2 0.5 0.6 0.4];
+    annotation('textbox',dim,'String',str,'FitBoxToText','on');
+    plot(v,F_drag);
+    plot(v,F_lift);
     xlabel('Velocity (m/s)');
-    axis([0 25 0 4])
+    ylabel('Force (N)');
+    legend('Drag','Lift');
     grid on;
     
-    subplot(3,1,3)
-    plot(v,m);
-    title('Lift/Weight Ratio');
-    xlabel('Velocity(m/s)');
-    axis([0 25 0 12])
+%     subplot(3,1,2);
+%     plot(v,n);
+%     title('Lift/Drag Ratio');
+%     xlabel('Velocity (m/s)');
+%     axis([0 25 0 4])
+%     grid on;
+%     
+%     subplot(3,1,3)
+%     plot(v,m);
+%     title('Lift/Weight Ratio');
+%     xlabel('Velocity(m/s)');
+%     axis([0 25 0 12])
     
 end
 
@@ -554,4 +625,20 @@ if(strcmp(skin,'plot'))
     xlabel('Velocity (m)');
     ylabel('Skin Depth (mm)');
     axis([0 50 0 35])
+    hold on
+    plot([0,50],[l*1000,l*1000]);
 end
+
+%figure;
+
+F_lift;
+Mass_pod = 400;
+F_pod = Mass_pod*9.81;
+F_lift - F_pod;
+%plot(v,F_drag - F_pod)
+%plot(v,F_lift - F_pod)
+%axis([0 20 0 4000])
+%title('Levitation Force - Pod Force (including magnets) ');
+
+
+
