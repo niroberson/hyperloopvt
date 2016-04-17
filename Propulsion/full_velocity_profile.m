@@ -1,9 +1,9 @@
-function [gt, gv] = full_velocity_profile(mPod)
+function [gt, gx, gv] = full_velocity_profile(mPod)
 %% Constants
 l_track = 1609.34; % 5280 ft or 1 mile
 l_pusher= 243.84; % 800 ft
 mPod = 270; % kg
-dt = 0.1;
+dt = 0.001;
 
 %% Set up global trackers
 gt = 0;
@@ -11,8 +11,18 @@ gv = 0;
 gx = 0;
 
 %% Get propulsion forces
-t_prop = 5.5;
-Fth = propulsion(t_prop);
+t_prop = 3;
+config = struct();
+config.k = 1.4;
+config.R = 297;
+config.T_min = 77;
+config.At = pi*((7.75/1000)^2);
+config.Me = 1.5;
+config.V = 0.0672689;
+config.Pi = 3.1026e+7;
+config.Ti = 273.15;
+config.Pvac = 861.84466;
+Fth = propulsion(t_prop, config);
 t_pusher = 0;
 %% Run trajectory
 i = 1;
@@ -60,23 +70,24 @@ aPush = 2*9.8;
 Fpush = aPush*mPod;
 end
 
-function Fth = propulsion(t_prop)
+function Fth = propulsion(t_prop, config_info)
 %% Nitrogen
 configuration = 'converging-diverging';
-[Fth, I, Ae] = cold_gas_thruster(configuration, t_prop);
+[Fth, I, Ae] = cold_gas_thruster(configuration, t_prop, config_info);
 end
 
 function Force_z = brake(v)
     %% Calculate Eddy Brake Drag
-    parameters = 'Hyperloop-Brakes';
+%     parameters = 'Hyperloop-Brakes';
     
-    [vfinal,profile,M,tau,Br,h,width,l,rho_track,d1,d2,P,PodWeight]...
-          = ParameterSelect(parameters);
+%     [vfinal,profile,M,tau,Br,h,width,l,rho_track,d1,d2,P,PodWeight]...
+%           = ParameterSelect(parameters);
+%     
+%     [Force_y, Force_z, LtD, LtW, numMagnets, weightEstimate_kg,...
+%           weightEstimate_lbs, length_feet, costEstimate, skinDepth]...
+%                                 = DoubleHalbachModel(parameters,v,d1,h);
     
-    [Force_y, Force_z, LtD, LtW, numMagnets, weightEstimate_kg,...
-          weightEstimate_lbs, length_feet, costEstimate, skinDepth]...
-                                = DoubleHalbachModel(parameters,v,d1,h);
-    
+    Force_z = 900;
 end
 
 function Force_z = magnetic_drag(v)
