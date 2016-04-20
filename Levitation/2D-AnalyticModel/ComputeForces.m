@@ -8,7 +8,7 @@ skin = 'plot-';
 model = 'new';
 
 %% Hyperloop Design Parameters
-%parameters = 'Hyperloop-Stilts';
+parameters = 'Hyperloop-Stilts';
 %parameters = 'Hyperloop-Brakes'
 %parameters = 'Hyperloop-Lateral';
 %parameters = 'Hyperloop-Hybrid';
