@@ -29,3 +29,10 @@ plot(t, output.Pe)
 legend('Tank', 'Throat', 'Exhaust')
 xlabel('Time [s]')
 ylabel('Pressure [Pa]')
+
+%% Plot acceleration over time
+figure
+mass_pod = 300 - output.mass_loss;
+plot(t, output.Fth./(9.81*mass_pod))
+xlabel('Time [s]')
+ylabel('Acceleration [gs]')

@@ -1,5 +1,5 @@
 dt = 0.01;
-mPod = 300;
+mPod = 250;
 [gt, gx, gv] = full_velocity_profile(dt, mPod);
 
 figure, hold on
@@ -9,7 +9,7 @@ legend({'Average Velocity'})
 plot(gt, gv)
 xlabel('Time (s)')
 ylabel('Velocity (m/s)')
-
+ 
 subplot(2,1,2)
 plot(gx, gv)
 xlabel('Position (m)')
