@@ -9,14 +9,14 @@ gv = 0;
 gx = 0;
 
 %% Get propulsion forces
-t_prop = 7;
+t_prop = 6;
 [Fth, mass_loss] = propulsion(t_prop, dt);
 
 %% Run trajectory
 i = 1;
 t_pusher = 0;
 mPodt = [];
-for t=0:dt:25
+for t=0:dt:20
     if gx(end) < l_pusher
         t_pusher = t;
         at = pusher(mPod)/mPod;

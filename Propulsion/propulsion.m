@@ -1,5 +1,5 @@
 sitch = 'production';
-duration = 10;
+duration = 7;
 dt = 0.001;
 t = 0:dt:duration;
 
