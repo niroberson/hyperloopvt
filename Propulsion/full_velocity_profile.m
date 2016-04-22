@@ -9,7 +9,7 @@ gv = 0;
 gx = 0;
 
 %% Get propulsion forces
-t_prop = 10;
+t_prop = 7;
 [Fth, mass_loss] = propulsion(t_prop, dt);
 
 %% Run trajectory
@@ -21,8 +21,8 @@ for t=0:dt:25
         t_pusher = t;
         at = pusher(mPod)/mPod;
     elseif t - t_pusher > t_prop
-        Fbrakes = brake(gv(end));
-        Factual = - magnetic_drag(gv(end)) - Fbrakes;
+        aBrakes = brake(gx(end), gv(end), l_track);
+        Factual = - magnetic_drag(gv(end)) - aBrakes*mPodt(end);
         at = Factual/mPodt(end);
     else
         Factual = Fth(i) - magnetic_drag(gv(end));
@@ -58,18 +58,8 @@ Fth = output.Fth;
 mass_loss = output.mass_loss;
 end
 
-function Force_z = brake(v)
-    %% Calculate Eddy Brake Drag
-%     parameters = 'Hyperloop-Brakes';
-    
-%     [vfinal,profile,M,tau,Br,h,width,l,rho_track,d1,d2,P,PodWeight]...
-%           = ParameterSelect(parameters);
-%     
-%     [Force_y, Force_z, LtD, LtW, numMagnets, weightEstimate_kg,...
-%           weightEstimate_lbs, length_feet, costEstimate, skinDepth]...
-%                                 = DoubleHalbachModel(parameters,v,d1,h);
-    
-    Force_z = 4000;
+function aBrakes = brake(x, v, l_track)
+    aBrakes = v^2/(2*(l_track - x));
 end
 
 function Force_z = magnetic_drag(v)
