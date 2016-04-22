@@ -1,9 +1,7 @@
-function [gt, gx, gv] = full_velocity_profile(mPod)
+function [gt, gx, gv] = full_velocity_profile(dt, mPod)
 %% Constants
 l_track = 1609.34; % 5280 ft or 1 mile
 l_pusher= 243.84; % 800 ft
-mPod = 270; % kg
-dt = 0.001;
 
 %% Set up global trackers
 gt = 0;
@@ -11,21 +9,12 @@ gv = 0;
 gx = 0;
 
 %% Get propulsion forces
-t_prop = 3;
-config = struct();
-config.k = 1.4;
-config.R = 297;
-config.T_min = 77;
-config.At = pi*((7.75/1000)^2);
-config.Me = 1.5;
-config.V = 0.0672689;
-config.Pi = 3.1026e+7;
-config.Ti = 273.15;
-config.Pvac = 861.84466;
-Fth = propulsion(t_prop, config);
-t_pusher = 0;
+t_prop = 10;
+Fth = propulsion(t_prop, dt);
+
 %% Run trajectory
 i = 1;
+t_pusher = 0;
 for t=0:dt:25
     if gx(end) < l_pusher
         Factual = pusher(mPod);
@@ -48,18 +37,6 @@ for t=0:dt:25
     gv(end+1) = vNext;
 end
 
-% figure, hold on
-% subplot(2,1,1)
-% plot([gt(1) gt(end)], [mean(gv) mean(gv)])
-% legend({'Average Velocity'})
-% plot(gt, gv)
-% xlabel('Time (s)')
-% ylabel('Velocity (m/s)')
-% 
-% subplot(2,1,2)
-% plot(gx, gv)
-% xlabel('Position (m)')
-% ylabel('Velocity (m/s)')
 end
 
 %% Run Brakes
@@ -70,10 +47,11 @@ aPush = 2*9.8;
 Fpush = aPush*mPod;
 end
 
-function Fth = propulsion(t_prop, config_info)
+function Fth = propulsion(t_prop, dt)
 %% Nitrogen
-configuration = 'converging-diverging';
-[Fth, I, Ae] = cold_gas_thruster(configuration, t_prop, config_info);
+sitch = 'production';
+output = cold_gas_thruster(t_prop, dt, sitch);
+Fth = output.Fth;
 end
 
 function Force_z = brake(v)
@@ -87,7 +65,7 @@ function Force_z = brake(v)
 %           weightEstimate_lbs, length_feet, costEstimate, skinDepth]...
 %                                 = DoubleHalbachModel(parameters,v,d1,h);
     
-    Force_z = 4500;
+    Force_z = 4000;
 end
 
 function Force_z = magnetic_drag(v)

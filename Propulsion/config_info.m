@@ -3,6 +3,7 @@ function config = config_info(sitch, propellant)
 V = 0.1206907; % m3 Tank Volume
 Pi = 2.3442e+7; % Pascals Tank Pressure
 At = (7.874/1000)^2*pi; % Nozzle area
+Me = 2.1;
 
 switch sitch
     case 'testing'
@@ -39,6 +40,6 @@ config.V = V;
 config.Pi = Pi;
 config.Ti = Ti;
 config.Pvac = Pvac;
-config.Me = 1.5;
+config.Me = Me;
 
 end

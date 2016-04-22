@@ -1,8 +1,10 @@
-%% Propulsion Testing
+sitch = 'production';
+
+%% Propulsion
 duration = 10;
 dt = 0.001;
 t = 0:dt:duration;
-output = cold_gas_thruster(duration, dt, 'production');
+output = cold_gas_thruster(duration, dt, sitch);
 
 %% Plot thrust
 figure, plot(t, output.Fth)

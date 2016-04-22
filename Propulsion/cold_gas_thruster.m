@@ -13,10 +13,10 @@ Me = config.Me;
 %% Setup empty variable storage
 P0 = []; T0 = []; Tt = []; Pt = []; Vt = []; Pe = []; Te = []; Ve = [];
 
-%% Transient behavior
-Me = 2;
+%% Get exit area
 Ae = At/Me*(((k+1)/2)/(1 + (k-1)/2*Me^2))^(-(k+1)/(2*(k-1)));
 
+%% Transient behavior
 for t=0:dt:t_prop
     [P0(end+1), T0(end+1)] = tank(Ti, Pi, V, At, k, R, t);
     [Tt(end+1), Pt(end+1), Vt(end+1)] = nozzle_converging(T0(end), P0(end), k, R);
@@ -26,6 +26,7 @@ end
 %% Determine the thrust produced over time
 mdot = Pe./(R*Te).*(Me.*sqrt(k*R.*Te))*Ae;
 Fth = Ve.*mdot + (Pe - config.Pvac)*Ae;
+
 %% Find the toal impulse in the alloted time
 output.I = trapz(Fth);
 
