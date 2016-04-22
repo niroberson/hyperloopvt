@@ -9,11 +9,11 @@ switch sitch
     case 'testing'
         %% Initial conditions
         Ti = 273.15; % K
-        Pvac = 101352.9; % stp
+        Pamb = 101352.9; % stp
     case 'production'
         %% Initial conditions
         Ti = 273.15; % K
-        Pvac = 861.84466;
+        Pamb = 861.84466;
 end
 
 %% Propellant Choice
@@ -39,7 +39,7 @@ config.At = At;
 config.V = V;
 config.Pi = Pi;
 config.Ti = Ti;
-config.Pvac = Pvac;
+config.Pamb = Pamb;
 config.Me = Me;
 
 end

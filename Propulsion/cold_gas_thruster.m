@@ -1,4 +1,8 @@
-function output = cold_gas_thruster(t_prop, dt, sitch)
+function output = cold_gas_thruster(t_prop, dt, sitch, model)
+if nargin < 4
+    model = 'isentropic';
+end
+
 
 %% Constants
 config = config_info(sitch, 'air');
@@ -21,13 +25,19 @@ Ae = At/Me*(((k+1)/2)/(1 + (k-1)/2*Me^2))^(-(k+1)/(2*(k-1)));
 for t=0:dt:t_prop
     [P0(end+1), T0(end+1)] = tank(Ti, Pi, V, At, k, R, t);
     mass_loss(end+1) = P0(1)*V/(R*T0(1)) - P0(end)*V/(R*T0(end));
-    [Tt(end+1), Pt(end+1), Vt(end+1)] = nozzle_converging(T0(end), P0(end), k, R);
-    [Pe(end+1), Te(end+1), Ve(end+1)] = nozzle_diverging(T0(end), P0(end), Me, k, R);
+    switch model
+        case 'isentropic'
+        [Tt(end+1), Pt(end+1), Vt(end+1)] = nozzle_converging(T0(end), P0(end), k, R);
+        [Pe(end+1), Te(end+1), Ve(end+1)] = nozzle_diverging(T0(end), P0(end), Me, k, R);
+        case 'isothermal'
+        [Tt(end+1), Pt(end+1), Vt(end+1)] = nozzle_converging(T0(1), P0(end), k, R);
+        [Pe(end+1), Te(end+1), Ve(end+1)] = nozzle_diverging(T0(1), P0(end), Me, k, R);  
+    end
 end
 
 %% Determine the thrust produced over time
 mdot = Pe./(R*Te).*(Me.*sqrt(k*R.*Te))*Ae;
-Fth = Ve.*mdot + (Pe - config.Pvac)*Ae;
+Fth = Ve.*mdot + (Pe - config.Pamb)*Ae;
 
 %% Find the toal impulse in the alloted time
 output.I = trapz(Fth);
