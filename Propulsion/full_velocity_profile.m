@@ -10,24 +10,27 @@ gx = 0;
 
 %% Get propulsion forces
 t_prop = 10;
-Fth = propulsion(t_prop, dt);
+[Fth, mass_loss] = propulsion(t_prop, dt);
 
 %% Run trajectory
 i = 1;
 t_pusher = 0;
+mPodt = [];
 for t=0:dt:25
     if gx(end) < l_pusher
-        Factual = pusher(mPod);
         t_pusher = t;
+        at = pusher(mPod)/mPod;
     elseif t - t_pusher > t_prop
         Fbrakes = brake(gv(end));
         Factual = - magnetic_drag(gv(end)) - Fbrakes;
+        at = Factual/mPodt(end);
     else
         Factual = Fth(i) - magnetic_drag(gv(end));
+        mPodt(end+1) = mPod - mass_loss(i);
+        at = Factual/mPodt(end);
         i = i+1;
     end
     
-    at = Factual/mPod;
     vNext = gv(end) + at*dt;
     dx = gv(end)*dt + 0.5*at*dt^2;
     
@@ -47,11 +50,12 @@ aPush = 2*9.8;
 Fpush = aPush*mPod;
 end
 
-function Fth = propulsion(t_prop, dt)
+function [Fth, mass_loss] = propulsion(t_prop, dt)
 %% Nitrogen
 sitch = 'production';
 output = cold_gas_thruster(t_prop, dt, sitch);
 Fth = output.Fth;
+mass_loss = output.mass_loss;
 end
 
 function Force_z = brake(v)

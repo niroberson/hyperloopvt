@@ -1,3 +1,5 @@
+dt = 0.01;
+mPod = 300;
 [gt, gx, gv] = full_velocity_profile(dt, mPod);
 
 figure, hold on
