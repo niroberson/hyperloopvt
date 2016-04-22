@@ -1,21 +1,18 @@
-function config = config_info(tank, propellant)
-%% Initial conditions
-Ti = 273.15; % K
-Pvac = 861.84466;
+function config = config_info(prod, propellant)
 %% Tank Choice
-switch tank
-    case 'big_tank'
-        V = 0.1206907; % m3 Tank Volume
-        Pi = 2.3442e+7; % Pascals Tank Pressure
-        At = (7.75/1000)^2*pi; % 3/4 in pipe
-    case 'small_tank'
-        V = 0.0672689;
-        Pi = 3.1026e+7;
-        At = (4.6/1000)^2*pi;
-    case 'full_scale'
-        V = 0.36; % m3 Tank Volume
-        Pi = 2.3442e+7; % Pascals Tank Pressure
-        At = (10/1000)^2*pi; % 3/4 in pipe
+V = 0.1206907; % m3 Tank Volume
+Pi = 2.3442e+7; % Pascals Tank Pressure
+At = (7.874/1000)^2*pi; % 3/4 in pipe
+
+switch prod
+    case 'testing'
+        %% Initial conditions
+        Ti = 273.15; % K
+        Pvac = 101352.9; % stp
+    case 'production'
+        %% Initial conditions
+        Ti = 273.15; % K
+        Pvac = 861.84466;
 end
 
 %% Propellant Choice

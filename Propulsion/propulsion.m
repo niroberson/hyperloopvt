@@ -1,5 +1,5 @@
 %% Propulsion
-t=0:0.01:5;
+t=0:0.01:15;
 [Fth, I, Ae, Te] = cold_gas_thruster('converging-diverging', t(end));
 figure
 subplot(2,1,1)

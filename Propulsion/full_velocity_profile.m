@@ -48,18 +48,18 @@ for t=0:dt:25
     gv(end+1) = vNext;
 end
 
-figure, hold on
-subplot(2,1,1)
-plot([gt(1) gt(end)], [mean(gv) mean(gv)])
-legend({'Average Velocity'})
-plot(gt, gv)
-xlabel('Time (s)')
-ylabel('Velocity (m/s)')
-
-subplot(2,1,2)
-plot(gx, gv)
-xlabel('Position (m)')
-ylabel('Velocity (m/s)')
+% figure, hold on
+% subplot(2,1,1)
+% plot([gt(1) gt(end)], [mean(gv) mean(gv)])
+% legend({'Average Velocity'})
+% plot(gt, gv)
+% xlabel('Time (s)')
+% ylabel('Velocity (m/s)')
+% 
+% subplot(2,1,2)
+% plot(gx, gv)
+% xlabel('Position (m)')
+% ylabel('Velocity (m/s)')
 end
 
 %% Run Brakes
@@ -87,7 +87,7 @@ function Force_z = brake(v)
 %           weightEstimate_lbs, length_feet, costEstimate, skinDepth]...
 %                                 = DoubleHalbachModel(parameters,v,d1,h);
     
-    Force_z = 900;
+    Force_z = 4500;
 end
 
 function Force_z = magnetic_drag(v)
@@ -99,5 +99,5 @@ function Force_z = magnetic_drag(v)
     
     [Force_y, Force_z, LtD, LtW, numMagnets, weightEstimate_kg,...
           weightEstimate_lbs, length_feet, costEstimate, skinDepth]...
-                                = DoubleHalbachModel(parameters,v,d1,h);
+                                = DoubleHalbachModelNew(parameters,v,d1,h);
 end
