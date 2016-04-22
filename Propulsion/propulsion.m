@@ -1,21 +1,29 @@
-%% Propulsion
-t=0:0.01:15;
-[Fth, I, Ae, Te] = cold_gas_thruster('converging-diverging', t(end));
-figure
-subplot(2,1,1)
-plot(t, Fth)
-subplot(2,1,2)
-plot(t, Te)
+%% Propulsion Testing
+duration = 10;
+dt = 0.001;
+t = 0:dt:duration;
+output = cold_gas_thruster(duration, dt, 'production');
 
-%% Propulsion 2
-t=0:0.01:5.5;
-[Fth, I, Ae, Te] = cold_gas_thruster('converging-diverging', t(end));
-figure
-subplot(2,1,1)
-plot(t, Fth)
-xlabel('Time (s)')
-ylabel('Force of Thrust (N)')
-subplot(2,1,2)
-plot(t, Te)
-xlabel('Time (s)')
-ylabel('Exhaust Temperature (K)')
+%% Plot thrust
+figure, plot(t, output.Fth)
+xlabel('Time [s]')
+ylabel('Thrust [N]')
+title('Thrust Duration')
+
+%% Plot system temperature
+figure, hold on
+plot(t, output.T0)
+plot(t, output.Tt)
+plot(t, output.Te)
+legend('Tank', 'Throat', 'Exhaust')
+xlabel('Time [s]')
+ylabel('Tempearture [K]')
+
+%% Plot system pressure
+figure, hold on
+plot(t, output.P0)
+plot(t, output.Pt)
+plot(t, output.Pe)
+legend('Tank', 'Throat', 'Exhaust')
+xlabel('Time [s]')
+ylabel('Pressure [Pa]')

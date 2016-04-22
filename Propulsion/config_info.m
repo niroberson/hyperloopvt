@@ -1,10 +1,10 @@
-function config = config_info(prod, propellant)
+function config = config_info(sitch, propellant)
 %% Tank Choice
 V = 0.1206907; % m3 Tank Volume
 Pi = 2.3442e+7; % Pascals Tank Pressure
-At = (7.874/1000)^2*pi; % 3/4 in pipe
+At = (7.874/1000)^2*pi; % Nozzle area
 
-switch prod
+switch sitch
     case 'testing'
         %% Initial conditions
         Ti = 273.15; % K
@@ -17,7 +17,7 @@ end
 
 %% Propellant Choice
 switch propellant
-        case 'air'
+    case 'air'
         % Air
         T_min = 78.8;
         k = 1.4;

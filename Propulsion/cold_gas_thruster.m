@@ -14,7 +14,7 @@ Me = config.Me;
 P0 = []; T0 = []; Tt = []; Pt = []; Vt = []; Pe = []; Te = []; Ve = [];
 
 %% Transient behavior
-Me = 2.1;
+Me = 2;
 Ae = At/Me*(((k+1)/2)/(1 + (k-1)/2*Me^2))^(-(k+1)/(2*(k-1)));
 
 for t=0:dt:t_prop
@@ -33,7 +33,7 @@ output.I = trapz(Fth);
 output.T0 = T0;
 output.P0 = P0;
 output.Te = Te;
-output.P = Pe;
+output.Pe = Pe;
 output.mdot = mdot;
 output.Fth = Fth;
 output.Tt = Tt;
