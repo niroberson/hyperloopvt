@@ -281,13 +281,14 @@ elseif(strcmp(parameters,'Hyperloop-Lateral'))
     
     subplot(2,1,2);
     plot(v,n);
-    ylabel('Lift/Drag Ratio');
+    ylabel('Ratios');
     xlabel('Velocity (m/s)');
     grid on; 
     hold on
     
     plot(v,m)
-    ylabel('Lift/Weight Ratio');
+    ylabel('Ratio');
+    legend('Lift/Drag','Lift/Weight')
     
 end
 

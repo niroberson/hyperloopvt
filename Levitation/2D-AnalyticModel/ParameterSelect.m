@@ -151,15 +151,15 @@ elseif(strcmp(parameters,'Hyperloop-Lateral'))
     % Magnet Parameters
     M = 4; % Number of Magnets in Wavelength
     Br = 1.32; % Magnet remanence (T)
-    P = 14; % Pole pair 
+    P = 3; % Pole pair 
     
-    %width = 0.01905;
+    width = 0.01905;
     %width = 0.0381;
-    width = 0.0254;
+    %width = 0.0254;
     %length = 0.0127;
-    tau = width/1.5;
+    tau = width*2;
     %tau = width;
-    h = tau*.7; 
+    h = tau*.335; 
     
     % Track Parameters
     l = 0.0079502; % Thickness of track (m)
@@ -170,8 +170,8 @@ elseif(strcmp(parameters,'Hyperloop-Lateral'))
     perturb = 0.013; % Perturbation in (m)
     %d1 = 0.020 - perturb; % Upper air gap (m)
     %d2 = 0.020 + perturb; % Lower air gap (m)
-    d1 = 0.007;
-    d2 = 0.033;
+    d1 = 0.013;
+    d2 = 0.017;
     
     elseif(strcmp(parameters,'Hyperloop-Hybrid'))
     vfinal = 135;
