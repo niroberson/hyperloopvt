@@ -5,7 +5,7 @@ end
 
 
 %% Constants
-config = config_info(sitch, 'air');
+config = config_info(sitch, 'nitrogen');
 Ti = config.Ti;
 Pi = config.Pi;
 V = config.V;
@@ -19,7 +19,7 @@ P0 = []; T0 = []; Tt = []; Pt = []; Vt = []; Pe = []; Te = []; Ve = [];
 mass_loss = [];
 
 %% Get exit area
-Ae = At/Me*(((k+1)/2)/(1 + (k-1)/2*Me^2))^(-(k+1)/(2*(k-1)));
+Ae = At/Me*(((k+1)/2))^(-(k+1)/(2*(k-1)))*(1 + (k-1)/2*Me^2)^((k+1)/(2*(k-1)));
 
 %% Transient behavior
 for t=0:dt:t_prop
