@@ -37,6 +37,7 @@ ylabel('Pressure [Pa]')
 %% Plot acceleration over time
 figure
 mass_pod = 350 - isentropic_output.mass_loss;
-plot(t, isentropic_output.Fth./(9.81*mass_pod))
+a = isentropic_output.Fth./(9.81*mass_pod);
+plot(t, a)
 xlabel('Time [s]')
 ylabel('Acceleration [gs]')

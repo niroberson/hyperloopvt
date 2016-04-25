@@ -16,6 +16,7 @@ t_prop = 6;
 i = 1;
 t_pusher = 0;
 mPodt = [];
+vProp = [];
 for t=0:dt:20
     if gx(end) < l_pusher
         t_pusher = t;
@@ -29,6 +30,7 @@ for t=0:dt:20
         mPodt(end+1) = mPod - mass_loss(i);
         at = Factual/mPodt(end);
         i = i+1;
+        vProp(end+1) = gv(end) + at*dt;
     end
     
     vNext = gv(end) + at*dt;
