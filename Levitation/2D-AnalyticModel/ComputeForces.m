@@ -8,9 +8,9 @@ skin = 'plot-';
 model = 'new';
 
 %% Hyperloop Design Parameters
-parameters = 'Hyperloop-Stilts';
+%parameters = 'Hyperloop-Stilts';
 %parameters = 'Hyperloop-Brakes'
-%parameters = 'Hyperloop-Lateral';
+parameters = 'Hyperloop-Lateral';
 %parameters = 'Hyperloop-Hybrid';
 %parameters = 'Test-Rig2';
 
@@ -86,10 +86,18 @@ fprintf('Number of Arrays: %i\r',P);
 
 fprintf('\nMass/Weight Estimates: %.2f (kg), %.2f (lbs), %.2f (N) \r',...
         weightEstimate_kg, weightEstimate_lbs, weightEstimate_kg*9.81)
-fprintf('Total Structure Length(z): %0.4f (ft) %0.4f (in)\r',length_feet,length_in);
-fprintf('Total Structure Width(x): %0.4f (ft) %0.4f (in)\r',h/12,h);
-fprintf('Total Structure Height(y): %0.4f (ft) %0.4f (in)\r',width/12,width);
-
+    
+if(strcmp(parameters,'Hyperloop-Stilts'))
+    fprintf('Total Structure Length(z): %0.4f (ft) %0.4f (in)\r',length_feet,length_in);
+    fprintf('Total Structure Width(x): %0.4f (ft) %0.4f (in)\r',width/12,width);
+    fprintf('Total Structure Height(y): %0.4f (ft) %0.4f (in)\r',h/12,h);
+    
+elseif(strcmp(parameters,'Hyperloop-Lateral'))
+    fprintf('Total Structure Length(z): %0.4f (ft) %0.4f (in)\r',length_feet,length_in);
+    fprintf('Total Structure Width(x): %0.4f (ft) %0.4f (in)\r',width/12,width);
+    fprintf('Total Structure Height(y): %0.4f (ft) %0.4f (in)\r',h/12,h);
+    
+end
 %% Average Force
 
 avg_force = mean(F_drag/1000);

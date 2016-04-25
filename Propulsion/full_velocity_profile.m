@@ -1,6 +1,6 @@
-function [gt, gx, gv] = full_velocity_profile(dt, mPod)
+function [gt, gx, gv] = full_velocity_profile(dt, mPod, l_track)
 %% Constants
-l_track = 1609.34; % 5280 ft or 1 mile
+%l_track = 1609.34; % 5280 ft or 1 mile
 l_pusher= 243.84; % 800 ft
 
 %% Set up global trackers
