@@ -107,58 +107,49 @@ if(strcmp(parameters,'Hyperloop-Doubles'))
     
     if(strcmp(plot_setting,'Four-Stilts'))
         subplot(1,2,1);
-        [ax,p1,p2] = plotyy(v,F_drag/1000,...
-                        v,F_lift/1000,'plot','plot');
+        %[ax,p1,p2] = plotyy(v,F_drag/1000,...
+        %                v,F_lift/1000,'plot','plot');
+        plot(v,F_drag/1000)
+        hold on
+        plot(v,F_lift/1000)
         title('Lift and Drag Forces');
-        xlabel(ax(1),'Velocity (m/s)')  % label x-axis
-        ylabel(ax(1),'Drag Force (kN)') % label left y-axis
-        ylabel(ax(2),'Lift Force (kN)') % label right y-axis
-        set(ax(1),'YLim',[0 8])
-        set(ax(1),'YTick',[0:1:8])
-        set(ax(2),'YLim',[0 8])
-        set(ax(2),'YTick',[0:1:8])
-        set(ax(1),'XLim',[0 135])
-        set(ax(1),'XTick',[0:15:135])
-        set(ax(2),'XLim',[0 135])
-        set(ax(2),'XTick',[0:15:135])
-%         grid on;
-%         weight
-%         subplot(1,2,1);
-%         [ax,p1,p2] = plotyy(v,F_lift/1000,...
-%                         [0.1, vfinal],[weight/1000, weight/1000],'plot','plot');
-%         maxV = max((F_lift/1000))
-%         title('Lift and Drag Forces');
+        xlabel('Velocity (m/s)');
+        ylabel('Force (kN)');
+        legend('Drag','Lift');
+        axis([0 130 0 5])
 %         xlabel(ax(1),'Velocity (m/s)')  % label x-axis
 %         ylabel(ax(1),'Drag Force (kN)') % label left y-axis
 %         ylabel(ax(2),'Lift Force (kN)') % label right y-axis
-%         set(ax(1),'YLim',[0 maxV])
-%         set(ax(1),'YTick',[0:maxV/5:maxV])
-%         set(ax(2),'YLim',[0 maxV])
-%         set(ax(2),'YTick',[0:maxV/5:maxV])
+%         set(ax(1),'YLim',[0 8])
+%         set(ax(1),'YTick',[0:1:8])
+%         set(ax(2),'YLim',[0 8])
+%         set(ax(2),'YTick',[0:1:8])
 %         set(ax(1),'XLim',[0 135])
 %         set(ax(1),'XTick',[0:15:135])
 %         set(ax(2),'XLim',[0 135])
 %         set(ax(2),'XTick',[0:15:135])
 %         grid on;
-%         
-%         
-       
+%      
     end
     
     subplot(1,2,2);
-    [ax,p1,p2]= plotyy(v,n,v,m);
+    plot(v,n)
+    hold on;
+    plot(v,m)
     title('Lift/Drag and Lift/Weight Ratios');
     xlabel('Velocity (m/s)');
-    ylabel(ax(1),'Lift/Drag'); % label left y-axis
-    ylabel(ax(2),'Lift/Weight'); % label left y-axis
-    set(ax(1),'XLim',[0 135])
-    set(ax(1),'XTick',[0:15:135])
-    set(ax(1),'YLim',[0 12])
-    set(ax(1),'YTick',[0:2:12])
-    set(ax(2),'YLim',[0 60])
-    set(ax(2),'YTick',[0:10:60])
-    set(ax(2),'XLim',[0 135])
-    set(ax(2),'XTick',[0:15:135])
+    ylabel('Ratio');
+    legend('Lift/Drag', 'Lift/Weight');
+%     ylabel(ax(1),'Lift/Drag'); % label left y-axis
+%     ylabel(ax(2),'Lift/Weight'); % label left y-axis
+%     set(ax(1),'XLim',[0 135])
+%     set(ax(1),'XTick',[0:15:135])
+%     set(ax(1),'YLim',[0 12])
+%     set(ax(1),'YTick',[0:2:12])
+%     set(ax(2),'YLim',[0 60])
+%     set(ax(2),'YTick',[0:10:60])
+%     set(ax(2),'XLim',[0 135])
+%     set(ax(2),'XTick',[0:15:135])
     grid on;
     
     %subplot(2,2,3)
@@ -215,20 +206,26 @@ if(strcmp(parameters,'Hyperloop-Doubles'))
     
 elseif(strcmp(parameters,'Hyperloop-Brakes'))
     subplot(2,1,1);
-    [ax,p1,p2] = plotyy(v,(F_drag),...
-                        v,F_lift,'plot','plot');
-    title('Lift and Drag Forces');
-    xlabel(ax(1),'Velocity (m/s)') % label x-axis
-    ylabel(ax(1),'Drag Force (N)') % label left y-axis
-    ylabel(ax(2),'Lift Force (N)') % label right y-axis
-    set(ax(1),'YLim',[0 5000])
-    set(ax(1),'YTick',[0:1000:5000])
-    set(ax(2),'YLim',[0 5000])
-    set(ax(2),'YTick',[0:1000:5000])
-    set(ax(1),'XLim',[0 135])
-    set(ax(1),'XTick',[0:10:135])
+%     [ax,p1,p2] = plotyy(v,(F_drag),...
+%                         v,F_lift,'plot','plot');
+%     title('Lift and Drag Forces');
+%     xlabel(ax(1),'Velocity (m/s)') % label x-axis
+%     ylabel(ax(1),'Drag Force (N)') % label left y-axis
+%     ylabel(ax(2),'Lift Force (N)') % label right y-axis
+%     set(ax(1),'YLim',[0 5000])
+%     set(ax(1),'YTick',[0:1000:5000])
+%     set(ax(2),'YLim',[0 5000])
+%     set(ax(2),'YTick',[0:1000:5000])
+%     set(ax(1),'XLim',[0 135])
+%     set(ax(1),'XTick',[0:10:135])
     %TeXString = texlabel('d1 = 10mm, d2 = 15mm');
     %text(20,25,TeXString)
+    plot(v,F_drag)
+    hold on;
+    plot(v,F_lift)
+    xlabel('Velocity (m/s)');
+    ylabel('Force (N)');
+    legend('Drag','Normal');
     grid on;
     
     subplot(2,1,2);
@@ -263,20 +260,13 @@ elseif(strcmp(parameters,'Hyperloop-Hybrid'))
     
 elseif(strcmp(parameters,'Hyperloop-Lateral'))
     subplot(2,1,1);
-    [ax,p1,p2] = plotyy(v,F_drag,...
-                        v,F_lift,'plot','plot');
+    plot(v,F_drag)
+    hold on;
+    plot(v,F_lift)
+    xlabel('Velocity (m/s)');
+    ylabel('Force (N)');
+    legend('Drag','Normal');
     title('Lift and Drag Forces');
-    xlabel(ax(1),'Velocity (m/s)') % label x-axis
-    ylabel(ax(1),'Drag Force (N)') % label left y-axis
-    ylabel(ax(2),'Lift Force (N)') % label right y-axis
-    set(ax(1),'YLim',[0 600])
-    set(ax(1),'YTick',[0:100:600])
-    set(ax(2),'YLim',[0 600])
-    set(ax(2),'YTick',[0:100:600])
-    set(ax(1),'XLim',[0 135])
-    set(ax(1),'XTick',[0:10:135])
-    %TeXString = texlabel('d1 = 10mm, d2 = 15mm');
-    %text(20,25,TeXString)
     grid on;
     
     subplot(2,1,2);

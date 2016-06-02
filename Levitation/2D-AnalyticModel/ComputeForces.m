@@ -2,15 +2,15 @@
 clear all;
 close all;
 
-PodMass = 500;
+PodMass = 250;
 weight = PodMass*9.81;
 skin = 'plot-';
 model = 'new';
 
 %% Hyperloop Design Parameters
 %parameters = 'Hyperloop-Stilts';
-%parameters = 'Hyperloop-Brakes'
-parameters = 'Hyperloop-Lateral';
+parameters = 'Hyperloop-Brakes'
+%parameters = 'Hyperloop-Lateral';
 %parameters = 'Hyperloop-Hybrid';
 %parameters = 'Test-Rig2';
 
@@ -79,9 +79,9 @@ length_in = length_feet*12;
 
 
 fprintf('\nSingle Magnet W x L x H (in)(X-Z-Y) =  %.2f, %.2f, %.2f \r',...
-        width, length, h)
-fprintf('One Array W x L x H (in)(X-Z-Y) =  %.2f, %.2f, %.2f \r', width,...
-         length*M, h)
+        h, length, width)
+fprintf('One Array W x L x H (in)(X-Z-Y) =  %.2f, %.2f, %.2f \r', h,...
+         length*M, width)
 fprintf('Number of Arrays: %i\r',P);
 
 fprintf('\nMass/Weight Estimates: %.2f (kg), %.2f (lbs), %.2f (N) \r',...
@@ -93,6 +93,11 @@ if(strcmp(parameters,'Hyperloop-Stilts'))
     fprintf('Total Structure Height(y): %0.4f (ft) %0.4f (in)\r',h/12,h);
     
 elseif(strcmp(parameters,'Hyperloop-Lateral'))
+    fprintf('Total Structure Length(z): %0.4f (ft) %0.4f (in)\r',length_feet,length_in);
+    fprintf('Total Structure Width(x): %0.4f (ft) %0.4f (in)\r',width/12,width);
+    fprintf('Total Structure Height(y): %0.4f (ft) %0.4f (in)\r',h/12,h);
+
+elseif(strcmp(parameters,'Hyperloop-Brakes'))
     fprintf('Total Structure Length(z): %0.4f (ft) %0.4f (in)\r',length_feet,length_in);
     fprintf('Total Structure Width(x): %0.4f (ft) %0.4f (in)\r',width/12,width);
     fprintf('Total Structure Height(y): %0.4f (ft) %0.4f (in)\r',h/12,h);
