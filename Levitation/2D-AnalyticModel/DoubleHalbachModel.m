@@ -22,7 +22,10 @@ function [Force_y, Force_z, LtD, LtW, numMagnets, weightEstimate_kg,...
 %% Select Parameters
 [vfinal,profile,M,tau,Br,h,width,l,rho_track,d1_old,d2,P,PodWeight]...
           = ParameterSelect(parameters);
-%tau = tau_pass
+
+%tau = tau_pass;
+%h = h_pass;
+%d2 = d1;
 %% Universal Constants 
 u0 = 4*pi*1e-7; % permeability of free space
 epsilon = 8.8541878176*1e-12; % Permitivity of free space
@@ -34,7 +37,7 @@ gamma_three = gamma_one; % Conductivity of air (S/m)
 
 %% Variables
 p = pi/tau; 
-lambda = 2*tau % Array wavelength(m)
+lambda = 2*tau; % Array wavelength(m)
 omega = 2*pi.*v./lambda;
 sigma = 1/rho_track;
 t = 0;
