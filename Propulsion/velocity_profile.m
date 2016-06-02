@@ -1,6 +1,6 @@
 clear, clc
-dt = 0.001;
-mPod = 300;
+dt = 0.1;
+mPod = 350;
 [gt, gx, gv] = full_velocity_profile(dt, mPod);
 
 figure, hold on

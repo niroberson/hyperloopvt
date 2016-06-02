@@ -12,6 +12,6 @@ h = pod.Hmax; % m height of pod
 A = w*h; % m^2 Frontal Area
 
 % Drag equation
-Cd = pod.Cd;
+Cd = 0.27;
 Fd = 0.5*ro*pod_v^2*Cd*A; % N
 end

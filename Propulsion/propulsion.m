@@ -1,5 +1,5 @@
 sitch = 'production';
-duration = 7;
+duration = 6;
 dt = 0.001;
 t = 0:dt:duration;
 
@@ -36,7 +36,8 @@ ylabel('Pressure [Pa]')
 
 %% Plot acceleration over time
 figure
-mass_pod = 300 - isentropic_output.mass_loss;
-plot(t, isentropic_output.Fth./(9.81*mass_pod))
+mass_pod = 350 - isentropic_output.mass_loss;
+a = isentropic_output.Fth./(9.81*mass_pod);
+plot(t, a)
 xlabel('Time [s]')
 ylabel('Acceleration [gs]')
